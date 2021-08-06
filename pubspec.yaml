@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   collection: ^1.15.0
   wakelock: ^0.5.2
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:
