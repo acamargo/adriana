@@ -60,7 +60,56 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Tennis'),
+      home: MatchesScreen(), //MyHomePage(title: 'Tennis'),
+    );
+  }
+}
+
+class MatchesScreen extends StatefulWidget {
+  @override
+  _MatchesScreenState createState() => _MatchesScreenState();
+}
+
+class _MatchesScreenState extends State<MatchesScreen> {
+  List _log = [];
+
+  void _create() {
+    setState(() {
+      _log.add({
+        'time': DateTime.now(),
+        'opponent': 'Angelo',
+        'surface': 'clay',
+        'venue': 'pirituba',
+        'state': 'in progress',
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Matches'),
+      ),
+      body: ListView.builder(
+        itemCount: _log.length,
+        itemBuilder: (context, index) {
+          final element = _log[index];
+          return Card(
+            child: ListTile(
+              title: Text('${element['time']} - ${element['opponent']}'),
+              subtitle: Text(
+                  '${element['surface']} - ${element['venue']} - ${element['state']}'),
+            ),
+          );
+        },
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: _create,
+        tooltip: 'Add match',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
