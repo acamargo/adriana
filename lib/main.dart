@@ -49,12 +49,13 @@ class MatchesStorage {
 }
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
-      .then((_) {
-    runApp(MyApp());
-  });
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
+  //     .then((_) {
+  //   runApp(MyApp());
+  // });
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -72,7 +73,47 @@ class MyApp extends StatelessWidget {
         /* dark theme settings */
       ),
       themeMode: ThemeMode.dark,
-      home: MatchesScreen(), //MyHomePage(title: 'Tennis'),
+      home: MatchesScreen(),
+      //home: MyHomePage(title: 'Tennis'),
+    );
+  }
+}
+
+class SomeDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: const Text('New Match'),
+      ),
+      body: Column(
+        children: [
+          ListTile(
+            title: TextField(
+              decoration: InputDecoration(labelText: "Player 1"),
+            ),
+          ),
+          ListTile(
+            title: TextField(
+              decoration: InputDecoration(labelText: "Player 2"),
+            ),
+          ),
+          ListTile(
+            title: TextField(
+              decoration: InputDecoration(labelText: "Court surface"),
+            ),
+          ),
+          ListTile(
+            title: TextField(
+              decoration: InputDecoration(labelText: "Venue"),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text('SAVE'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -86,6 +127,14 @@ class MatchesScreen extends StatefulWidget {
 
 class _MatchesScreenState extends State<MatchesScreen> {
   List _log = [];
+
+  void _add() {
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return new SomeDialog();
+        },
+        fullscreenDialog: true));
+  }
 
   void _create() {
     setState(() {
@@ -131,7 +180,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: _create,
+        onPressed: _add,
         tooltip: 'Add match',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
