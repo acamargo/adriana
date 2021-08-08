@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -16,28 +17,34 @@ class MatchesStorage {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/counter.txt');
+    print(path);
+    return File('$path/matches.json');
   }
 
-  Future<int> readCounter() async {
+  Future<List> load() async {
     try {
       final file = await _localFile;
 
-      // Read the file
       final contents = await file.readAsString();
 
-      return int.parse(contents);
+      return json.decode(contents);
     } catch (e) {
-      // If encountering an error, return 0
-      return 0;
+      return [];
     }
   }
 
-  Future<File> writeCounter(int counter) async {
+  Future<File> save(List data) async {
     final file = await _localFile;
 
-    // Write the file
-    return file.writeAsString('$counter');
+    final contents = json.encode(data, toEncodable: myEncode);
+    return file.writeAsString(contents);
+  }
+
+  dynamic myEncode(dynamic item) {
+    if (item is DateTime) {
+      return item.toIso8601String();
+    }
+    return item;
   }
 }
 
@@ -71,6 +78,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MatchesScreen extends StatefulWidget {
+  final MatchesStorage storage = MatchesStorage();
+
   @override
   _MatchesScreenState createState() => _MatchesScreenState();
 }
@@ -86,6 +95,17 @@ class _MatchesScreenState extends State<MatchesScreen> {
         'surface': 'clay',
         'venue': 'pirituba',
         'state': 'in progress',
+      });
+      widget.storage.save(_log);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.storage.load().then((List log) {
+      setState(() {
+        _log = log;
       });
     });
   }
