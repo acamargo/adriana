@@ -79,7 +79,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class MyReturnObject {
+  String p1, p2, surface, venue;
+
+  MyReturnObject(this.p1, this.p2, this.surface, this.venue);
+}
+
 class SomeDialog extends StatelessWidget {
+  final p1Controller = TextEditingController();
+  final p2Controller = TextEditingController();
+  final surfaceController = TextEditingController();
+  final venueController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -91,25 +102,35 @@ class SomeDialog extends StatelessWidget {
           ListTile(
             title: TextField(
               decoration: InputDecoration(labelText: "Player 1"),
+              controller: p1Controller,
             ),
           ),
           ListTile(
             title: TextField(
               decoration: InputDecoration(labelText: "Player 2"),
+              controller: p2Controller,
             ),
           ),
           ListTile(
             title: TextField(
               decoration: InputDecoration(labelText: "Court surface"),
+              controller: surfaceController,
             ),
           ),
           ListTile(
             title: TextField(
               decoration: InputDecoration(labelText: "Venue"),
+              controller: venueController,
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop(MyReturnObject(
+                  p1Controller.text,
+                  p2Controller.text,
+                  surfaceController.text,
+                  venueController.text));
+            },
             child: Text('SAVE'),
           ),
         ],
@@ -128,12 +149,26 @@ class MatchesScreen extends StatefulWidget {
 class _MatchesScreenState extends State<MatchesScreen> {
   List _log = [];
 
-  void _add() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
-        builder: (BuildContext context) {
-          return new SomeDialog();
-        },
-        fullscreenDialog: true));
+  void _add() async {
+    MyReturnObject results =
+        await Navigator.of(context).push(MaterialPageRoute<MyReturnObject>(
+            builder: (BuildContext context) {
+              return SomeDialog();
+            },
+            fullscreenDialog: true));
+    if (results != null) {
+      setState(() {
+        _log.add({
+          'time': DateTime.now(),
+          'p1': results.p1,
+          'p2': results.p2,
+          'surface': results.surface,
+          'venue': results.venue,
+          'state': 'in progress',
+        });
+        widget.storage.save(_log);
+      });
+    }
   }
 
   void _create() {
@@ -171,7 +206,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
           final element = _log[index];
           return Card(
             child: ListTile(
-              title: Text('${element['time']} - ${element['opponent']}'),
+              title: Text(
+                  '${element['p1']} vs ${element['p2']} - ${element['time']}'),
               subtitle: Text(
                   '${element['surface']} - ${element['venue']} - ${element['state']}'),
             ),
