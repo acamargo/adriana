@@ -85,11 +85,25 @@ class MyReturnObject {
   MyReturnObject(this.p1, this.p2, this.surface, this.venue);
 }
 
-class SomeDialog extends StatelessWidget {
+class SomeDialog extends StatefulWidget {
+  @override
+  _SomeDialog createState() => _SomeDialog();
+}
+
+class _SomeDialog extends State<SomeDialog> {
   final p1Controller = TextEditingController();
   final p2Controller = TextEditingController();
   final surfaceController = TextEditingController();
   final venueController = TextEditingController();
+
+  @override
+  void dispose() {
+    p1Controller.dispose();
+    p2Controller.dispose();
+    surfaceController.dispose();
+    venueController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +172,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             fullscreenDialog: true));
     if (results != null) {
       setState(() {
-        _log.add({
+        _log.insert(0, {
           'time': DateTime.now(),
           'p1': results.p1,
           'p2': results.p2,
