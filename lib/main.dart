@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
@@ -24,10 +25,18 @@ class MatchesStorage {
   Future<List> load() async {
     try {
       final file = await _localFile;
-
       final contents = await file.readAsString();
-
-      return json.decode(contents);
+      final result = json.decode(contents);
+      return result
+          .map((item) => {
+                'time': DateTime.parse(item['time']),
+                'p1': item['p1'],
+                'p2': item['p2'],
+                'surface': item['surface'],
+                'venue': item['venue'],
+                'state': item['state'],
+              })
+          .toList();
     } catch (e) {
       return [];
     }
@@ -185,19 +194,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
     }
   }
 
-  void _create() {
-    setState(() {
-      _log.add({
-        'time': DateTime.now(),
-        'opponent': 'Angelo',
-        'surface': 'clay',
-        'venue': 'pirituba',
-        'state': 'in progress',
-      });
-      widget.storage.save(_log);
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -206,6 +202,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
         _log = log;
       });
     });
+  }
+
+  String _formatDateTime(DateTime asOf) {
+    final now = DateTime.now();
+    final difference = DateTime(asOf.year, asOf.month, asOf.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
+    if (difference == 0) {
+      return DateFormat("Hm").format(asOf);
+    } else if (difference == -1) {
+      return "Yesterday";
+    }
+    return DateFormat("yyyy-MM-dd").format(asOf);
   }
 
   @override
@@ -220,8 +229,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
           final element = _log[index];
           return Card(
             child: ListTile(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MyHomePage(element)));
+              },
               title: Text(
-                  '${element['p1']} vs ${element['p2']} - ${element['time']}'),
+                  '${element['p1']} vs ${element['p2']} - ${_formatDateTime(element['time'])}'),
               subtitle: Text(
                   '${element['surface']} - ${element['venue']} - ${element['state']}'),
             ),
@@ -239,9 +252,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage(this.match);
 
-  final String title;
+  final Map match;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
