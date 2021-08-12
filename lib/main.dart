@@ -231,7 +231,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             child: ListTile(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MyHomePage(element)));
+                    builder: (context) => PointPage(element)));
               },
               title: Text(
                   '${element['p1']} vs ${element['p2']} - ${_formatDateTime(element['time'])}'),
@@ -247,6 +247,324 @@ class _MatchesScreenState extends State<MatchesScreen> {
         tooltip: 'Add match',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class PointPage extends StatefulWidget {
+  final Map match;
+
+  const PointPage(this.match);
+
+  @override
+  _PointPageState createState() => _PointPageState();
+}
+
+class _PointPageState extends State<PointPage> {
+  String _player = "";
+  String _consistency = "";
+  String _stroke = "";
+  String _direction = "";
+  String _depth = "";
+
+  @override
+  Widget build(BuildContext context) {
+    bool isServing = _player == "p1";
+    bool isServiceStroke = ["A", "F", "DF"].contains(_stroke);
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("André 0/40 0-0"),
+      ),
+      body: ListView(
+        children: [
+          Wrap(
+            spacing: 10,
+            children: [
+              ChoiceChip(
+                  label: Text(widget.match['p1']),
+                  selected: _player == "p1",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _player = "p1";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text(widget.match['p2']),
+                  selected: _player == "p2",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _player = "p2";
+                    });
+                  }),
+            ],
+          ),
+          Divider(),
+          Wrap(
+            spacing: 10,
+            children: [
+              ChoiceChip(
+                label: Text("first ball touch"),
+                selected: _consistency == "1",
+                onSelected: (bool selected) {
+                  setState(() {
+                    _consistency = "1";
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: Text("second ball touch"),
+                selected: _consistency == "2",
+                onSelected: (bool selected) {
+                  setState(() {
+                    _consistency = "2";
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: Text("third ball touch or more"),
+                selected: _consistency == "3+",
+                onSelected: (bool selected) {
+                  setState(() {
+                    _consistency = "3+";
+                  });
+                },
+              ),
+            ],
+          ),
+          Divider(),
+          Wrap(
+            spacing: 10,
+            children: [
+              if (isServing)
+                ChoiceChip(
+                    label: Text("ace"),
+                    selected: _stroke == "A",
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _stroke = "A";
+                      });
+                    }),
+              if (isServing)
+                ChoiceChip(
+                    label: Text("fault"),
+                    selected: _stroke == "F",
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _stroke = "F";
+                      });
+                    }),
+              if (isServing)
+                ChoiceChip(
+                    label: Text("double fault"),
+                    selected: _stroke == "DF",
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _stroke = "DF";
+                      });
+                    }),
+              ChoiceChip(
+                  label: Text("groundstroke forehand"),
+                  selected: _stroke == "GFH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "GFH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("groundstroke backhand"),
+                  selected: _stroke == "GBH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "GBH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("volley backhand"),
+                  selected: _stroke == "VFH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "VFH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("volley backhand"),
+                  selected: _stroke == "VBH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "VBH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("smash"),
+                  selected: _stroke == "SH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "SH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("lob"),
+                  selected: _stroke == "L",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "L";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("passing shot forehand"),
+                  selected: _stroke == "PSFH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "PSFH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("passing shot backhand"),
+                  selected: _stroke == "PSBH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "PSBH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("tweener"),
+                  selected: _stroke == "TW",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "TW";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("drop shot forehand"),
+                  selected: _stroke == "DSFH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "DSFH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("drop shot backhand"),
+                  selected: _stroke == "DSBH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "DSBH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("half-volley forehand"),
+                  selected: _stroke == "HVFH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "HVFH";
+                    });
+                  }),
+              ChoiceChip(
+                  label: Text("half-volley backhand"),
+                  selected: _stroke == "HVBH",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _stroke = "HVBH";
+                    });
+                  }),
+            ],
+          ),
+          Divider(),
+          Wrap(
+            spacing: 10,
+            children: [
+              ChoiceChip(
+                label: Text(isServiceStroke ? "T" : "cross-court"),
+                selected: _direction == "CC",
+                onSelected: (bool selected) {
+                  setState(() {
+                    _direction = "CC";
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: Text(isServiceStroke ? "body" : "middle-court"),
+                selected: _direction == "MD",
+                onSelected: (bool selected) {
+                  setState(() {
+                    _direction = "MD";
+                  });
+                },
+              ),
+              ChoiceChip(
+                label: Text(isServiceStroke ? "wide" : "down-the-line"),
+                selected: _direction == "DL",
+                onSelected: (bool selected) {
+                  setState(() {
+                    _direction = "DL";
+                  });
+                },
+              ),
+            ],
+          ),
+          Divider(),
+          Wrap(
+            spacing: 10,
+            children: [
+              if (_stroke != "A")
+                ChoiceChip(
+                  label: Text("into the net"),
+                  selected: _depth == "N",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _depth = "N";
+                    });
+                  },
+                ),
+              if (_stroke != "F" && _stroke != "DF")
+                ChoiceChip(
+                  label: Text("short"),
+                  selected: _depth == "S",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _depth = "S";
+                    });
+                  },
+                ),
+              if (_stroke != "F" && _stroke != "DF")
+                ChoiceChip(
+                  label: Text("deep"),
+                  selected: _depth == "D",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _depth = "D";
+                    });
+                  },
+                ),
+              if (_stroke != "A")
+                ChoiceChip(
+                  label: Text("long"),
+                  selected: _depth == "L",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _depth = "L";
+                    });
+                  },
+                ),
+              if (_stroke != "A")
+                ChoiceChip(
+                  label: Text("wide"),
+                  selected: _depth == "W",
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _depth = "W";
+                    });
+                  },
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
