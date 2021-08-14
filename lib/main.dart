@@ -102,6 +102,8 @@ class SomeDialog extends StatefulWidget {
 }
 
 class _SomeDialog extends State<SomeDialog> {
+  final _formKey = GlobalKey<FormState>();
+
   final p1Controller = TextEditingController();
   final p2Controller = TextEditingController();
   final surfaceController = TextEditingController();
@@ -122,43 +124,72 @@ class _SomeDialog extends State<SomeDialog> {
       appBar: new AppBar(
         title: const Text('New Match'),
       ),
-      body: Column(
-        children: [
-          ListTile(
-            title: TextField(
-              decoration: InputDecoration(labelText: "Player 1"),
-              controller: p1Controller,
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            ListTile(
+              title: TextFormField(
+                decoration: InputDecoration(labelText: "Player 1"),
+                controller: p1Controller,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+              ),
             ),
-          ),
-          ListTile(
-            title: TextField(
-              decoration: InputDecoration(labelText: "Player 2"),
-              controller: p2Controller,
+            ListTile(
+              title: TextFormField(
+                decoration: InputDecoration(labelText: "Player 2"),
+                controller: p2Controller,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+              ),
             ),
-          ),
-          ListTile(
-            title: TextField(
-              decoration: InputDecoration(labelText: "Court surface"),
-              controller: surfaceController,
+            ListTile(
+              title: TextFormField(
+                decoration: InputDecoration(labelText: "Court surface"),
+                controller: surfaceController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+              ),
             ),
-          ),
-          ListTile(
-            title: TextField(
-              decoration: InputDecoration(labelText: "Venue"),
-              controller: venueController,
+            ListTile(
+              title: TextFormField(
+                decoration: InputDecoration(labelText: "Venue"),
+                controller: venueController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop(MyReturnObject(
-                  p1Controller.text,
-                  p2Controller.text,
-                  surfaceController.text,
-                  venueController.text));
-            },
-            child: Text('SAVE'),
-          ),
-        ],
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  Navigator.of(context).pop(MyReturnObject(
+                      p1Controller.text,
+                      p2Controller.text,
+                      surfaceController.text,
+                      venueController.text));
+                }
+              },
+              child: Text('Save'),
+            ),
+          ],
+        ),
       ),
     );
   }
