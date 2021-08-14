@@ -95,6 +95,8 @@ class MyReturnObject {
 }
 
 class SomeDialog extends StatefulWidget {
+  const SomeDialog({Key? key}) : super(key: key);
+
   @override
   _SomeDialog createState() => _SomeDialog();
 }
@@ -173,7 +175,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   List _log = [];
 
   void _add() async {
-    MyReturnObject results =
+    MyReturnObject? results =
         await Navigator.of(context).push(MaterialPageRoute<MyReturnObject>(
             builder: (BuildContext context) {
               return SomeDialog();
@@ -235,7 +237,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             child: ListTile(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PointPage(element)));
+                    builder: (context) => WarmUpPage(element)));
               },
               title: Text(
                   '${element['p1']} vs ${element['p2']} - ${_formatDateTime(element['time'])}'),
@@ -251,6 +253,51 @@ class _MatchesScreenState extends State<MatchesScreen> {
         tooltip: 'Add match',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class WarmUpPage extends StatefulWidget {
+  final Map match;
+
+  const WarmUpPage(this.match);
+
+  @override
+  _WarmUpPageState createState() => _WarmUpPageState();
+}
+
+class _WarmUpPageState extends State<WarmUpPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Text("Coin toss"),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PointPage(widget.match)));
+              },
+              child: Text('${widget.match['p1']} serves first'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PointPage(widget.match)));
+              },
+              child: Text('${widget.match['p2']} serves first'),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -289,7 +336,7 @@ class _PointPageState extends State<PointPage> {
       ),
       body: ListView(
         children: [
-          Text("Who touched the ball by last?"),
+          Text("Who touched the ball last?"),
           Wrap(
             spacing: 10,
             children: [
@@ -693,7 +740,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var tieBreak = point['isServing']
         ? '${point['scoreTieBreak'][point['currentSet'] - 1]}/${point['scoreTieBreakOpponent'][point['currentSet'] - 1]}'
         : '${point['scoreTieBreakOpponent'][point['currentSet'] - 1]}/${point['scoreTieBreak'][point['currentSet'] - 1]}';
-    Iterable<Iterable<dynamic>> matchOrder = point['isServing']
+    Iterable<Iterable<int>> matchOrder = point['isServing']
         ? [
             point['scoreMatch'],
             point['scoreMatchOpponent'],
