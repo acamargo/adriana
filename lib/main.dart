@@ -16,6 +16,19 @@ class MatchesStorage {
     return directory.path;
   }
 
+  Future<List<FileSystemEntity>> list() async {
+    final directory = await getApplicationDocumentsDirectory();
+    var files = <FileSystemEntity>[];
+    var completer = Completer<List<FileSystemEntity>>();
+    var lister = directory.list(recursive: false);
+    lister.listen((file) {
+      if (file is File && file.path.endsWith('match.json')) files.add(file);
+    },
+        // should also register onError
+        onDone: () => completer.complete(files));
+    return completer.future;
+  }
+
   Future<File> get _localFile async {
     final path = await _localPath;
     print(path);
@@ -45,6 +58,15 @@ class MatchesStorage {
   Future<File> save(List data) async {
     final file = await _localFile;
 
+    final contents = json.encode(data, toEncodable: myEncode);
+    return file.writeAsString(contents);
+  }
+
+  Future<File> create(Map data) async {
+    final path = await _localPath;
+    final fileName = data['createdAt'].toIso8601String();
+    final file = File('$path/$fileName.match.json');
+    print(file);
     final contents = json.encode(data, toEncodable: myEncode);
     return file.writeAsString(contents);
   }
@@ -88,10 +110,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyReturnObject {
+class Match {
   String p1, p2, surface, venue;
 
-  MyReturnObject(this.p1, this.p2, this.surface, this.venue);
+  Match(this.p1, this.p2, this.surface, this.venue);
 }
 
 class NewMatchPage extends StatefulWidget {
@@ -179,7 +201,7 @@ class _NewMatchPage extends State<NewMatchPage> {
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.of(context).pop(MyReturnObject(
+                  Navigator.of(context).pop(Match(
                       p1Controller.text,
                       p2Controller.text,
                       surfaceController.text,
@@ -204,35 +226,48 @@ class MatchesScreen extends StatefulWidget {
 
 class _MatchesScreenState extends State<MatchesScreen> {
   List _log = [];
+  List _files = [];
 
   void _add() async {
-    MyReturnObject? results =
-        await Navigator.of(context).push(MaterialPageRoute<MyReturnObject>(
-            builder: (BuildContext context) {
-              return NewMatchPage();
-            },
-            fullscreenDialog: true));
+    Match? results = await Navigator.of(context).push(MaterialPageRoute<Match>(
+        builder: (BuildContext context) {
+          return NewMatchPage();
+        },
+        fullscreenDialog: true));
     if (results != null) {
-      setState(() {
-        _log.insert(0, {
-          'time': DateTime.now(),
-          'p1': results.p1,
-          'p2': results.p2,
-          'surface': results.surface,
-          'venue': results.venue,
-          'state': 'in progress',
-        });
-        widget.storage.save(_log);
+      widget.storage.create({
+        'createdAt': DateTime.now(),
+        'p1': results.p1,
+        'p2': results.p2,
+        'surface': results.surface,
+        'venue': results.venue,
+        'state': 'waiting to start',
+        'events': [],
       });
+      widget.storage.list().then((files) {
+        _files = files;
+        setState(() {});
+      });
+      // setState(() {
+      //   _log.insert(0, {
+      //     'time': DateTime.now(),
+      //     'p1': results.p1,
+      //     'p2': results.p2,
+      //     'surface': results.surface,
+      //     'venue': results.venue,
+      //     'state': 'in progress',
+      //   });
+      //   widget.storage.save(_log);
+      // });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    widget.storage.load().then((List log) {
+    widget.storage.list().then((files) {
       setState(() {
-        _log = log;
+        _files = files;
       });
     });
   }
@@ -261,22 +296,27 @@ class _MatchesScreenState extends State<MatchesScreen> {
         title: Text('Matches'),
       ),
       body: ListView.builder(
-        itemCount: _log.length,
+        itemCount: _files.length,
         itemBuilder: (context, index) {
-          final element = _log[index];
-          return Card(
-            child: ListTile(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WarmUpPage(element)));
-              },
-              title: Text(
-                  '${element['p1']} vs ${element['p2']} - ${_formatDateTime(element['time'])}'),
-              subtitle: Text(
-                  '${element['surface']} - ${element['venue']} - ${element['state']}'),
-            ),
-          );
+          final file = _files[index];
+          return Card(child: Text(file.path));
         },
+        // itemCount: _log.length,
+        // itemBuilder: (context, index) {
+        //   final element = _log[index];
+        //   return Card(
+        //     child: ListTile(
+        //       onTap: () {
+        //         Navigator.of(context).push(MaterialPageRoute(
+        //             builder: (context) => WarmUpPage(element)));
+        //       },
+        //       title: Text(
+        //           '${element['p1']} vs ${element['p2']} - ${_formatDateTime(element['time'])}'),
+        //       subtitle: Text(
+        //           '${element['surface']} - ${element['venue']} - ${element['state']}'),
+        //     ),
+        //   );
+        // },
       ),
 
       floatingActionButton: FloatingActionButton(
