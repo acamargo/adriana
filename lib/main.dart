@@ -94,14 +94,14 @@ class MyReturnObject {
   MyReturnObject(this.p1, this.p2, this.surface, this.venue);
 }
 
-class SomeDialog extends StatefulWidget {
-  const SomeDialog({Key? key}) : super(key: key);
+class NewMatchPage extends StatefulWidget {
+  const NewMatchPage({Key? key}) : super(key: key);
 
   @override
-  _SomeDialog createState() => _SomeDialog();
+  _NewMatchPage createState() => _NewMatchPage();
 }
 
-class _SomeDialog extends State<SomeDialog> {
+class _NewMatchPage extends State<NewMatchPage> {
   final _formKey = GlobalKey<FormState>();
 
   final p1Controller = TextEditingController();
@@ -209,7 +209,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     MyReturnObject? results =
         await Navigator.of(context).push(MaterialPageRoute<MyReturnObject>(
             builder: (BuildContext context) {
-              return SomeDialog();
+              return NewMatchPage();
             },
             fullscreenDialog: true));
     if (results != null) {
