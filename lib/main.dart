@@ -40,11 +40,9 @@ class MatchesStorage {
     var files = directory
         .listSync(recursive: false)
         .where((file) => file is File && file.path.endsWith('match.json'))
-        .toList();
-    print('files: $files');
-    var matches = Future.wait(files.map((file) => _loadMatch(file)).toList());
-    print('matches: $matches');
-    return matches;
+        .toList()
+          ..sort((fileA, fileB) => fileB.path.compareTo(fileA.path));
+    return Future.wait(files.map((file) => _loadMatch(file)).toList());
   }
 
   Future<File> get _localFile async {
@@ -243,8 +241,6 @@ class MatchesScreen extends StatefulWidget {
 }
 
 class _MatchesScreenState extends State<MatchesScreen> {
-  List _log = [];
-  List _files = [];
   List _matches = [];
 
   void _add() async {
@@ -268,17 +264,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
           _matches = matches;
         });
       });
-      // setState(() {
-      //   _log.insert(0, {
-      //     'time': DateTime.now(),
-      //     'p1': results.p1,
-      //     'p2': results.p2,
-      //     'surface': results.surface,
-      //     'venue': results.venue,
-      //     'state': 'in progress',
-      //   });
-      //   widget.storage.save(_log);
-      // });
     }
   }
 
@@ -286,7 +271,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
   void initState() {
     super.initState();
     widget.storage.loadAll().then((matches) {
-      print('initState#matches: $matches');
       setState(() {
         _matches = matches;
       });
@@ -322,6 +306,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
           final match = _matches[index];
           return Card(
             child: ListTile(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => WarmUpPage(match)));
+              },
               title: Text(
                   '${match['p1']} vs ${match['p2']} - ${_formatDateTime(DateTime.parse(match['createdAt']))}'),
               subtitle: Text(
@@ -329,22 +317,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
             ),
           );
         },
-        // itemCount: _log.length,
-        // itemBuilder: (context, index) {
-        //   final element = _log[index];
-        //   return Card(
-        //     child: ListTile(
-        //       onTap: () {
-        //         Navigator.of(context).push(MaterialPageRoute(
-        //             builder: (context) => WarmUpPage(element)));
-        //       },
-        //       title: Text(
-        //           '${element['p1']} vs ${element['p2']} - ${_formatDateTime(element['time'])}'),
-        //       subtitle: Text(
-        //           '${element['surface']} - ${element['venue']} - ${element['state']}'),
-        //     ),
-        //   );
-        // },
       ),
 
       floatingActionButton: FloatingActionButton(
