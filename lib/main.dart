@@ -29,6 +29,24 @@ class MatchesStorage {
     return completer.future;
   }
 
+  Future<Map> _loadMatch(file) async {
+    final contents = await file.readAsString();
+    final result = json.decode(contents);
+    return result;
+  }
+
+  Future<List<Map>> loadAll() async {
+    final directory = await getApplicationDocumentsDirectory();
+    var files = directory
+        .listSync(recursive: false)
+        .where((file) => file is File && file.path.endsWith('match.json'))
+        .toList();
+    print('files: $files');
+    var matches = Future.wait(files.map((file) => _loadMatch(file)).toList());
+    print('matches: $matches');
+    return matches;
+  }
+
   Future<File> get _localFile async {
     final path = await _localPath;
     print(path);
@@ -227,6 +245,7 @@ class MatchesScreen extends StatefulWidget {
 class _MatchesScreenState extends State<MatchesScreen> {
   List _log = [];
   List _files = [];
+  List _matches = [];
 
   void _add() async {
     Match? results = await Navigator.of(context).push(MaterialPageRoute<Match>(
@@ -244,9 +263,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
         'state': 'waiting to start',
         'events': [],
       });
-      widget.storage.list().then((files) {
-        _files = files;
-        setState(() {});
+      widget.storage.loadAll().then((matches) {
+        setState(() {
+          _matches = matches;
+        });
       });
       // setState(() {
       //   _log.insert(0, {
@@ -265,9 +285,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
   @override
   void initState() {
     super.initState();
-    widget.storage.list().then((files) {
+    widget.storage.loadAll().then((matches) {
+      print('initState#matches: $matches');
       setState(() {
-        _files = files;
+        _matches = matches;
       });
     });
   }
@@ -296,10 +317,17 @@ class _MatchesScreenState extends State<MatchesScreen> {
         title: Text('Matches'),
       ),
       body: ListView.builder(
-        itemCount: _files.length,
+        itemCount: _matches.length,
         itemBuilder: (context, index) {
-          final file = _files[index];
-          return Card(child: Text(file.path));
+          final match = _matches[index];
+          return Card(
+            child: ListTile(
+              title: Text(
+                  '${match['p1']} vs ${match['p2']} - ${_formatDateTime(DateTime.parse(match['createdAt']))}'),
+              subtitle: Text(
+                  '${match['surface']} - ${match['venue']} - ${match['state']}'),
+            ),
+          );
         },
         // itemCount: _log.length,
         // itemBuilder: (context, index) {
