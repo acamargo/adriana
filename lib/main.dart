@@ -172,7 +172,7 @@ class _NewMatchPage extends State<NewMatchPage> {
                 controller: p1Controller,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Please enter the name of the first player';
                   }
                   return null;
                 },
@@ -184,7 +184,7 @@ class _NewMatchPage extends State<NewMatchPage> {
                 controller: p2Controller,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Please enter the name of the second player';
                   }
                   return null;
                 },
@@ -196,7 +196,7 @@ class _NewMatchPage extends State<NewMatchPage> {
                 controller: surfaceController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Please enter the court surface (Clay, Hard, Grass)';
                   }
                   return null;
                 },
@@ -208,7 +208,7 @@ class _NewMatchPage extends State<NewMatchPage> {
                 controller: venueController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Please enter the place where the match is happening';
                   }
                   return null;
                 },
@@ -256,8 +256,90 @@ class _MatchesScreenState extends State<MatchesScreen> {
         'p2': results.p2,
         'surface': results.surface,
         'venue': results.venue,
-        'state': 'waiting to start',
-        'events': [],
+        'events': [
+          {
+            'event': 'Score',
+            'createdAt': DateTime.now(),
+            'pointNumber': 0,
+            'p1': [
+              {'game': 0, 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': 0, 'tiebreak': null, 'set': 0}
+            ],
+            'state': 'waiting coin toss',
+          },
+          // {
+          //   'event': 'CoinToss',
+          //   'createdAt': DateTime.now(),
+          //   'server': 'p1',
+          // },
+          // {
+          //   'event': 'Score',
+          //   'createdAt': DateTime.now(),
+          //   'pointNumber': 0,
+          //   'server': 'p1',
+          //   'isServiceFault': false,
+          //   'courtSide': 'deuce',
+          //   'p1': [
+          //     {'game': 0, 'tiebreak': null, 'set': 0}
+          //   ],
+          //   'p2': [
+          //     {'game': 0, 'tiebreak': null, 'set': 0}
+          //   ],
+          //   'state': 'first service, p1 0/0 0-0',
+          // },
+          // {
+          //   'event': 'Rally',
+          //   'createdAt': DateTime.now(),
+          //   'lastHitBy': 'p1',
+          //   'consistency': '1', // first shot
+          //   'shot': 'F', // fault
+          //   'direction': 'B', // body
+          //   'depth': 'N', // into the net
+          //   'winner': null,
+          // },
+          // {
+          //   'event': 'Score',
+          //   'createdAt': DateTime.now(),
+          //   'pointNumber': 1,
+          //   'server': 'p1',
+          //   'isServiceFault': true,
+          //   'courtSide': 'deuce',
+          //   'p1': [
+          //     {'game': 0, 'tiebreak': null, 'set': 0}
+          //   ],
+          //   'p2': [
+          //     {'game': 0, 'tiebreak': null, 'set': 0}
+          //   ],
+          //   'state': 'second serve, p1 0/0 0-0',
+          // },
+          // {
+          //   'event': 'Rally',
+          //   'createdAt': DateTime.now(),
+          //   'lastHitBy': 'p1',
+          //   'consistency': '1', // first shot
+          //   'shot': 'DF', // double fault
+          //   'direction': 'B', // body
+          //   'depth': 'N', // into the net
+          //   'winner': 'p2',
+          // },
+          // {
+          //   'event': 'Score',
+          //   'createdAt': DateTime.now(),
+          //   'pointNumber': 2,
+          //   'server': 'p1',
+          //   'isServiceFault': false,
+          //   'courtSide': 'Ad',
+          //   'p1': [
+          //     {'game': 0, 'tiebreak': null, 'set': 0}
+          //   ],
+          //   'p2': [
+          //     {'game': 15, 'tiebreak': null, 'set': 0}
+          //   ],
+          //   'state': 'first serve, p1 0/15 0-0',
+          // },
+        ],
       });
       widget.storage.loadAll().then((matches) {
         setState(() {
