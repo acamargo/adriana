@@ -31,7 +31,10 @@ class MatchesStorage {
 
   Future<Map> _loadMatch(file) async {
     final contents = await file.readAsString();
-    final result = json.decode(contents);
+    final result = json.decode(contents, reviver: (key, value) {
+      if (key == "createdAt") return DateTime.parse(value as String);
+      return value;
+    });
     return result;
   }
 
@@ -393,9 +396,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     MaterialPageRoute(builder: (context) => WarmUpPage(match)));
               },
               title: Text(
-                  '${match['p1']} vs ${match['p2']} - ${_formatDateTime(DateTime.parse(match['createdAt']))}'),
+                  '${match['p1']} vs ${match['p2']} - ${_formatDateTime(match['createdAt'])}'),
               subtitle: Text(
-                  '${match['surface']} - ${match['venue']} - ${match['state']}'),
+                  '${match['surface']} - ${match['venue']} - ${match['events'].last['state']}'),
             ),
           );
         },
@@ -411,15 +414,42 @@ class _MatchesScreenState extends State<MatchesScreen> {
 }
 
 class WarmUpPage extends StatefulWidget {
+  final MatchesStorage storage = MatchesStorage();
   final Map match;
 
-  const WarmUpPage(this.match);
+  WarmUpPage(this.match);
 
   @override
   _WarmUpPageState createState() => _WarmUpPageState();
 }
 
 class _WarmUpPageState extends State<WarmUpPage> {
+  Map buildScoreFromCoinToss(previousScore, coinToss) {
+    Map newScore = {...previousScore};
+    newScore['createdAt'] = DateTime.now();
+    newScore['server'] = coinToss['server'];
+    newScore['isServiceFault'] = false;
+    newScore['courtSide'] = 'deuce';
+    newScore['state'] = 'first service, ${widget.match[newScore['server']]}';
+    return newScore;
+  }
+
+  _storeCoinTossEvent(winner) {
+    Map coinTossEvent = {
+      'event': 'CoinToss',
+      'createdAt': DateTime.now(),
+      'server': winner,
+    };
+    Map scoreEvent =
+        buildScoreFromCoinToss(widget.match['events'].last, coinTossEvent);
+    widget.match['events'].add(coinTossEvent);
+    widget.match['events'].add(scoreEvent);
+    widget.storage.create(widget.match);
+
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => PointPage(widget.match)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -432,19 +462,13 @@ class _WarmUpPageState extends State<WarmUpPage> {
             Text("Coin toss"),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PointPage(widget.match)));
+                _storeCoinTossEvent('p1');
               },
               child: Text('${widget.match['p1']} serves first'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PointPage(widget.match)));
+                _storeCoinTossEvent('p2');
               },
               child: Text('${widget.match['p2']} serves first'),
             )
