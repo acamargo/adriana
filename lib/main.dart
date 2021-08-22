@@ -495,6 +495,18 @@ class _PointPageState extends State<PointPage> {
   String _direction = "";
   String _depth = "";
 
+  String _formatScore() {
+    var score = widget.match['events'].last;
+    var playerServing = score['server'];
+    var playerServingName = widget.match[playerServing];
+    var playerReceiving = playerServing == "p1" ? "p2" : "p1";
+    var playerServingGame = score[playerServing].last['game'];
+    var playerReceivingGame = score[playerReceiving].last['game'];
+    var playerServingSet = score[playerServing].last['set'];
+    var playerReceivingSet = score[playerReceiving].last['set'];
+    return "$playerServingName $playerServingGame/$playerReceivingGame $playerServingSet-$playerReceivingSet";
+  }
+
   @override
   Widget build(BuildContext context) {
     String whoIsServing = "p1";
@@ -509,7 +521,7 @@ class _PointPageState extends State<PointPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("André 0/40 0-0"),
+        title: Text(_formatScore()),
       ),
       body: ListView(
         children: [
