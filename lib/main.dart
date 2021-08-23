@@ -272,76 +272,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
             ],
             'state': 'waiting coin toss',
           },
-          // {
-          //   'event': 'CoinToss',
-          //   'createdAt': DateTime.now(),
-          //   'server': 'p1',
-          // },
-          // {
-          //   'event': 'Score',
-          //   'createdAt': DateTime.now(),
-          //   'pointNumber': 0,
-          //   'server': 'p1',
-          //   'isServiceFault': false,
-          //   'courtSide': 'deuce',
-          //   'p1': [
-          //     {'game': 0, 'tiebreak': null, 'set': 0}
-          //   ],
-          //   'p2': [
-          //     {'game': 0, 'tiebreak': null, 'set': 0}
-          //   ],
-          //   'state': 'first service, p1 0/0 0-0',
-          // },
-          // {
-          //   'event': 'Rally',
-          //   'createdAt': DateTime.now(),
-          //   'lastHitBy': 'p1',
-          //   'consistency': '1', // first shot
-          //   'shot': 'F', // fault
-          //   'direction': 'B', // body
-          //   'depth': 'N', // into the net
-          //   'winner': null,
-          // },
-          // {
-          //   'event': 'Score',
-          //   'createdAt': DateTime.now(),
-          //   'pointNumber': 1,
-          //   'server': 'p1',
-          //   'isServiceFault': true,
-          //   'courtSide': 'deuce',
-          //   'p1': [
-          //     {'game': 0, 'tiebreak': null, 'set': 0}
-          //   ],
-          //   'p2': [
-          //     {'game': 0, 'tiebreak': null, 'set': 0}
-          //   ],
-          //   'state': 'second serve, p1 0/0 0-0',
-          // },
-          // {
-          //   'event': 'Rally',
-          //   'createdAt': DateTime.now(),
-          //   'lastHitBy': 'p1',
-          //   'consistency': '1', // first shot
-          //   'shot': 'DF', // double fault
-          //   'direction': 'B', // body
-          //   'depth': 'N', // into the net
-          //   'winner': 'p2',
-          // },
-          // {
-          //   'event': 'Score',
-          //   'createdAt': DateTime.now(),
-          //   'pointNumber': 2,
-          //   'server': 'p1',
-          //   'isServiceFault': false,
-          //   'courtSide': 'Ad',
-          //   'p1': [
-          //     {'game': 0, 'tiebreak': null, 'set': 0}
-          //   ],
-          //   'p2': [
-          //     {'game': 15, 'tiebreak': null, 'set': 0}
-          //   ],
-          //   'state': 'first serve, p1 0/15 0-0',
-          // },
         ],
       });
       widget.storage.loadAll().then((matches) {
@@ -389,11 +319,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
         itemCount: _matches.length,
         itemBuilder: (context, index) {
           final match = _matches[index];
+
           return Card(
             child: ListTile(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CoinTossScreen(match)));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  bool hasCoinToss = match['events']
+                      .where((event) => event['event'] == 'CoinToss')
+                      .isNotEmpty;
+                  return hasCoinToss
+                      ? PointScreen(match)
+                      : CoinTossScreen(match);
+                }));
               },
               title: Text(
                   '${match['p1']} vs ${match['p2']} - ${_formatDateTime(match['createdAt'])}'),
@@ -447,7 +385,7 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
     widget.storage.create(widget.match);
 
     Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => PointPage(widget.match)));
+        MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
   }
 
   @override
@@ -479,17 +417,17 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
   }
 }
 
-class PointPage extends StatefulWidget {
+class PointScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
   final Map match;
 
-  PointPage(this.match);
+  PointScreen(this.match);
 
   @override
-  _PointPageState createState() => _PointPageState();
+  _PointScreenState createState() => _PointScreenState();
 }
 
-class _PointPageState extends State<PointPage> {
+class _PointScreenState extends State<PointScreen> {
   String _player = "";
   String _consistency = "";
   String _shot = "";
@@ -678,7 +616,7 @@ class _PointPageState extends State<PointPage> {
           Wrap(
             spacing: 10,
             children: [
-              if (isServing)
+              if (isServing && _consistency == '1')
                 ChoiceChip(
                     label: Text("ace"),
                     selected: _shot == "A",
@@ -696,7 +634,7 @@ class _PointPageState extends State<PointPage> {
                         _shot = "F";
                       });
                     }),
-              if (isServing && score['isServiceFault'])
+              if (isServing && score['isServiceFault'] && _consistency == '1')
                 ChoiceChip(
                     label: Text("double fault"),
                     selected: _shot == "DF",
@@ -950,13 +888,10 @@ class _PointPageState extends State<PointPage> {
                     _depth != "")
                 ? () {
                     _storeRallyEvent();
-                    setState(() {
-                      _player = "";
-                      _consistency = "";
-                      _shot = "";
-                      _direction = "";
-                      _depth = "";
-                    });
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PointScreen(widget.match)));
                   }
                 : null,
             child: Text('Save'),
