@@ -325,6 +325,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
+                  if (match['events'].last['event'] == 'FinalScore') {
+                    return StatsScreen(match);
+                  }
                   bool hasCoinToss = match['events']
                       .where((event) => event['event'] == 'CoinToss')
                       .isNotEmpty;
@@ -524,20 +527,51 @@ class _PointScreenState extends State<PointScreen> {
     widget.storage.create(widget.match);
   }
 
-  void handleClick(String value) {
+  void handleClick(String value) async {
     switch (value) {
       case 'Finish':
-        Map lastScore = widget.match['events'].last;
-        Map finalScoreEvent = {
-          'event': 'FinalScore',
-          'createdAt': DateTime.now(),
-          'pointNumber': lastScore['pointNumber'],
-          'p1': lastScore['p1'],
-          'p2': lastScore['p2'],
-          'state': 'Match finished'
-        };
-        widget.match['events'].add(finalScoreEvent);
-        widget.storage.create(widget.match);
+        bool result = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+              content: Text("Would you like to finish the match?"),
+              actions: [
+                TextButton(
+                  child: Text("YES"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(true);
+                  },
+                ),
+                TextButton(
+                  child: Text("NO"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(false);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        if (result) {
+          Map lastScore = widget.match['events'].last;
+          Map finalScoreEvent = {
+            'event': 'FinalScore',
+            'createdAt': DateTime.now(),
+            'pointNumber': lastScore['pointNumber'],
+            'p1': lastScore['p1'],
+            'p2': lastScore['p2'],
+            'state': 'Match finished'
+          };
+          widget.match['events'].add(finalScoreEvent);
+          widget.storage.create(widget.match);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StatsScreen(widget.match),
+            ),
+          );
+        }
         break;
     }
   }
@@ -940,6 +974,33 @@ class _PointScreenState extends State<PointScreen> {
                   : null,
               child: Text('Save'),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class StatsScreen extends StatefulWidget {
+  final match;
+
+  StatsScreen(this.match);
+
+  @override
+  _StatsScreenState createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Match Stats'),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Text('${widget.match['p1']} vs ${widget.match['p2']}'),
           ],
         ),
       ),
