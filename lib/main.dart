@@ -524,6 +524,24 @@ class _PointScreenState extends State<PointScreen> {
     widget.storage.create(widget.match);
   }
 
+  void handleClick(String value) {
+    switch (value) {
+      case 'Finish':
+        Map lastScore = widget.match['events'].last;
+        Map finalScoreEvent = {
+          'event': 'FinalScore',
+          'createdAt': DateTime.now(),
+          'pointNumber': lastScore['pointNumber'],
+          'p1': lastScore['p1'],
+          'p2': lastScore['p2'],
+          'state': 'Match finished'
+        };
+        widget.match['events'].add(finalScoreEvent);
+        widget.storage.create(widget.match);
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Map score = widget.match['events'].last;
@@ -540,76 +558,17 @@ class _PointScreenState extends State<PointScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_formatScore()),
-      ),
-      body: ListView(
-        children: [
-          Text("Who touched the ball last?"),
-          Wrap(
-            spacing: 10,
-            children: [
-              ChoiceChip(
-                  label: Text(widget.match['p1']),
-                  selected: _player == "p1",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _player = "p1";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text(widget.match['p2']),
-                  selected: _player == "p2",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _player = "p2";
-                    });
-                  }),
-            ],
-          ),
-          Divider(),
-          Text("What was the rally length?"),
-          Wrap(
-            spacing: 10,
-            children: [
-              if (isServing) ...[
-                ChoiceChip(
-                  label: Text("one shot"),
-                  selected: _consistency == "1",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _consistency = "1";
-                    });
-                  },
-                ),
-                ChoiceChip(
-                  label: Text("three shots or more"),
-                  selected: _consistency == "3",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _consistency = "3";
-                    });
-                  },
-                ),
-              ] else ...[
-                ChoiceChip(
-                  label: Text("two shots"),
-                  selected: _consistency == "2",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _consistency = "2";
-                    });
-                  },
-                ),
-                ChoiceChip(
-                  label: Text("four shots or more"),
-                  selected: _consistency == "4",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _consistency = "4";
-                    });
-                  },
-                ),
-              ],
-            ],
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context) {
+              return {'Finish'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
           ),
           Divider(),
           Text("What was the shot hit?"),
