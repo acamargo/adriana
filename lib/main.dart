@@ -167,69 +167,71 @@ class _NewMatchPage extends State<NewMatchPage> {
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          children: [
-            ListTile(
-              title: TextFormField(
-                decoration: InputDecoration(labelText: "Player 1"),
-                controller: p1Controller,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the name of the first player';
-                  }
-                  return null;
-                },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(labelText: "Player 1"),
+                  controller: p1Controller,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the name of the first player';
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-            ListTile(
-              title: TextFormField(
-                decoration: InputDecoration(labelText: "Player 2"),
-                controller: p2Controller,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the name of the second player';
-                  }
-                  return null;
-                },
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(labelText: "Player 2"),
+                  controller: p2Controller,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the name of the second player';
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-            ListTile(
-              title: TextFormField(
-                decoration: InputDecoration(labelText: "Court surface"),
-                controller: surfaceController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the court surface (Clay, Hard, Grass)';
-                  }
-                  return null;
-                },
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(labelText: "Court surface"),
+                  controller: surfaceController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the court surface (Clay, Hard, Grass)';
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-            ListTile(
-              title: TextFormField(
-                decoration: InputDecoration(labelText: "Venue"),
-                controller: venueController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the place where the match is happening';
-                  }
-                  return null;
-                },
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(labelText: "Venue"),
+                  controller: venueController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the place where the match is happening';
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  Navigator.of(context).pop(Match(
-                      p1Controller.text,
-                      p2Controller.text,
-                      surfaceController.text,
-                      venueController.text));
-                }
-              },
-              child: Text('Save'),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.of(context).pop(Match(
+                        p1Controller.text,
+                        p2Controller.text,
+                        surfaceController.text,
+                        venueController.text));
+                  }
+                },
+                child: Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );
