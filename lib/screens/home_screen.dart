@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Wakelock.disable();
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Tennis Performance',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
