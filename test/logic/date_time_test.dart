@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:adriana/logic/date_time_formatter.dart';
+import 'package:adriana/logic/date_time.dart';
 
 void main() {
   group('Given an asOf', () {

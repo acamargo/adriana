@@ -9,6 +9,7 @@ import 'point_screen.dart';
 import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
 import '../models/match.dart';
+import '../logic/date_time.dart';
 
 class MatchesScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
@@ -66,19 +67,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
     });
   }
 
-  String _formatDateTime(DateTime asOf) {
-    final now = DateTime.now();
-    final difference = DateTime(asOf.year, asOf.month, asOf.day)
-        .difference(DateTime(now.year, now.month, now.day))
-        .inDays;
-    if (difference == 0) {
-      return DateFormat("Hm").format(asOf);
-    } else if (difference == -1) {
-      return "Yesterday";
-    }
-    return DateFormat("yyyy-MM-dd").format(asOf);
-  }
-
   @override
   Widget build(BuildContext context) {
     Wakelock.disable();
@@ -114,7 +102,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 }));
               },
               title: Text(
-                  '${match['p1']} vs ${match['p2']} - ${_formatDateTime(match['createdAt'])}'),
+                  '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
               subtitle: Text(
                   '${match['surface']} - ${match['venue']} - ${match['events'].last['state']}'),
             ),
