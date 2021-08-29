@@ -9,6 +9,7 @@ import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
 import '../models/match.dart';
 import '../logic/date_time.dart';
+import '../logic/match.dart';
 
 class MatchesScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
@@ -25,27 +26,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
         builder: (BuildContext context) => NewMatchScreen(),
         fullscreenDialog: true));
     if (results != null) {
-      final match = {
-        'createdAt': DateTime.now(),
-        'p1': results.p1,
-        'p2': results.p2,
-        'surface': results.surface,
-        'venue': results.venue,
-        'events': [
-          {
-            'event': 'Score',
-            'createdAt': DateTime.now(),
-            'pointNumber': 0,
-            'p1': [
-              {'game': '0', 'tiebreak': null, 'set': 0}
-            ],
-            'p2': [
-              {'game': '0', 'tiebreak': null, 'set': 0}
-            ],
-            'state': 'waiting coin toss',
-          },
-        ],
-      };
+      final match = newMatch(
+          createdAt: DateTime.now(),
+          p1: results.p1,
+          p2: results.p2,
+          surface: results.surface,
+          venue: results.venue);
       widget.storage.create(match);
       setState(() => _matches.insert(0, match));
     }

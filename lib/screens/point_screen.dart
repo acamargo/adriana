@@ -4,6 +4,7 @@ import 'package:wakelock/wakelock.dart';
 
 import '../matches_storage.dart';
 import 'stats_screen.dart';
+import '../logic/score.dart';
 
 class PointScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
@@ -178,7 +179,7 @@ class _PointScreenState extends State<PointScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_formatScore()),
+        title: Text(formatScore(widget.match, widget.match['events'].last)),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: handleClick,
