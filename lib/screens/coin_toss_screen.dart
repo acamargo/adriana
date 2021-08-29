@@ -16,12 +16,9 @@ class CoinTossScreen extends StatefulWidget {
 
 class _CoinTossScreenState extends State<CoinTossScreen> {
   _storeCoinTossEvent(winner) {
-    Map coinTossEvent = {
-      'event': 'CoinToss',
-      'createdAt': DateTime.now(),
-      'server': winner,
-    };
-    Map scoreEvent = buildScoreFromCoinToss(widget.match, coinTossEvent);
+    Map coinTossEvent =
+        newCoinTossEvent(winner: winner, createdAt: DateTime.now());
+    Map scoreEvent = newScoreFromCoinToss(widget.match, coinTossEvent);
     widget.match['events'].add(coinTossEvent);
     widget.match['events'].add(scoreEvent);
     widget.storage.create(widget.match);
