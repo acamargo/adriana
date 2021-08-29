@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../matches_storage.dart';
 import 'point_screen.dart';
+import '../logic/coin_toss.dart';
 
 class CoinTossScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
@@ -14,24 +15,13 @@ class CoinTossScreen extends StatefulWidget {
 }
 
 class _CoinTossScreenState extends State<CoinTossScreen> {
-  Map buildScoreFromCoinToss(previousScore, coinToss) {
-    Map newScore = {...previousScore};
-    newScore['createdAt'] = DateTime.now();
-    newScore['server'] = coinToss['server'];
-    newScore['isServiceFault'] = false;
-    newScore['courtSide'] = 'deuce';
-    newScore['state'] = 'first service, ${widget.match[newScore['server']]}';
-    return newScore;
-  }
-
   _storeCoinTossEvent(winner) {
     Map coinTossEvent = {
       'event': 'CoinToss',
       'createdAt': DateTime.now(),
       'server': winner,
     };
-    Map scoreEvent =
-        buildScoreFromCoinToss(widget.match['events'].last, coinTossEvent);
+    Map scoreEvent = buildScoreFromCoinToss(widget.match, coinTossEvent);
     widget.match['events'].add(coinTossEvent);
     widget.match['events'].add(scoreEvent);
     widget.storage.create(widget.match);
