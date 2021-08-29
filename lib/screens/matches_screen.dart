@@ -22,12 +22,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   void _add() async {
     Match? results = await Navigator.of(context).push(MaterialPageRoute<Match>(
-        builder: (BuildContext context) {
-          return NewMatchScreen();
-        },
+        builder: (BuildContext context) => NewMatchScreen(),
         fullscreenDialog: true));
     if (results != null) {
-      widget.storage.create({
+      final match = {
         'createdAt': DateTime.now(),
         'p1': results.p1,
         'p2': results.p2,
@@ -47,12 +45,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
             'state': 'waiting coin toss',
           },
         ],
-      });
-      widget.storage.loadAll().then((matches) {
-        setState(() {
-          _matches = matches;
-        });
-      });
+      };
+      widget.storage.create(match);
+      setState(() => _matches.insert(0, match));
     }
   }
 
@@ -60,9 +55,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   void initState() {
     super.initState();
     widget.storage.loadAll().then((matches) {
-      setState(() {
-        _matches = matches;
-      });
+      setState(() => _matches = matches);
     });
   }
 
