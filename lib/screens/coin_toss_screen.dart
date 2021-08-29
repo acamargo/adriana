@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../matches_storage.dart';
 import 'point_screen.dart';
 import '../logic/coin_toss.dart';
+import '../logic/score.dart';
 
 class CoinTossScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
