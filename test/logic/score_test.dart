@@ -5,6 +5,46 @@ import 'package:adriana/logic/match.dart';
 import 'package:adriana/logic/coin_toss.dart';
 
 void main() {
+  group('newScoreFromRally()', () {
+    group('Given a Match', () {
+      final match = newMatch(
+          createdAt: DateTime.now(),
+          p1: 'André',
+          p2: 'Angelo',
+          surface: 'Indoors - Clay',
+          venue: 'Academia Winners');
+      group('When André is serving and commits a fault', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'deuce',
+          'pointNumber': 1,
+          'p1': [
+            {'game': '0', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '0', 'tiebreak': null, 'set': 0}
+          ],
+        };
+        final rally = {
+          'shot': 'F',
+          'winner': null,
+        };
+        test('Then doesnt count as a point', () {
+          final newScore =
+              newScoreFromRally(DateTime.now(), match, previousScore, rally);
+          expect(
+              newScore,
+              allOf([
+                containsPair('isServiceFault', true),
+                containsPair('state', 'second service, André'),
+                containsPair('pointNumber', 1),
+                containsPair('courtSide', 'deuce'),
+              ]));
+        });
+      });
+    });
+  });
   group('formatScore', () {
     group('Given a match', () {
       final match = newMatch(
