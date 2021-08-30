@@ -23,18 +23,6 @@ class _PointScreenState extends State<PointScreen> {
   String _direction = "";
   String _depth = "";
 
-  String _formatScore() {
-    var score = widget.match['events'].last;
-    var playerServing = score['server'];
-    var playerServingName = widget.match[playerServing];
-    var playerReceiving = playerServing == "p1" ? "p2" : "p1";
-    var playerServingGame = score[playerServing].last['game'];
-    var playerReceivingGame = score[playerReceiving].last['game'];
-    var playerServingSet = score[playerServing].last['set'];
-    var playerReceivingSet = score[playerReceiving].last['set'];
-    return "$playerServingName $playerServingGame/$playerReceivingGame $playerServingSet-$playerReceivingSet";
-  }
-
   Map buildScoreFromRally(previousScore, rally) {
     Map newScore = {...previousScore};
     newScore['createdAt'] = DateTime.now();
