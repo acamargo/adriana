@@ -1,5 +1,10 @@
+import 'dart:math';
+
 String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
-  return '${playerServingSet['set']}-${playerReceivingSet['set']}';
+  return (playerServingSet['tiebreak'] != null &&
+          playerReceivingSet['tiebreak'] != null)
+      ? '${playerServingSet['set']}-${playerReceivingSet['set']}(${min(playerServingSet['tiebreak'] as int, playerReceivingSet['tiebreak'] as int)})'
+      : '${playerServingSet['set']}-${playerReceivingSet['set']}';
 }
 
 String formatScore(Map match, Map score) {
