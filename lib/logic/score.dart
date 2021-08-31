@@ -51,16 +51,9 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
   Map newScore = {...previousScore};
   newScore['createdAt'] = createdAt;
   newScore['isServiceFault'] = rally['shot'] == 'F';
-  if (newScore['isServiceFault']) {
-    newScore['state'] = 'second service, ${match[newScore['server']]}';
-  } else {
-    newScore['state'] = 'first service, ${match[newScore['server']]}';
-  }
 
   if (rally['winner'] != null) {
     var looser = rally['winner'] == 'p1' ? 'p2' : 'p1';
-    print(
-        'newScore[rally[\'winner\']].last[\'game\']=${newScore[rally['winner']].last['game']}');
     if (newScore[rally['winner']].last['game'] == '0') {
       newScore[rally['winner']].last['game'] = '15';
     } else if (newScore[rally['winner']].last['game'] == '15') {
@@ -80,10 +73,16 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
       newScore[looser].last['game'] = '0';
       newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
     }
-    newScore['winner'] = null;
+    //newScore['winner'] = null;
     newScore['isServiceFault'] = false;
     newScore['courtSide'] = newScore['courtSide'] == 'deuce' ? 'ad' : 'deuce';
     newScore['pointNumber']++;
+  }
+
+  if (newScore['isServiceFault']) {
+    newScore['state'] = 'second service, ${match[newScore['server']]}';
+  } else {
+    newScore['state'] = 'first service, ${match[newScore['server']]}';
   }
 
   return newScore;

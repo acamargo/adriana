@@ -6,6 +6,7 @@ import 'package:adriana/logic/coin_toss.dart';
 
 void main() {
   group('newScoreFromRally()', () {
+    final now = DateTime.now();
     group('Given a Match', () {
       final match = newMatch(
           createdAt: DateTime.now(),
@@ -41,6 +42,391 @@ void main() {
                 containsPair('pointNumber', 1),
                 containsPair('courtSide', 'deuce'),
               ]));
+        });
+      });
+      group('When André is serving and commits a double fault', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'deuce',
+          'pointNumber': 1,
+          'isServiceFault': true,
+          'p1': [
+            {'game': '0', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '0', 'tiebreak': null, 'set': 0}
+          ],
+        };
+        final rally = {
+          'shot': 'DF',
+          'winner': 'p2',
+        };
+        test('Then count as point to p2', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'ad',
+            'pointNumber': 2,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '0', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '15', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group('When p1 is serving and commits an ace', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'ad',
+          'pointNumber': 2,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '0', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '15', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'shot': 'A',
+          'winner': 'p1',
+        };
+        test('Then count as point to p1', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'deuce',
+            'pointNumber': 3,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '15', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '15', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group(
+          'When p1 is serving and wins the point with a groundstroke forehand winner',
+          () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'deuce',
+          'pointNumber': 3,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '15', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '15', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'shot': 'GF',
+          'winner': 'p1',
+        };
+        test('Then count as point to p1', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'ad',
+            'pointNumber': 4,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '30', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '15', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group(
+          'When p1 is serving and wins the point with a groundstroke backhand winner',
+          () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'ad',
+          'pointNumber': 4,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '30', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '15', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then count as point to p1', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'deuce',
+            'pointNumber': 5,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '15', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group('When p1 is serving and miss a backhand volley', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'deuce',
+          'pointNumber': 5,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '15', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'winner': 'p2',
+        };
+        test('Then count as point to p2', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'ad',
+            'pointNumber': 6,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '30', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group('When p1 is serving and miss a smash', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'ad',
+          'pointNumber': 6,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '30', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'winner': 'p2',
+        };
+        test('Then count as point to p2', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'deuce',
+            'pointNumber': 7,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group('When p1 is serving and miss a forehand volley', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'deuce',
+          'pointNumber': 7,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'winner': 'p2',
+        };
+        test('Then count as advantage to p2', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'ad',
+            'pointNumber': 8,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': 'Ad', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group('When p1 is serving and p2 plays a forehand into the net', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'ad',
+          'pointNumber': 8,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': 'Ad', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then the score is deuce', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'deuce',
+            'pointNumber': 9,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group('When p1 is serving and hits a forehand volley winner', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'deuce',
+          'pointNumber': 10,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then is advantage to p1', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'ad',
+            'pointNumber': 11,
+            'isServiceFault': false,
+            'p1': [
+              {'game': 'Ad', 'tiebreak': null, 'set': 0}
+            ],
+            'p2': [
+              {'game': '40', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, André'
+          });
+        });
+      });
+      group('When p1 is serving and hits an ace', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'ad',
+          'pointNumber': 11,
+          'isServiceFault': false,
+          'p1': [
+            {'game': 'Ad', 'tiebreak': null, 'set': 0}
+          ],
+          'p2': [
+            {'game': '40', 'tiebreak': null, 'set': 0}
+          ],
+          'createdAt': now,
+          'state': 'first service, André'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then p1 wins the game', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p2',
+            'courtSide': 'deuce',
+            'pointNumber': 12,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '0', 'tiebreak': null, 'set': 1}
+            ],
+            'p2': [
+              {'game': '0', 'tiebreak': null, 'set': 0}
+            ],
+            'createdAt': now,
+            'state': 'first service, Angelo'
+          });
         });
       });
     });
