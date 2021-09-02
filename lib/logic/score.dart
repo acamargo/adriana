@@ -72,6 +72,18 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
       newScore[rally['winner']].last['game'] = '0';
       newScore[looser].last['game'] = '0';
       newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
+
+      if ((newScore[rally['winner']].last['set'] == 6 &&
+              newScore[looser].last['set'] <= 4) ||
+          (newScore[rally['winner']].last['set'] == 7 &&
+              newScore[looser].last['set'] == 5)) {
+        newScore['p1'].add({'game': '0', 'tiebreak': null, 'set': 0});
+        newScore['p2'].add({'game': '0', 'tiebreak': null, 'set': 0});
+      } else if (newScore[rally['winner']].last['set'] == 6 &&
+          newScore[looser].last['set'] == 6) {
+        newScore['p1'].last['tiebreak'] = 0;
+        newScore['p2'].last['tiebreak'] = 0;
+      }
     }
     //newScore['winner'] = null;
     newScore['isServiceFault'] = false;
