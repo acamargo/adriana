@@ -58,9 +58,22 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
         newScore['p1'].last['set'] == 6 && newScore['p2'].last['set'] == 6;
     if (isTiebreak) {
       newScore[rally['winner']].last['tiebreak']++;
-      if ((newScore['tiebreakPointNumber'] - 1) % 2 == 0)
-        newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
-      newScore['tiebreakPointNumber']++;
+      var winnerPoints = newScore[rally['winner']].last['tiebreak'];
+      var looserPoints = newScore[looser].last['tiebreak'];
+      if (winnerPoints >= 7 && looserPoints <= (winnerPoints - 2)) {
+        newScore['p1'].add({'game': '0', 'tiebreak': 0, 'set': 0});
+        newScore['p2'].add({'game': '0', 'tiebreak': 0, 'set': 0});
+        newScore.remove('tiebreakPointNumber');
+        newScore['courtSide'] = 'deuce'; // to become deuce above
+        newScore['server'] = newScore['tiebreakServer'] == 'p1' ? 'p2' : 'p1';
+        newScore.remove('tiebreakServer');
+      } else {
+        if ((newScore['tiebreakPointNumber'] - 1) % 2 == 0)
+          newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
+        newScore['tiebreakPointNumber']++;
+        newScore['courtSide'] =
+            newScore['courtSide'] == 'deuce' ? 'ad' : 'deuce';
+      }
     } else {
       if (newScore[rally['winner']].last['game'] == '0') {
         newScore[rally['winner']].last['game'] = '15';
@@ -91,13 +104,14 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
             newScore[looser].last['set'] == 6) {
           newScore['p1'].last['tiebreak'] = 0;
           newScore['p2'].last['tiebreak'] = 0;
+          newScore['tiebreakServer'] = newScore['server'];
           newScore['tiebreakPointNumber'] = 1;
         }
       }
+      newScore['courtSide'] = newScore['courtSide'] == 'deuce' ? 'ad' : 'deuce';
     }
-    //newScore['winner'] = null;
     newScore['isServiceFault'] = false;
-    newScore['courtSide'] = newScore['courtSide'] == 'deuce' ? 'ad' : 'deuce';
+    //newScore['courtSide'] = newScore['courtSide'] == 'deuce' ? 'ad' : 'deuce';
     newScore['pointNumber']++;
   }
 
