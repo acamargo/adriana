@@ -10,11 +10,11 @@ void main() {
     group('Given a Match', () {
       final match = newMatch(
           createdAt: DateTime.now(),
-          p1: 'André',
-          p2: 'Angelo',
+          p1: 'P1',
+          p2: 'P2',
           surface: 'Indoors - Clay',
           venue: 'Academia Winners');
-      group('When André is serving and commits a fault', () {
+      group('When P1 is serving and commits a fault', () {
         final previousScore = {
           'event': 'Score',
           'server': 'p1',
@@ -38,13 +38,13 @@ void main() {
               newScore,
               allOf([
                 containsPair('isServiceFault', true),
-                containsPair('state', 'second service, André'),
+                containsPair('state', 'second service, P1'),
                 containsPair('pointNumber', 1),
                 containsPair('courtSide', 'deuce'),
               ]));
         });
       });
-      group('When André is serving and commits a double fault', () {
+      group('When p1 is serving and commits a double fault', () {
         final previousScore = {
           'event': 'Score',
           'server': 'p1',
@@ -77,7 +77,7 @@ void main() {
               {'game': '15', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -95,7 +95,7 @@ void main() {
             {'game': '15', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'shot': 'A',
@@ -116,7 +116,7 @@ void main() {
               {'game': '15', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -136,7 +136,7 @@ void main() {
             {'game': '15', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'shot': 'GF',
@@ -157,7 +157,7 @@ void main() {
               {'game': '15', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -177,7 +177,7 @@ void main() {
             {'game': '15', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p1',
@@ -197,7 +197,7 @@ void main() {
               {'game': '15', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -215,7 +215,7 @@ void main() {
             {'game': '15', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p2',
@@ -235,7 +235,7 @@ void main() {
               {'game': '30', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -253,7 +253,7 @@ void main() {
             {'game': '30', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p2',
@@ -273,7 +273,7 @@ void main() {
               {'game': '40', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -291,7 +291,7 @@ void main() {
             {'game': '40', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p2',
@@ -311,7 +311,7 @@ void main() {
               {'game': 'Ad', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -329,7 +329,7 @@ void main() {
             {'game': 'Ad', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p1',
@@ -349,7 +349,7 @@ void main() {
               {'game': '40', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -367,7 +367,7 @@ void main() {
             {'game': '40', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p1',
@@ -387,7 +387,7 @@ void main() {
               {'game': '40', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, André'
+            'state': 'first service, P1'
           });
         });
       });
@@ -405,7 +405,7 @@ void main() {
             {'game': '40', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p1',
@@ -425,7 +425,7 @@ void main() {
               {'game': '0', 'tiebreak': null, 'set': 0}
             ],
             'createdAt': now,
-            'state': 'first service, Angelo'
+            'state': 'first service, P2'
           });
         });
       });
@@ -443,7 +443,7 @@ void main() {
             {'game': '0', 'tiebreak': null, 'set': 0}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p1',
@@ -465,7 +465,7 @@ void main() {
               {'game': '0', 'tiebreak': null, 'set': 0},
             ],
             'createdAt': now,
-            'state': 'first service, Angelo'
+            'state': 'first service, P2'
           });
         });
       });
@@ -483,7 +483,7 @@ void main() {
             {'game': '0', 'tiebreak': null, 'set': 5}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p1',
@@ -503,7 +503,7 @@ void main() {
               {'game': '0', 'tiebreak': null, 'set': 5},
             ],
             'createdAt': now,
-            'state': 'first service, Angelo'
+            'state': 'first service, P2'
           });
         });
       });
@@ -521,7 +521,7 @@ void main() {
             {'game': '0', 'tiebreak': null, 'set': 5}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p1',
@@ -543,7 +543,7 @@ void main() {
               {'game': '0', 'tiebreak': null, 'set': 0},
             ],
             'createdAt': now,
-            'state': 'first service, Angelo'
+            'state': 'first service, P2'
           });
         });
       });
@@ -561,7 +561,7 @@ void main() {
             {'game': '40', 'tiebreak': null, 'set': 5}
           ],
           'createdAt': now,
-          'state': 'first service, André'
+          'state': 'first service, P1'
         };
         final rally = {
           'winner': 'p2',
@@ -574,6 +574,7 @@ void main() {
             'courtSide': 'deuce',
             'pointNumber': 57,
             'isServiceFault': false,
+            'tiebreakPointNumber': 1,
             'p1': [
               {'game': '0', 'tiebreak': 0, 'set': 6},
             ],
@@ -581,7 +582,129 @@ void main() {
               {'game': '0', 'tiebreak': 0, 'set': 6},
             ],
             'createdAt': now,
-            'state': 'first service, Angelo'
+            'state': 'first service, P2'
+          });
+        });
+      });
+      group('When start the tiebreak and p1 win the point', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p1',
+          'courtSide': 'deuce',
+          'pointNumber': 60,
+          'tiebreakPointNumber': 1,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '0', 'tiebreak': 0, 'set': 6}
+          ],
+          'p2': [
+            {'game': '0', 'tiebreak': 0, 'set': 6}
+          ],
+          'createdAt': now,
+          'state': 'first service, P1'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then p2 is going to serve', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p2',
+            'courtSide': 'ad',
+            'pointNumber': 61,
+            'tiebreakPointNumber': 2,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '0', 'tiebreak': 1, 'set': 6}
+            ],
+            'p2': [
+              {'game': '0', 'tiebreak': 0, 'set': 6},
+            ],
+            'createdAt': now,
+            'state': 'first service, P2'
+          });
+        });
+      });
+      group('When p2 is serving and looses the second point of the tiebreak',
+          () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p2',
+          'courtSide': 'ad',
+          'pointNumber': 61,
+          'tiebreakPointNumber': 2,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '0', 'tiebreak': 1, 'set': 6}
+          ],
+          'p2': [
+            {'game': '0', 'tiebreak': 0, 'set': 6}
+          ],
+          'createdAt': now,
+          'state': 'first service, P2'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then p2 will serve the second serve', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p2',
+            'courtSide': 'deuce',
+            'pointNumber': 62,
+            'tiebreakPointNumber': 3,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '0', 'tiebreak': 2, 'set': 6}
+            ],
+            'p2': [
+              {'game': '0', 'tiebreak': 0, 'set': 6},
+            ],
+            'createdAt': now,
+            'state': 'first service, P2'
+          });
+        });
+      });
+      group('When p2 is serving and looses the third point of the tiebreak',
+          () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p2',
+          'courtSide': 'deuce',
+          'pointNumber': 62,
+          'tiebreakPointNumber': 3,
+          'isServiceFault': false,
+          'p1': [
+            {'game': '0', 'tiebreak': 2, 'set': 6}
+          ],
+          'p2': [
+            {'game': '0', 'tiebreak': 0, 'set': 6}
+          ],
+          'createdAt': now,
+          'state': 'first service, P2'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then p1 will serve the fourth point of the tiebreak', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p1',
+            'courtSide': 'ad',
+            'pointNumber': 63,
+            'tiebreakPointNumber': 4,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '0', 'tiebreak': 3, 'set': 6}
+            ],
+            'p2': [
+              {'game': '0', 'tiebreak': 0, 'set': 6},
+            ],
+            'createdAt': now,
+            'state': 'first service, P1'
           });
         });
       });

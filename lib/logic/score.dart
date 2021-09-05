@@ -54,35 +54,45 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
 
   if (rally['winner'] != null) {
     var looser = rally['winner'] == 'p1' ? 'p2' : 'p1';
-    if (newScore[rally['winner']].last['game'] == '0') {
-      newScore[rally['winner']].last['game'] = '15';
-    } else if (newScore[rally['winner']].last['game'] == '15') {
-      newScore[rally['winner']].last['game'] = '30';
-    } else if (newScore[rally['winner']].last['game'] == '30') {
-      newScore[rally['winner']].last['game'] = '40';
-    } else if (newScore[rally['winner']].last['game'] == '40' &&
-        newScore[looser].last['game'] == '40') {
-      newScore[rally['winner']].last['game'] = 'Ad';
-    } else if (newScore[rally['winner']].last['game'] == '40' &&
-        newScore[looser].last['game'] == 'Ad') {
-      newScore[rally['winner']].last['game'] = '40';
-      newScore[looser].last['game'] = '40';
+    var isTiebreak =
+        newScore['p1'].last['set'] == 6 && newScore['p2'].last['set'] == 6;
+    if (isTiebreak) {
+      newScore[rally['winner']].last['tiebreak']++;
+      if ((newScore['tiebreakPointNumber'] - 1) % 2 == 0)
+        newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
+      newScore['tiebreakPointNumber']++;
     } else {
-      newScore[rally['winner']].last['set']++;
-      newScore[rally['winner']].last['game'] = '0';
-      newScore[looser].last['game'] = '0';
-      newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
+      if (newScore[rally['winner']].last['game'] == '0') {
+        newScore[rally['winner']].last['game'] = '15';
+      } else if (newScore[rally['winner']].last['game'] == '15') {
+        newScore[rally['winner']].last['game'] = '30';
+      } else if (newScore[rally['winner']].last['game'] == '30') {
+        newScore[rally['winner']].last['game'] = '40';
+      } else if (newScore[rally['winner']].last['game'] == '40' &&
+          newScore[looser].last['game'] == '40') {
+        newScore[rally['winner']].last['game'] = 'Ad';
+      } else if (newScore[rally['winner']].last['game'] == '40' &&
+          newScore[looser].last['game'] == 'Ad') {
+        newScore[rally['winner']].last['game'] = '40';
+        newScore[looser].last['game'] = '40';
+      } else {
+        newScore[rally['winner']].last['set']++;
+        newScore[rally['winner']].last['game'] = '0';
+        newScore[looser].last['game'] = '0';
+        newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
 
-      if ((newScore[rally['winner']].last['set'] == 6 &&
-              newScore[looser].last['set'] <= 4) ||
-          (newScore[rally['winner']].last['set'] == 7 &&
-              newScore[looser].last['set'] == 5)) {
-        newScore['p1'].add({'game': '0', 'tiebreak': null, 'set': 0});
-        newScore['p2'].add({'game': '0', 'tiebreak': null, 'set': 0});
-      } else if (newScore[rally['winner']].last['set'] == 6 &&
-          newScore[looser].last['set'] == 6) {
-        newScore['p1'].last['tiebreak'] = 0;
-        newScore['p2'].last['tiebreak'] = 0;
+        if ((newScore[rally['winner']].last['set'] == 6 &&
+                newScore[looser].last['set'] <= 4) ||
+            (newScore[rally['winner']].last['set'] == 7 &&
+                newScore[looser].last['set'] == 5)) {
+          newScore['p1'].add({'game': '0', 'tiebreak': null, 'set': 0});
+          newScore['p2'].add({'game': '0', 'tiebreak': null, 'set': 0});
+        } else if (newScore[rally['winner']].last['set'] == 6 &&
+            newScore[looser].last['set'] == 6) {
+          newScore['p1'].last['tiebreak'] = 0;
+          newScore['p2'].last['tiebreak'] = 0;
+          newScore['tiebreakPointNumber'] = 1;
+        }
       }
     }
     //newScore['winner'] = null;
