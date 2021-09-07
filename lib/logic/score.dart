@@ -61,6 +61,7 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
       var winnerPoints = newScore[rally['winner']].last['tiebreak'];
       var looserPoints = newScore[looser].last['tiebreak'];
       if (winnerPoints >= 7 && looserPoints <= (winnerPoints - 2)) {
+        newScore[rally['winner']].last['set']++;
         newScore['p1'].add({'game': '0', 'tiebreak': 0, 'set': 0});
         newScore['p2'].add({'game': '0', 'tiebreak': 0, 'set': 0});
         newScore.remove('tiebreakPointNumber');

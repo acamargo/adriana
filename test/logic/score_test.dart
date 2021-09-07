@@ -864,11 +864,95 @@ void main() {
             'pointNumber': 67,
             'isServiceFault': false,
             'p1': [
-              {'game': '0', 'tiebreak': 7, 'set': 6},
+              {'game': '0', 'tiebreak': 7, 'set': 7},
               {'game': '0', 'tiebreak': 0, 'set': 0},
             ],
             'p2': [
               {'game': '0', 'tiebreak': 0, 'set': 6},
+              {'game': '0', 'tiebreak': 0, 'set': 0},
+            ],
+            'createdAt': now,
+            'state': 'first service, P2'
+          });
+        });
+      });
+      group('When p1 leads 6-5 tiebreak', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p2',
+          'courtSide': 'deuce',
+          'pointNumber': 66,
+          'tiebreakPointNumber': 11,
+          'tiebreakServer': 'p1',
+          'isServiceFault': false,
+          'p1': [
+            {'game': '0', 'tiebreak': 6, 'set': 6}
+          ],
+          'p2': [
+            {'game': '0', 'tiebreak': 5, 'set': 6},
+          ],
+          'createdAt': now,
+          'state': 'first service, P2'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then p1 wins the point and the tiebreak', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p2',
+            'courtSide': 'deuce',
+            'pointNumber': 67,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '0', 'tiebreak': 7, 'set': 7},
+              {'game': '0', 'tiebreak': 0, 'set': 0},
+            ],
+            'p2': [
+              {'game': '0', 'tiebreak': 5, 'set': 6},
+              {'game': '0', 'tiebreak': 0, 'set': 0},
+            ],
+            'createdAt': now,
+            'state': 'first service, P2'
+          });
+        });
+      });
+      group('When p1 leads 16-15 tiebreak', () {
+        final previousScore = {
+          'event': 'Score',
+          'server': 'p2',
+          'courtSide': 'deuce',
+          'pointNumber': 66,
+          'tiebreakPointNumber': 32,
+          'tiebreakServer': 'p1',
+          'isServiceFault': false,
+          'p1': [
+            {'game': '0', 'tiebreak': 16, 'set': 6}
+          ],
+          'p2': [
+            {'game': '0', 'tiebreak': 15, 'set': 6},
+          ],
+          'createdAt': now,
+          'state': 'first service, P2'
+        };
+        final rally = {
+          'winner': 'p1',
+        };
+        test('Then p1 wins the point and the tiebreak', () {
+          final newScore = newScoreFromRally(now, match, previousScore, rally);
+          expect(newScore, {
+            'event': 'Score',
+            'server': 'p2',
+            'courtSide': 'deuce',
+            'pointNumber': 67,
+            'isServiceFault': false,
+            'p1': [
+              {'game': '0', 'tiebreak': 17, 'set': 7},
+              {'game': '0', 'tiebreak': 0, 'set': 0},
+            ],
+            'p2': [
+              {'game': '0', 'tiebreak': 15, 'set': 6},
               {'game': '0', 'tiebreak': 0, 'set': 0},
             ],
             'createdAt': now,
