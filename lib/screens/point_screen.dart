@@ -5,6 +5,7 @@ import 'package:wakelock/wakelock.dart';
 import '../matches_storage.dart';
 import 'stats_screen.dart';
 import '../logic/score.dart';
+import '../logic/rally.dart';
 
 class PointScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
@@ -23,78 +24,17 @@ class _PointScreenState extends State<PointScreen> {
   String _direction = "";
   String _depth = "";
 
-  Map buildScoreFromRally(previousScore, rally) {
-    Map newScore = {...previousScore};
-    newScore['createdAt'] = DateTime.now();
-    newScore['isServiceFault'] = rally['shot'] == 'F';
-    if (newScore['isServiceFault']) {
-      newScore['state'] = 'second service, ${widget.match[newScore['server']]}';
-    } else {
-      newScore['state'] = 'first service, ${widget.match[newScore['server']]}';
-    }
-
-    if (rally['winner'] != null) {
-      var looser = rally['winner'] == 'p1' ? 'p2' : 'p1';
-      print(
-          'newScore[rally[\'winner\']].last[\'game\']=${newScore[rally['winner']].last['game']}');
-      if (newScore[rally['winner']].last['game'] == '0') {
-        newScore[rally['winner']].last['game'] = '15';
-      } else if (newScore[rally['winner']].last['game'] == '15') {
-        newScore[rally['winner']].last['game'] = '30';
-      } else if (newScore[rally['winner']].last['game'] == '30') {
-        newScore[rally['winner']].last['game'] = '40';
-      } else if (newScore[rally['winner']].last['game'] == '40' &&
-          newScore[looser].last['game'] == '40') {
-        newScore[rally['winner']].last['game'] = 'Ad';
-      } else if (newScore[rally['winner']].last['game'] == '40' &&
-          newScore[looser].last['game'] == 'Ad') {
-        newScore[rally['winner']].last['game'] = '40';
-        newScore[looser].last['game'] = '40';
-      } else {
-        newScore[rally['winner']].last['set']++;
-        newScore[rally['winner']].last['game'] = '0';
-        newScore[looser].last['game'] = '0';
-        newScore['server'] = newScore['server'] == 'p1' ? 'p2' : 'p1';
-      }
-      newScore['winner'] = null;
-      newScore['isServiceFault'] = false;
-      newScore['courtSide'] = newScore['courtSide'] == 'deuce' ? 'ad' : 'deuce';
-      newScore['pointNumber']++;
-    }
-
-    return newScore;
-  }
-
   _storeRallyEvent() {
-    Map score = widget.match['events'].last;
-    print("_storeRallyEvent#score=$score");
-    String whoIsServing = score['server'];
-    String whoIsReceiving = whoIsServing == "p1" ? "p2" : "p1";
-    var winner;
-    if (_shot == "F") {
-      winner = null;
-    } else if (_shot == "DF") {
-      winner = whoIsReceiving;
-    } else if (_shot == "A") {
-      winner = whoIsServing;
-    } else if (['N', 'L', 'W'].contains(_depth)) {
-      winner = _player == "p1" ? "p2" : "p1";
-    } else if (['S', 'D'].contains(_depth)) {
-      winner = _player;
-    }
-
-    Map rallyEvent = {
-      'event': 'Rally',
-      'createdAt': DateTime.now(),
-      'lastHitBy': _player,
-      'consistency': _consistency,
-      'shot': _shot,
-      'direction': _direction,
-      'depth': _depth,
-      'winner': winner,
-    };
-    Map scoreEvent =
-        buildScoreFromRally(widget.match['events'].last, rallyEvent);
+    Map rallyEvent = newRallyEvent(
+        createdAt: DateTime.now(),
+        match: widget.match,
+        player: _player,
+        consistency: _consistency,
+        shot: _shot,
+        direction: _direction,
+        depth: _depth);
+    Map scoreEvent = newScoreFromRally(
+        DateTime.now(), widget.match, widget.match['events'].last, rallyEvent);
 
     widget.match['events'].add(rallyEvent);
     widget.match['events'].add(scoreEvent);
@@ -307,7 +247,7 @@ class _PointScreenState extends State<PointScreen> {
                         });
                       }),
                   ChoiceChip(
-                      label: Text("volley backhand"),
+                      label: Text("volley forehand"),
                       selected: _shot == "VFH",
                       onSelected: (bool selected) {
                         setState(() {
