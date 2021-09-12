@@ -491,14 +491,30 @@ class _PointScreenState extends State<PointScreen> {
       ];
   }
 
+  List<Widget> _saveButton() {
+    if (_player != '' &&
+        _consistency != '' &&
+        _shot != '' &&
+        _direction != '' &&
+        _depth != '')
+      return [
+        ElevatedButton(
+          onPressed: () {
+            _storeRallyEvent();
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PointScreen(widget.match)));
+          },
+          child: Text('Save'),
+        ),
+      ];
+    else
+      return [];
+  }
+
   @override
   Widget build(BuildContext context) {
-    Map score = widget.match['events'].last;
-    String whoIsServing = score['server'];
-    String whoIsReceiving = whoIsServing == "p1" ? "p2" : "p1";
-    bool isServing = _player == whoIsServing;
-    bool isServiceStroke = ["A", "F", "DF"].contains(_shot);
-
     // Wakelock.enable();
 
     // SystemChrome.setPreferredOrientations([
@@ -531,25 +547,7 @@ class _PointScreenState extends State<PointScreen> {
               _whatWasTheShotHit() +
               _whatWastheBallDirection() +
               _whereDidTheBallLand() +
-              [
-                ElevatedButton(
-                  onPressed: (_player != "" &&
-                          _consistency != "" &&
-                          _shot != "" &&
-                          _direction != "" &&
-                          _depth != "")
-                      ? () {
-                          _storeRallyEvent();
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      PointScreen(widget.match)));
-                        }
-                      : null,
-                  child: Text('Save'),
-                ),
-              ],
+              _saveButton(),
         ),
       ),
     );
