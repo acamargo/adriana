@@ -34,3 +34,23 @@ Map newRallyEvent({
     'winner': winner,
   };
 }
+
+Map<String, Object> whatWasTheRallyLengthOptions(
+    String player, String consistency, bool isServing) {
+  Map<String, Object> result = {'options': []};
+  if (player != '') {
+    if (consistency == '') result['label'] = 'What was the rally length?';
+    if (isServing) {
+      result['options'] = [
+        {'label': 'one shot', 'value': '1'},
+        {'label': 'three shots or more', 'value': '3'},
+      ];
+    } else {
+      result['options'] = [
+        {'label': 'two shots', 'value': '2'},
+        {'label': 'four shots or more', 'value': '4'}
+      ];
+    }
+  }
+  return result;
+}

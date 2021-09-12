@@ -90,6 +90,26 @@ class _PointScreenState extends State<PointScreen> {
     }
   }
 
+  Map score() {
+    return widget.match['events'].last;
+  }
+
+  String whoIsServing() {
+    return score()['server'];
+  }
+
+  String whoIsReceiving() {
+    return whoIsServing() == 'p1' ? 'p2' : 'p1';
+  }
+
+  bool isServing() {
+    return _player == whoIsServing();
+  }
+
+  bool isServiceStroke() {
+    return ['A', 'F', 'DF'].contains(_shot);
+  }
+
   List<Widget> _whoTouchedTheBallLast() {
     return [
       if (_player == '') Text("Who touched the ball last?"),
@@ -166,26 +186,6 @@ class _PointScreenState extends State<PointScreen> {
         ),
         Divider(),
       ];
-  }
-
-  Map score() {
-    return widget.match['events'].last;
-  }
-
-  String whoIsServing() {
-    return score()['server'];
-  }
-
-  String whoIsReceiving() {
-    return whoIsServing() == 'p1' ? 'p2' : 'p1';
-  }
-
-  bool isServing() {
-    return _player == whoIsServing();
-  }
-
-  bool isServiceStroke() {
-    return ['A', 'F', 'DF'].contains(_shot);
   }
 
   List<Widget> _whatWasTheShotHit() {
