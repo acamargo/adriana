@@ -35,11 +35,12 @@ Map newRallyEvent({
   };
 }
 
-Map<String, Object> whatWasTheRallyLengthOptions(
-    String player, String consistency, bool isServing) {
-  Map<String, Object> result = {'options': []};
+Map whatWasTheRallyLengthOptions(
+    {required String player,
+    required String consistency,
+    required bool isServing}) {
+  var result = {'label': 'What was the rally length?', 'options': []};
   if (player != '') {
-    if (consistency == '') result['label'] = 'What was the rally length?';
     if (isServing) {
       result['options'] = [
         {'label': 'one shot', 'value': '1'},

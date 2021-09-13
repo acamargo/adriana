@@ -258,44 +258,39 @@ void main() {
   group('whatWasTheRallyLengthOptions()', () {
     group('Given a rally', () {
       group('When there is no player', () {
-        test('Then return an empty list of options and no label', () {
-          final player = '';
-          final consistency = '';
-          final isServing = true;
-          final result =
-              whatWasTheRallyLengthOptions(player, consistency, isServing);
-          expect(result, {'options': []});
+        test('Then return an empty list of options', () {
+          expect(
+              whatWasTheRallyLengthOptions(
+                  player: '', consistency: '', isServing: true),
+              {'label': 'What was the rally length?', 'options': []});
         });
       });
       group('When the player is serving and no consistency', () {
         test('Then return label and options for server', () {
-          final player = 'p1';
-          final consistency = '';
-          final isServing = true;
-          final result =
-              whatWasTheRallyLengthOptions(player, consistency, isServing);
-          expect(result, {
-            'label': 'What was the rally length?',
-            'options': [
-              {'label': 'one shot', 'value': '1'},
-              {'label': 'three shots or more', 'value': '3'},
-            ]
-          });
+          expect(
+              whatWasTheRallyLengthOptions(
+                  player: 'p1', consistency: '', isServing: true),
+              {
+                'label': 'What was the rally length?',
+                'options': [
+                  {'label': 'one shot', 'value': '1'},
+                  {'label': 'three shots or more', 'value': '3'},
+                ]
+              });
         });
       });
       group('When the player is receiving and consistency is defined', () {
         test('Then return no label and options for receiver', () {
-          final player = 'p1';
-          final consistency = '1';
-          final isServing = false;
-          final result =
-              whatWasTheRallyLengthOptions(player, consistency, isServing);
-          expect(result, {
-            'options': [
-              {'label': 'two shots', 'value': '2'},
-              {'label': 'four shots or more', 'value': '4'}
-            ]
-          });
+          expect(
+              whatWasTheRallyLengthOptions(
+                  player: 'p1', consistency: '1', isServing: false),
+              {
+                'label': 'What was the rally length?',
+                'options': [
+                  {'label': 'two shots', 'value': '2'},
+                  {'label': 'four shots or more', 'value': '4'}
+                ]
+              });
         });
       });
     });

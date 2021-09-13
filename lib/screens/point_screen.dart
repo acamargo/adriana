@@ -135,57 +135,32 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   List<Widget> _whatWasTheRallyLength() {
-    if (_player == '')
+    final options = whatWasTheRallyLengthOptions(
+        player: _player, consistency: _consistency, isServing: isServing());
+    if (!options['options']
+        .map((item) => item['value'])
+        .toList()
+        .contains(_consistency)) _consistency = '';
+    if (options['options'].isEmpty) {
       return [];
-    else
+    } else {
       return [
-        if (_consistency == '') Text('What was the rally length?'),
+        if (_consistency == '') Text(options['label']),
         Wrap(
           spacing: 10,
-          children: [
-            if (isServing()) ...[
+          children: <Widget>[
+            for (var item in options['options'])
               ChoiceChip(
-                label: Text('one shot'),
-                selected: _consistency == '1',
-                onSelected: (bool selected) {
-                  setState(() {
-                    _consistency = '1';
-                  });
-                },
-              ),
-              ChoiceChip(
-                label: Text('three shots or more'),
-                selected: _consistency == '3',
-                onSelected: (bool selected) {
-                  setState(() {
-                    _consistency = '3';
-                  });
-                },
-              ),
-            ] else ...[
-              ChoiceChip(
-                label: Text('two shots'),
-                selected: _consistency == '2',
-                onSelected: (bool selected) {
-                  setState(() {
-                    _consistency = '2';
-                  });
-                },
-              ),
-              ChoiceChip(
-                label: Text('four shots or more'),
-                selected: _consistency == '4',
-                onSelected: (bool selected) {
-                  setState(() {
-                    _consistency = '4';
-                  });
-                },
-              ),
-            ],
+                label: Text(item['label']),
+                selected: _consistency == item['value'],
+                onSelected: (bool selected) =>
+                    setState(() => _consistency = item['value']),
+              )
           ],
         ),
         Divider(),
       ];
+    }
   }
 
   List<Widget> _whatWasTheShotHit() {
