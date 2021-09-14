@@ -295,4 +295,137 @@ void main() {
       });
     });
   });
+  group('whatWasTheShotHitOptions()', () {
+    group('Given a rally', () {
+      group('When it is receiving', () {
+        test('Then returns only shots possible for receiver', () {
+          final result = whatWasTheShotHitOptions(
+              consistency: '1', isServing: false, isServiceFault: false);
+          expect(result, containsPair('label', 'What was the shot hit?'));
+          expect(
+              result,
+              containsPair('options', [
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'groundstroke backhand', 'value': 'GBH'},
+                {'label': 'volley forehand', 'value': 'VFH'},
+                {'label': 'volley backhand', 'value': 'VBH'},
+                {'label': 'smash', 'value': 'SH'},
+                {'label': 'lob', 'value': 'L'},
+                {'label': 'passing shot forehand', 'value': 'PSFH'},
+                {'label': 'passing shot backhand', 'value': 'PSBH'},
+                {'label': 'tweeter', 'value': 'TW'},
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'drop shot forehand', 'value': 'DSFH'},
+                {'label': 'drop shot backhand', 'value': 'DSBH'},
+                {'label': 'half-volley forehand', 'value': 'HVFH'},
+                {'label': 'half-volley backhand', 'value': 'HVBH'}
+              ]));
+        });
+      });
+      group('When first service and the rally length was 1', () {
+        test('Then it is possible the receiver shots plus ace and fault', () {
+          final result = whatWasTheShotHitOptions(
+              consistency: '1', isServing: true, isServiceFault: false);
+          expect(result, containsPair('label', 'What was the shot hit?'));
+          expect(
+              result,
+              containsPair('options', [
+                {'label': 'ace', 'value': 'A'},
+                {'label': 'fault', 'value': 'F'},
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'groundstroke backhand', 'value': 'GBH'},
+                {'label': 'volley forehand', 'value': 'VFH'},
+                {'label': 'volley backhand', 'value': 'VBH'},
+                {'label': 'smash', 'value': 'SH'},
+                {'label': 'lob', 'value': 'L'},
+                {'label': 'passing shot forehand', 'value': 'PSFH'},
+                {'label': 'passing shot backhand', 'value': 'PSBH'},
+                {'label': 'tweeter', 'value': 'TW'},
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'drop shot forehand', 'value': 'DSFH'},
+                {'label': 'drop shot backhand', 'value': 'DSBH'},
+                {'label': 'half-volley forehand', 'value': 'HVFH'},
+                {'label': 'half-volley backhand', 'value': 'HVBH'}
+              ]));
+        });
+      });
+      group('When first service and the rally length was 3', () {
+        test('Then it is possible the receiver shots', () {
+          final result = whatWasTheShotHitOptions(
+              consistency: '3', isServing: true, isServiceFault: false);
+          expect(result, containsPair('label', 'What was the shot hit?'));
+          expect(
+              result,
+              containsPair('options', [
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'groundstroke backhand', 'value': 'GBH'},
+                {'label': 'volley forehand', 'value': 'VFH'},
+                {'label': 'volley backhand', 'value': 'VBH'},
+                {'label': 'smash', 'value': 'SH'},
+                {'label': 'lob', 'value': 'L'},
+                {'label': 'passing shot forehand', 'value': 'PSFH'},
+                {'label': 'passing shot backhand', 'value': 'PSBH'},
+                {'label': 'tweeter', 'value': 'TW'},
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'drop shot forehand', 'value': 'DSFH'},
+                {'label': 'drop shot backhand', 'value': 'DSBH'},
+                {'label': 'half-volley forehand', 'value': 'HVFH'},
+                {'label': 'half-volley backhand', 'value': 'HVBH'}
+              ]));
+        });
+      });
+      group('When second serve and the rally length was 1', () {
+        test('Then it is possible the receiver shots plus double fault', () {
+          final result = whatWasTheShotHitOptions(
+              consistency: '1', isServing: true, isServiceFault: true);
+          expect(result, containsPair('label', 'What was the shot hit?'));
+          expect(
+              result,
+              containsPair('options', [
+                {'label': 'ace', 'value': 'A'},
+                {'label': 'double fault', 'value': 'DF'},
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'groundstroke backhand', 'value': 'GBH'},
+                {'label': 'volley forehand', 'value': 'VFH'},
+                {'label': 'volley backhand', 'value': 'VBH'},
+                {'label': 'smash', 'value': 'SH'},
+                {'label': 'lob', 'value': 'L'},
+                {'label': 'passing shot forehand', 'value': 'PSFH'},
+                {'label': 'passing shot backhand', 'value': 'PSBH'},
+                {'label': 'tweeter', 'value': 'TW'},
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'drop shot forehand', 'value': 'DSFH'},
+                {'label': 'drop shot backhand', 'value': 'DSBH'},
+                {'label': 'half-volley forehand', 'value': 'HVFH'},
+                {'label': 'half-volley backhand', 'value': 'HVBH'}
+              ]));
+        });
+      });
+      group('When second serve and the rally length was 3', () {
+        final result = whatWasTheShotHitOptions(
+            consistency: '3', isServing: true, isServiceFault: true);
+        test('Then it is possible the receiver shots', () {
+          expect(result, containsPair('label', 'What was the shot hit?'));
+          expect(
+              result,
+              containsPair('options', [
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'groundstroke backhand', 'value': 'GBH'},
+                {'label': 'volley forehand', 'value': 'VFH'},
+                {'label': 'volley backhand', 'value': 'VBH'},
+                {'label': 'smash', 'value': 'SH'},
+                {'label': 'lob', 'value': 'L'},
+                {'label': 'passing shot forehand', 'value': 'PSFH'},
+                {'label': 'passing shot backhand', 'value': 'PSBH'},
+                {'label': 'tweeter', 'value': 'TW'},
+                {'label': 'groundstroke forehand', 'value': 'GFH'},
+                {'label': 'drop shot forehand', 'value': 'DSFH'},
+                {'label': 'drop shot backhand', 'value': 'DSBH'},
+                {'label': 'half-volley forehand', 'value': 'HVFH'},
+                {'label': 'half-volley backhand', 'value': 'HVBH'}
+              ]));
+        });
+      });
+    });
+  });
 }

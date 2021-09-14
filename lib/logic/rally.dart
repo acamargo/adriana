@@ -55,3 +55,34 @@ Map whatWasTheRallyLengthOptions(
   }
   return result;
 }
+
+Map whatWasTheShotHitOptions(
+    {required String consistency,
+    required bool isServing,
+    required bool isServiceFault}) {
+  var result = {'label': 'What was the shot hit?', 'options': []};
+  if (consistency != '') {
+    result['options'] = [
+      if (isServing && consistency == '1') {'label': 'ace', 'value': 'A'},
+      if (isServing && consistency == '1' && !isServiceFault)
+        {'label': 'fault', 'value': 'F'},
+      if (isServing && consistency == '1' && isServiceFault)
+        {'label': 'double fault', 'value': 'DF'},
+      {'label': 'groundstroke forehand', 'value': 'GFH'},
+      {'label': 'groundstroke backhand', 'value': 'GBH'},
+      {'label': 'volley forehand', 'value': 'VFH'},
+      {'label': 'volley backhand', 'value': 'VBH'},
+      {'label': 'smash', 'value': 'SH'},
+      {'label': 'lob', 'value': 'L'},
+      {'label': 'passing shot forehand', 'value': 'PSFH'},
+      {'label': 'passing shot backhand', 'value': 'PSBH'},
+      {'label': 'tweeter', 'value': 'TW'},
+      {'label': 'groundstroke forehand', 'value': 'GFH'},
+      {'label': 'drop shot forehand', 'value': 'DSFH'},
+      {'label': 'drop shot backhand', 'value': 'DSBH'},
+      {'label': 'half-volley forehand', 'value': 'HVFH'},
+      {'label': 'half-volley backhand', 'value': 'HVBH'}
+    ];
+  }
+  return result;
+}

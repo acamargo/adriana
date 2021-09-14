@@ -164,154 +164,37 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   List<Widget> _whatWasTheShotHit() {
-    if (_consistency == '')
+    final options = whatWasTheShotHitOptions(
+        consistency: _consistency,
+        isServing: isServing(),
+        isServiceFault: score()['isServiceFault']);
+    if (!options['options']
+        .map((item) => item['value'])
+        .toList()
+        .contains(_shot)) _shot = '';
+    if (options['options'].isEmpty) {
       return [];
-    else
+    } else {
       return [
-        if (_shot == '') Text("What was the shot hit?"),
+        if (_shot == '') Text(options['label']),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Wrap(
             spacing: 10,
-            children: [
-              if (isServing() && _consistency == '1')
+            children: <Widget>[
+              for (var item in options['options'])
                 ChoiceChip(
-                    label: Text("ace"),
-                    selected: _shot == "A",
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _shot = "A";
-                      });
-                    }),
-              if (isServing() && !score()['isServiceFault'])
-                ChoiceChip(
-                    label: Text("fault"),
-                    selected: _shot == "F",
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _shot = "F";
-                      });
-                    }),
-              if (isServing() &&
-                  score()['isServiceFault'] &&
-                  _consistency == '1')
-                ChoiceChip(
-                    label: Text("double fault"),
-                    selected: _shot == "DF",
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _shot = "DF";
-                      });
-                    }),
-              ChoiceChip(
-                  label: Text("groundstroke forehand"),
-                  selected: _shot == "GFH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "GFH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("groundstroke backhand"),
-                  selected: _shot == "GBH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "GBH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("volley forehand"),
-                  selected: _shot == "VFH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "VFH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("volley backhand"),
-                  selected: _shot == "VBH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "VBH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("smash"),
-                  selected: _shot == "SH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "SH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("lob"),
-                  selected: _shot == "L",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "L";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("passing shot forehand"),
-                  selected: _shot == "PSFH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "PSFH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("passing shot backhand"),
-                  selected: _shot == "PSBH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "PSBH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("tweener"),
-                  selected: _shot == "TW",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "TW";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("drop shot forehand"),
-                  selected: _shot == "DSFH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "DSFH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("drop shot backhand"),
-                  selected: _shot == "DSBH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "DSBH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("half-volley forehand"),
-                  selected: _shot == "HVFH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "HVFH";
-                    });
-                  }),
-              ChoiceChip(
-                  label: Text("half-volley backhand"),
-                  selected: _shot == "HVBH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _shot = "HVBH";
-                    });
-                  }),
+                  label: Text(item['label']),
+                  selected: _shot == item['value'],
+                  onSelected: (bool selected) =>
+                      setState(() => _shot = item['value']),
+                )
             ],
           ),
         ),
         Divider(),
       ];
+    }
   }
 
   List<Widget> _whatWastheBallDirection() {
