@@ -113,22 +113,25 @@ class _PointScreenState extends State<PointScreen> {
   List<Widget> _whoTouchedTheBallLast() {
     return [
       if (_player == '') Text("Who touched the ball last?"),
-      Wrap(
-        spacing: 10,
-        children: [
-          ChoiceChip(
-              label: Text(widget.match['p1']),
-              selected: _player == 'p1',
-              onSelected: (bool selected) {
-                setState(() => _player = 'p1');
-              }),
-          ChoiceChip(
-              label: Text(widget.match['p2']),
-              selected: _player == 'p2',
-              onSelected: (bool selected) {
-                setState(() => _player = 'p2');
-              }),
-        ],
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+          spacing: 10,
+          children: [
+            ChoiceChip(
+                label: Text(widget.match['p1']),
+                selected: _player == 'p1',
+                onSelected: (bool selected) {
+                  setState(() => _player = 'p1');
+                }),
+            ChoiceChip(
+                label: Text(widget.match['p2']),
+                selected: _player == 'p2',
+                onSelected: (bool selected) {
+                  setState(() => _player = 'p2');
+                }),
+          ],
+        ),
       ),
       Divider(),
     ];
@@ -146,17 +149,20 @@ class _PointScreenState extends State<PointScreen> {
     } else {
       return [
         if (_consistency == '') Text(options['label']),
-        Wrap(
-          spacing: 10,
-          children: <Widget>[
-            for (var item in options['options'])
-              ChoiceChip(
-                label: Text(item['label']),
-                selected: _consistency == item['value'],
-                onSelected: (bool selected) =>
-                    setState(() => _consistency = item['value']),
-              )
-          ],
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Wrap(
+            spacing: 10,
+            children: <Widget>[
+              for (var item in options['options'])
+                ChoiceChip(
+                  label: Text(item['label']),
+                  selected: _consistency == item['value'],
+                  onSelected: (bool selected) =>
+                      setState(() => _consistency = item['value']),
+                )
+            ],
+          ),
         ),
         Divider(),
       ];
