@@ -428,4 +428,47 @@ void main() {
       });
     });
   });
+
+  group('whatWasTheBallDirectionOptions()', () {
+    group('Given a rally', () {
+      group('When there is no shot defined', () {
+        test('Then return no options', () {
+          expect(
+              whatWasTheBallDirectionOptions(
+                  shot: '', isServiceStroke: false, whoIsReceiving: 'P1 name'),
+              allOf(containsPair('label', 'What was the ball direction?'),
+                  containsPair('options', [])));
+        });
+      });
+      group('When there is a shot and isServiceStroke true', () {
+        test('Then the options are for server', () {
+          expect(
+              whatWasTheBallDirectionOptions(
+                  shot: 'A', isServiceStroke: true, whoIsReceiving: 'P1 name'),
+              allOf(
+                  containsPair('label', 'What was the ball direction?'),
+                  containsPair('options', [
+                    {'label': "P1 name's forehand", 'value': 'FH'},
+                    {'label': "P1 name's body", 'value': 'B'},
+                    {'label': "P1 name's backhand", 'value': 'BH'},
+                    {'label': 'wide', 'value': 'W'}
+                  ])));
+        });
+      });
+      group('When there is a shot and isServiceStroke false', () {
+        test('Then the options are for receiver', () {
+          expect(
+              whatWasTheBallDirectionOptions(
+                  shot: 'A', isServiceStroke: false, whoIsReceiving: 'P1 name'),
+              allOf(
+                  containsPair('label', 'What was the ball direction?'),
+                  containsPair('options', [
+                    {'label': 'cross-court', 'value': 'CC'},
+                    {'label': 'middle-court', 'value': 'MD'},
+                    {'label': 'down-the-line', 'value': 'DL'}
+                  ])));
+        });
+      });
+    });
+  });
 }

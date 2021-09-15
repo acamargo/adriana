@@ -86,3 +86,27 @@ Map whatWasTheShotHitOptions(
   }
   return result;
 }
+
+Map whatWasTheBallDirectionOptions(
+    {required String shot,
+    required bool isServiceStroke,
+    required String whoIsReceiving}) {
+  var result = {'label': 'What was the ball direction?', 'options': []};
+  if (shot != '') {
+    if (isServiceStroke) {
+      result['options'] = [
+        {'label': "${whoIsReceiving}'s forehand", 'value': 'FH'},
+        {'label': "${whoIsReceiving}'s body", 'value': 'B'},
+        {'label': "${whoIsReceiving}'s backhand", 'value': 'BH'},
+        {'label': 'wide', 'value': 'W'}
+      ];
+    } else {
+      result['options'] = [
+        {'label': 'cross-court', 'value': 'CC'},
+        {'label': 'middle-court', 'value': 'MD'},
+        {'label': 'down-the-line', 'value': 'DL'},
+      ];
+    }
+  }
+  return result;
+}

@@ -204,87 +204,37 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   List<Widget> _whatWastheBallDirection() {
-    if (_shot == '')
+    final options = whatWasTheBallDirectionOptions(
+        shot: _shot,
+        isServiceStroke: isServiceStroke(),
+        whoIsReceiving: whoIsReceiving());
+    if (!options['options']
+        .map((item) => item['value'])
+        .toList()
+        .contains(_direction)) _direction = '';
+    if (options['options'].isEmpty) {
       return [];
-    else
+    } else {
       return [
-        if (_direction == '') Text("What was the ball direction?"),
+        if (_direction == '') Text(options['label']),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Wrap(
             spacing: 10,
-            children: [
-              if (isServiceStroke()) ...[
+            children: <Widget>[
+              for (var item in options['options'])
                 ChoiceChip(
-                  label: Text("${widget.match[whoIsReceiving()]}'s forehand"),
-                  selected: _direction == "FH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _direction = "FH";
-                    });
-                  },
-                ),
-                ChoiceChip(
-                  label: Text("${widget.match[whoIsReceiving()]}'s body"),
-                  selected: _direction == "B",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _direction = "B";
-                    });
-                  },
-                ),
-                ChoiceChip(
-                  label: Text("${widget.match[whoIsReceiving()]}'s backhand"),
-                  selected: _direction == "BH",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _direction = "BH";
-                    });
-                  },
-                ),
-                ChoiceChip(
-                  label: Text("wide"),
-                  selected: _direction == "W",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _direction = "W";
-                    });
-                  },
-                ),
-              ] else ...[
-                ChoiceChip(
-                  label: Text("cross-court"),
-                  selected: _direction == "CC",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _direction = "CC";
-                    });
-                  },
-                ),
-                ChoiceChip(
-                  label: Text("middle-court"),
-                  selected: _direction == "MD",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _direction = "MD";
-                    });
-                  },
-                ),
-                ChoiceChip(
-                  label: Text("down-the-line"),
-                  selected: _direction == "DL",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _direction = "DL";
-                    });
-                  },
-                ),
-              ],
+                  label: Text(item['label']),
+                  selected: _direction == item['value'],
+                  onSelected: (bool selected) =>
+                      setState(() => _direction = item['value']),
+                )
             ],
           ),
         ),
         Divider(),
       ];
+    }
   }
 
   List<Widget> _whereDidTheBallLand() {
