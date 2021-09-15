@@ -238,71 +238,35 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   List<Widget> _whereDidTheBallLand() {
-    if (_direction == '')
+    final options =
+        whereDidTheBallLandOptions(direction: _direction, shot: _shot);
+    if (!options['options']
+        .map((item) => item['value'])
+        .toList()
+        .contains(_depth)) _depth = '';
+    if (options['options'].isEmpty) {
       return [];
-    else
+    } else {
       return [
-        if (_depth == '') Text("Where did the ball land?"),
+        if (_depth == '') Text(options['label']),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Wrap(
             spacing: 10,
-            children: [
-              if (_shot != "A")
+            children: <Widget>[
+              for (var item in options['options'])
                 ChoiceChip(
-                  label: Text("into the net"),
-                  selected: _depth == "N",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _depth = "N";
-                    });
-                  },
-                ),
-              if (_shot != "F" && _shot != "DF")
-                ChoiceChip(
-                  label: Text("short"),
-                  selected: _depth == "S",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _depth = "S";
-                    });
-                  },
-                ),
-              if (_shot != "F" && _shot != "DF")
-                ChoiceChip(
-                  label: Text("deep"),
-                  selected: _depth == "D",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _depth = "D";
-                    });
-                  },
-                ),
-              if (_shot != "A")
-                ChoiceChip(
-                  label: Text("long"),
-                  selected: _depth == "L",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _depth = "L";
-                    });
-                  },
-                ),
-              if (_shot != "A")
-                ChoiceChip(
-                  label: Text("wide"),
-                  selected: _depth == "W",
-                  onSelected: (bool selected) {
-                    setState(() {
-                      _depth = "W";
-                    });
-                  },
-                ),
+                  label: Text(item['label']),
+                  selected: _depth == item['value'],
+                  onSelected: (bool selected) =>
+                      setState(() => _depth = item['value']),
+                )
             ],
           ),
         ),
         Divider(),
       ];
+    }
   }
 
   List<Widget> _saveButton() {

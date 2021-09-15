@@ -471,4 +471,70 @@ void main() {
       });
     });
   });
+
+  group('whereDidTheBallLand()', () {
+    group('Given a rally', () {
+      group('When there is no direction defined', () {
+        test('Then return no options', () {
+          expect(
+              whereDidTheBallLandOptions(direction: '', shot: ''),
+              allOf(containsPair('label', 'Where did the ball land?'),
+                  containsPair('options', [])));
+        });
+      });
+      group('When there is direction and shot is ace', () {
+        test('Then return server options', () {
+          expect(
+              whereDidTheBallLandOptions(direction: 'B', shot: 'A'),
+              allOf(
+                  containsPair('label', 'Where did the ball land?'),
+                  containsPair('options', [
+                    {'label': 'short', 'value': 'S'},
+                    {'label': 'deep', 'value': 'D'},
+                  ])));
+        });
+      });
+      group('When there is direction and shot is fault', () {
+        test('Then return server options for error', () {
+          expect(
+              whereDidTheBallLandOptions(direction: 'B', shot: 'F'),
+              allOf(
+                  containsPair('label', 'Where did the ball land?'),
+                  containsPair('options', [
+                    {'label': 'into the net', 'value': 'N'},
+                    {'label': 'long', 'value': 'L'},
+                    {'label': 'wide', 'value': 'W'},
+                  ])));
+        });
+      });
+      group('When there is direction and shot is double fault', () {
+        test('Then return server options for error', () {
+          expect(
+              whereDidTheBallLandOptions(direction: 'B', shot: 'DF'),
+              allOf(
+                  containsPair('label', 'Where did the ball land?'),
+                  containsPair('options', [
+                    {'label': 'into the net', 'value': 'N'},
+                    {'label': 'long', 'value': 'L'},
+                    {'label': 'wide', 'value': 'W'},
+                  ])));
+        });
+      });
+      group('When there is direction and shot is groundstroke forehand', () {
+        test('Then all options are available', () {
+          expect(
+              whereDidTheBallLandOptions(direction: 'CC', shot: 'GFH'),
+              allOf(
+                  containsPair('label', 'Where did the ball land?'),
+                  containsPair('options', [
+                    {'label': 'into the net', 'value': 'N'},
+                    {'label': 'long', 'value': 'L'},
+                    {'label': 'wide', 'value': 'W'},
+                    {'label': 'short', 'value': 'S'},
+                    {'label': 'deep', 'value': 'D'},
+                  ])));
+        });
+      });
+    });
+  });
 }

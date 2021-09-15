@@ -110,3 +110,18 @@ Map whatWasTheBallDirectionOptions(
   }
   return result;
 }
+
+Map whereDidTheBallLandOptions(
+    {required String direction, required String shot}) {
+  var result = {'label': 'Where did the ball land?', 'options': []};
+  if (direction != '') {
+    result['options'] = [
+      if (shot != 'A') {'label': 'into the net', 'value': 'N'},
+      if (shot != 'A') {'label': 'long', 'value': 'L'},
+      if (shot != 'A') {'label': 'wide', 'value': 'W'},
+      if (shot != 'F' && shot != 'DF') {'label': 'short', 'value': 'S'},
+      if (shot != 'F' && shot != 'DF') {'label': 'deep', 'value': 'D'},
+    ];
+  }
+  return result;
+}
