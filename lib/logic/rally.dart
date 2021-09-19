@@ -11,15 +11,13 @@ Map newRallyEvent({
   String whoIsServing = score['server'];
   String whoIsReceiving = whoIsServing == "p1" ? "p2" : "p1";
   var winner;
-  if (shot == "F") {
+  if (shot == "SV" &&
+      (depth == 'O' || depth == 'N') &&
+      !score['isServiceFault']) {
     winner = null;
-  } else if (shot == "DF") {
-    winner = whoIsReceiving;
-  } else if (shot == "A") {
-    winner = whoIsServing;
-  } else if (['N', 'L', 'W'].contains(depth)) {
+  } else if (['N', 'O'].contains(depth)) {
     winner = player == "p1" ? "p2" : "p1";
-  } else if (['S', 'D'].contains(depth)) {
+  } else if (['I'].contains(depth)) {
     winner = player;
   }
 
@@ -60,31 +58,15 @@ Map whatWasTheShotHitOptions(
     {required String consistency,
     required bool isServing,
     required bool isServiceFault}) {
-  var result = {'label': 'What was the shot hit?', 'options': []};
-  if (consistency != '') {
-    result['options'] = [
-      if (isServing && consistency == '1') {'label': 'ace', 'value': 'A'},
-      if (isServing && consistency == '1' && !isServiceFault)
-        {'label': 'fault', 'value': 'F'},
-      if (isServing && consistency == '1' && isServiceFault)
-        {'label': 'double fault', 'value': 'DF'},
-      {'label': 'groundstroke forehand', 'value': 'GFH'},
-      {'label': 'groundstroke backhand', 'value': 'GBH'},
-      {'label': 'volley forehand', 'value': 'VFH'},
-      {'label': 'volley backhand', 'value': 'VBH'},
-      {'label': 'smash', 'value': 'SH'},
-      {'label': 'lob', 'value': 'L'},
-      {'label': 'passing shot forehand', 'value': 'PSFH'},
-      {'label': 'passing shot backhand', 'value': 'PSBH'},
-      {'label': 'tweeter', 'value': 'TW'},
-      {'label': 'groundstroke forehand', 'value': 'GFH'},
-      {'label': 'drop shot forehand', 'value': 'DSFH'},
-      {'label': 'drop shot backhand', 'value': 'DSBH'},
-      {'label': 'half-volley forehand', 'value': 'HVFH'},
-      {'label': 'half-volley backhand', 'value': 'HVBH'}
-    ];
-  }
-  return result;
+  return {
+    'options': [
+      {'label': 'FOREHAND', 'value': 'FH'},
+      {'label': 'BACKHAND', 'value': 'BH'},
+      {'label': 'SMASH', 'value': 'SM'},
+      {'label': 'VOLLEY', 'value': 'V'},
+      {'label': 'SERVE', 'value': 'SV'}
+    ]
+  };
 }
 
 Map whatWasTheBallDirectionOptions(
@@ -113,15 +95,11 @@ Map whatWasTheBallDirectionOptions(
 
 Map whereDidTheBallLandOptions(
     {required String direction, required String shot}) {
-  var result = {'label': 'Where did the ball land?', 'options': []};
-  if (direction != '') {
-    result['options'] = [
-      if (shot != 'A') {'label': 'into the net', 'value': 'N'},
-      if (shot != 'A') {'label': 'long', 'value': 'L'},
-      if (shot != 'A') {'label': 'wide', 'value': 'W'},
-      if (shot != 'F' && shot != 'DF') {'label': 'short', 'value': 'S'},
-      if (shot != 'F' && shot != 'DF') {'label': 'deep', 'value': 'D'},
-    ];
-  }
-  return result;
+  return {
+    'options': [
+      {'label': 'NET', 'value': 'N'},
+      {'label': 'IN', 'value': 'I'},
+      {'label': 'OUT', 'value': 'O'},
+    ]
+  };
 }

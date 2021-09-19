@@ -13,7 +13,11 @@ String formatScore(Map match, Map score) {
   var playerReceiving = playerServing == "p1" ? "p2" : "p1";
   var playerServingGame = score[playerServing].last['game'];
   var playerReceivingGame = score[playerReceiving].last['game'];
-  var result = [playerServingName, '$playerServingGame/$playerReceivingGame'];
+  var result = [
+    playerServingName,
+    if (score['isServiceFault']) 'fault',
+    '$playerServingGame/$playerReceivingGame'
+  ];
   for (var i = 0; i < score[playerServing].length; i++) {
     result.add(
         formatScoreSet(score[playerServing][i], score[playerReceiving][i]));
@@ -50,7 +54,8 @@ Map newScoreFromCoinToss(match, coinToss) {
 Map newScoreFromRally(createdAt, match, previousScore, rally) {
   Map newScore = {...previousScore};
   newScore['createdAt'] = createdAt;
-  newScore['isServiceFault'] = rally['shot'] == 'F';
+  newScore['isServiceFault'] = (rally['shot'] == 'SV' &&
+      (rally['depth'] == 'O' || rally['depth'] == 'N'));
 
   if (rally['winner'] != null) {
     var looser = rally['winner'] == 'p1' ? 'p2' : 'p1';
