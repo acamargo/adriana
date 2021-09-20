@@ -19,9 +19,7 @@ class PointScreen extends StatefulWidget {
 
 class _PointScreenState extends State<PointScreen> {
   String _player = '';
-  String _consistency = '';
   String _shot = '';
-  String _direction = '';
   String _depth = '';
 
   _storeRallyEvent() {
@@ -102,10 +100,6 @@ class _PointScreenState extends State<PointScreen> {
 
   bool isServing() {
     return _player == whoIsServing();
-  }
-
-  bool isServiceStroke() {
-    return ['A', 'F', 'DF'].contains(_shot);
   }
 
   List<Widget> _whoTouchedTheBallLast() {
@@ -205,6 +199,11 @@ class _PointScreenState extends State<PointScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+
+    if (_player == '') {
+      _player = whoIsServing();
+      if (_shot == '') _shot = 'SV';
+    }
 
     return Scaffold(
       appBar: AppBar(
