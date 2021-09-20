@@ -137,6 +137,10 @@ class _PointScreenState extends State<PointScreen> {
 
   List<Widget> _whatWasTheShotHit() {
     final options = whatWasTheShotHitOptions(isServing: isServing());
+    if (!options['options']
+        .map((item) => item['value'])
+        .toList()
+        .contains(_shot)) _shot = '';
     return [
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
