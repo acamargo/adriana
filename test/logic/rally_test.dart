@@ -181,10 +181,10 @@ void main() {
           expect(
               result,
               containsPair('options', [
-                {'label': 'FOREHAND', 'value': 'FH'},
                 {'label': 'BACKHAND', 'value': 'BH'},
                 {'label': 'SMASH', 'value': 'SM'},
                 {'label': 'VOLLEY', 'value': 'V'},
+                {'label': 'FOREHAND', 'value': 'FH'},
               ]));
         });
       });
@@ -194,11 +194,11 @@ void main() {
           expect(
               result,
               containsPair('options', [
-                {'label': 'SERVE', 'value': 'SV'},
-                {'label': 'FOREHAND', 'value': 'FH'},
                 {'label': 'BACKHAND', 'value': 'BH'},
                 {'label': 'SMASH', 'value': 'SM'},
+                {'label': 'SERVE', 'value': 'SV'},
                 {'label': 'VOLLEY', 'value': 'V'},
+                {'label': 'FOREHAND', 'value': 'FH'},
               ]));
         });
       });

@@ -30,11 +30,11 @@ Map newRallyEvent({
 Map whatWasTheShotHitOptions({required bool isServing}) {
   return {
     'options': [
-      if (isServing) {'label': 'SERVE', 'value': 'SV'},
-      {'label': 'FOREHAND', 'value': 'FH'},
       {'label': 'BACKHAND', 'value': 'BH'},
       {'label': 'SMASH', 'value': 'SM'},
+      if (isServing) {'label': 'SERVE', 'value': 'SV'},
       {'label': 'VOLLEY', 'value': 'V'},
+      {'label': 'FOREHAND', 'value': 'FH'},
     ]
   };
 }
