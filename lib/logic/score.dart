@@ -15,7 +15,7 @@ String formatScore(Map match, Map score) {
   var playerReceivingGame = score[playerReceiving].last['game'];
   var result = [
     playerServingName,
-    if (score['isServiceFault']) 'fault',
+    if (score['isServiceFault'] == true) 'fault',
     '$playerServingGame/$playerReceivingGame'
   ];
   for (var i = 0; i < score[playerServing].length; i++) {

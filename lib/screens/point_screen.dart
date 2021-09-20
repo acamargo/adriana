@@ -29,9 +29,7 @@ class _PointScreenState extends State<PointScreen> {
         createdAt: DateTime.now(),
         match: widget.match,
         player: _player,
-        consistency: _consistency,
         shot: _shot,
-        direction: _direction,
         depth: _depth);
     Map scoreEvent = newScoreFromRally(
         DateTime.now(), widget.match, widget.match['events'].last, rallyEvent);
@@ -118,6 +116,7 @@ class _PointScreenState extends State<PointScreen> {
           spacing: 10,
           children: [
             ChoiceChip(
+                padding: EdgeInsets.all(10),
                 label: Text(widget.match['p1']),
                 selected: _player == 'p1',
                 onSelected: (bool selected) {
@@ -127,6 +126,7 @@ class _PointScreenState extends State<PointScreen> {
                   });
                 }),
             ChoiceChip(
+                padding: EdgeInsets.all(10),
                 label: Text(widget.match['p2']),
                 selected: _player == 'p2',
                 onSelected: (bool selected) {
@@ -142,10 +142,7 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   List<Widget> _whatWasTheShotHit() {
-    final options = whatWasTheShotHitOptions(
-        consistency: _consistency,
-        isServing: isServing(),
-        isServiceFault: score()['isServiceFault']);
+    final options = whatWasTheShotHitOptions(isServing: isServing());
     return [
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -154,6 +151,7 @@ class _PointScreenState extends State<PointScreen> {
           children: <Widget>[
             for (var item in options['options'])
               ChoiceChip(
+                padding: EdgeInsets.all(10),
                 label: Text(item['label']),
                 selected: _shot == item['value'],
                 onSelected: (bool selected) => setState(() {
@@ -168,8 +166,7 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   List<Widget> _whereDidTheBallLand() {
-    final options =
-        whereDidTheBallLandOptions(direction: _direction, shot: _shot);
+    final options = whereDidTheBallLandOptions(shot: _shot);
     return [
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -178,6 +175,7 @@ class _PointScreenState extends State<PointScreen> {
           children: <Widget>[
             for (var item in options['options'])
               ChoiceChip(
+                padding: EdgeInsets.all(10),
                 label: Text(item['label']),
                 selected: _depth == item['value'],
                 onSelected: (bool selected) => setState(() {
@@ -227,7 +225,8 @@ class _PointScreenState extends State<PointScreen> {
       ),
       body: Container(
         margin: EdgeInsets.all(10),
-        child: ListView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: _whoTouchedTheBallLast() +
                 [Divider()] +
                 _whatWasTheShotHit() +

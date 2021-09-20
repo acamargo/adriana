@@ -28,7 +28,8 @@ void main() {
           ],
         };
         final rally = {
-          'shot': 'F',
+          'shot': 'SV',
+          'depth': 'N',
           'winner': null,
         };
         test('Then doesnt count as a point', () {
