@@ -53,6 +53,12 @@ Map newScoreFromCoinToss(match, coinToss) {
 
 Map newScoreFromRally(createdAt, match, previousScore, rally) {
   Map newScore = {...previousScore};
+  newScore['p1'] = previousScore['p1']
+      .map((element) => <String, dynamic>{...element})
+      .toList();
+  newScore['p2'] = previousScore['p2']
+      .map((element) => <String, dynamic>{...element})
+      .toList();
   newScore['createdAt'] = createdAt;
   newScore['isServiceFault'] = (rally['shot'] == 'SV' &&
       (rally['depth'] == 'O' || rally['depth'] == 'N'));

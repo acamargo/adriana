@@ -86,6 +86,47 @@ class _PointScreenState extends State<PointScreen> {
     }
   }
 
+  bool _undoAllowed() {
+    final events = widget.match['events'];
+    final length = events.length;
+    return events[length - 2]['event'] == 'Rally' &&
+        events[length - 1]['event'] == 'Score';
+  }
+
+  void handleUndo() async {
+    bool result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+          content: Text("Would you like to undo the last shot?"),
+          actions: [
+            TextButton(
+              child: Text("YES"),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(true);
+              },
+            ),
+            TextButton(
+              child: Text("NO"),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    if (result) {
+      widget.match['events'].removeLast();
+      widget.match['events'].removeLast();
+      print(widget.match['events']);
+      widget.storage.create(widget.match);
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
+    }
+  }
+
   Map score() {
     return widget.match['events'].last;
   }
@@ -213,6 +254,16 @@ class _PointScreenState extends State<PointScreen> {
       appBar: AppBar(
         title: Text(formatScore(widget.match, widget.match['events'].last)),
         actions: <Widget>[
+          if (_undoAllowed())
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: handleUndo,
+                  child: Icon(
+                    Icons.undo,
+                    size: 26.0,
+                  ),
+                )),
           PopupMenuButton<String>(
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
