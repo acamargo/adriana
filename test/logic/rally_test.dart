@@ -32,6 +32,7 @@ void main() {
           expect(newRally, {
             'event': 'Rally',
             'createdAt': now,
+            'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SV',
             'depth': 'N',
@@ -59,6 +60,7 @@ void main() {
           expect(newRally, {
             'event': 'Rally',
             'createdAt': now,
+            'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SV',
             'depth': 'N',
@@ -85,6 +87,7 @@ void main() {
           expect(newRally, {
             'event': 'Rally',
             'createdAt': now,
+            'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SV',
             'depth': 'I',
@@ -111,6 +114,7 @@ void main() {
           expect(newRally, {
             'event': 'Rally',
             'createdAt': now,
+            'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'FH',
             'depth': 'N',
@@ -137,6 +141,7 @@ void main() {
           expect(newRally, {
             'event': 'Rally',
             'createdAt': now,
+            'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'FH',
             'depth': 'O',
@@ -163,6 +168,7 @@ void main() {
           expect(newRally, {
             'event': 'Rally',
             'createdAt': now,
+            'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SM',
             'depth': 'I',

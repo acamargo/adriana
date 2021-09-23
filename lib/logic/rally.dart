@@ -7,12 +7,12 @@ Map newRallyEvent({
 }) {
   Map score = match['events'].last;
   var winner;
-  if (shot == "SV" &&
+  if (shot == 'SV' &&
       (depth == 'O' || depth == 'N') &&
       !(score['isServiceFault'] == true)) {
     winner = null;
   } else if (['N', 'O'].contains(depth)) {
-    winner = player == "p1" ? "p2" : "p1";
+    winner = player == 'p1' ? 'p2' : 'p1';
   } else if (['I'].contains(depth)) {
     winner = player;
   }
@@ -20,6 +20,7 @@ Map newRallyEvent({
   return {
     'event': 'Rally',
     'createdAt': createdAt,
+    'server': score['server'],
     'lastHitBy': player,
     'shot': shot,
     'depth': depth,

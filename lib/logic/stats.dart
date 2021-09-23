@@ -1,9 +1,18 @@
-Map playerParticipation({required List<Map> events}) {
+Map decidingPoints({required List<Map> events}) {
   var report = <String, dynamic>{
     'points': 0,
     'p1': {
       'points': 0,
-      'service': {'points': 0, 'double-fault': 0, 'ace': 0},
+      'service': {
+        'points': 0,
+        'faults': 0,
+        'double-fault': 0,
+        'ace': 0,
+        'shots': 0,
+        'into-the-net': 0,
+        'out': 0,
+        'in': 0
+      },
       'forehand': {'points': 0, 'double-fault': 0, 'ace': 0},
       'backhand': {'points': 0, 'double-fault': 0, 'ace': 0},
       'smash': {'points': 0, 'double-fault': 0, 'ace': 0},
@@ -11,7 +20,16 @@ Map playerParticipation({required List<Map> events}) {
     },
     'p2': {
       'points': 0,
-      'service': {'points': 0, 'double-fault': 0, 'ace': 0},
+      'service': {
+        'points': 0,
+        'faults': 0,
+        'double-fault': 0,
+        'ace': 0,
+        'shots': 0,
+        'into-the-net': 0,
+        'out': 0,
+        'in': 0
+      },
       'forehand': {'points': 0, 'double-fault': 0, 'ace': 0},
       'backhand': {'points': 0, 'double-fault': 0, 'ace': 0},
       'smash': {'points': 0, 'double-fault': 0, 'ace': 0},
@@ -21,13 +39,27 @@ Map playerParticipation({required List<Map> events}) {
   for (var i = 0; i < events.length; i++) {
     final event = events[i];
     if (event['type'] == 'Rally') {
+      final lastHitBy = event['lastHitBy'];
+      final server = event['server'];
       final winner = event['winner'];
-      report['points']++;
-      report[winner]['points']++;
-      if (event['shot'] == 'SV') {
-        report[winner]['service']['points']++;
-        if (event['lastHitBy'] == winner && event['depth'] == 'I')
-          report[winner]['service']['ace']++;
+      final shot = event['shot'];
+      final depth = event['depth'];
+
+      if (shot == 'SV') {
+        if (winner == null) {
+          report[lastHitBy]['service']['faults']++;
+        } else {
+          report['points']++;
+          report[lastHitBy]['points']++;
+          report[lastHitBy]['service']['points']++;
+        }
+        report[lastHitBy]['service']['shots']++;
+        if (depth == 'O') report[lastHitBy]['service']['out']++;
+        if (depth == 'N') report[lastHitBy]['service']['into-the-net']++;
+        if (depth == 'I') {
+          report[lastHitBy]['service']['ace']++;
+          report[lastHitBy]['service']['in']++;
+        }
       }
     }
   }
