@@ -13,10 +13,10 @@ Map decidingPoints({required List<Map> events}) {
         'out': 0,
         'in': 0
       },
-      'forehand': {'points': 0, 'double-fault': 0, 'ace': 0},
-      'backhand': {'points': 0, 'double-fault': 0, 'ace': 0},
-      'smash': {'points': 0, 'double-fault': 0, 'ace': 0},
-      'volley': {'points': 0, 'double-fault': 0, 'ace': 0}
+      'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+      'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+      'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+      'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
     },
     'p2': {
       'points': 0,
@@ -30,12 +30,13 @@ Map decidingPoints({required List<Map> events}) {
         'out': 0,
         'in': 0
       },
-      'forehand': {'points': 0, 'double-fault': 0, 'ace': 0},
-      'backhand': {'points': 0, 'double-fault': 0, 'ace': 0},
-      'smash': {'points': 0, 'double-fault': 0, 'ace': 0},
-      'volley': {'points': 0, 'double-fault': 0, 'ace': 0}
+      'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+      'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+      'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+      'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
     }
   };
+  var fault = false;
   for (var i = 0; i < events.length; i++) {
     final event = events[i];
     if (event['type'] == 'Rally') {
@@ -48,10 +49,14 @@ Map decidingPoints({required List<Map> events}) {
       if (shot == 'SV') {
         if (winner == null) {
           report[lastHitBy]['service']['faults']++;
+          fault = true;
         } else {
           report['points']++;
           report[lastHitBy]['points']++;
           report[lastHitBy]['service']['points']++;
+          if (fault && server != winner)
+            report[lastHitBy]['service']['double-fault']++;
+          fault = false;
         }
         report[lastHitBy]['service']['shots']++;
         if (depth == 'O') report[lastHitBy]['service']['out']++;
@@ -60,6 +65,13 @@ Map decidingPoints({required List<Map> events}) {
           report[lastHitBy]['service']['ace']++;
           report[lastHitBy]['service']['in']++;
         }
+      } else if (shot == 'FH') {
+        report['points']++;
+        report[lastHitBy]['points']++;
+        report[lastHitBy]['forehand']['points']++;
+        if (depth == 'O') report[lastHitBy]['forehand']['out']++;
+        if (depth == 'N') report[lastHitBy]['forehand']['into-the-net']++;
+        if (depth == 'I') report[lastHitBy]['forehand']['winner']++;
       }
     }
   }
