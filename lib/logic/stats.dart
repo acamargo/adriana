@@ -72,6 +72,13 @@ Map decidingPoints({required List<Map> events}) {
         if (depth == 'O') report[lastHitBy]['forehand']['out']++;
         if (depth == 'N') report[lastHitBy]['forehand']['into-the-net']++;
         if (depth == 'I') report[lastHitBy]['forehand']['winner']++;
+      } else if (shot == 'BH') {
+        report['points']++;
+        report[lastHitBy]['points']++;
+        report[lastHitBy]['backhand']['points']++;
+        if (depth == 'O') report[lastHitBy]['backhand']['out']++;
+        if (depth == 'N') report[lastHitBy]['backhand']['into-the-net']++;
+        if (depth == 'I') report[lastHitBy]['backhand']['winner']++;
       }
     }
   }
