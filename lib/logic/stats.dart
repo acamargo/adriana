@@ -86,6 +86,13 @@ Map decidingPoints({required List<Map> events}) {
         if (depth == 'O') report[lastHitBy]['volley']['out']++;
         if (depth == 'N') report[lastHitBy]['volley']['into-the-net']++;
         if (depth == 'I') report[lastHitBy]['volley']['winner']++;
+      } else if (shot == 'SM') {
+        report['points']++;
+        report[lastHitBy]['points']++;
+        report[lastHitBy]['smash']['points']++;
+        if (depth == 'O') report[lastHitBy]['smash']['out']++;
+        if (depth == 'N') report[lastHitBy]['smash']['into-the-net']++;
+        if (depth == 'I') report[lastHitBy]['smash']['winner']++;
       }
     }
   }

@@ -724,5 +724,159 @@ void main() {
         });
       });
     });
+
+    group('Given p1 smash into-the-net', () {
+      final events = [
+        {
+          'type': 'Rally',
+          'server': 'p1',
+          'lastHitBy': 'p1',
+          'shot': 'SM',
+          'depth': 'N',
+          'winner': 'p2'
+        }
+      ];
+      test('Then increment p1 smash stats', () {
+        expect(decidingPoints(events: events), {
+          'points': 1,
+          'p1': {
+            'points': 1,
+            'service': {
+              'points': 0,
+              'faults': 0,
+              'double-fault': 0,
+              'ace': 0,
+              'shots': 0,
+              'into-the-net': 0,
+              'out': 0,
+              'in': 0
+            },
+            'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'smash': {'points': 1, 'into-the-net': 1, 'out': 0, 'winner': 0},
+            'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
+          },
+          'p2': {
+            'points': 0,
+            'service': {
+              'points': 0,
+              'faults': 0,
+              'double-fault': 0,
+              'ace': 0,
+              'shots': 0,
+              'into-the-net': 0,
+              'out': 0,
+              'in': 0
+            },
+            'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
+          }
+        });
+      });
+    });
+    group('Given p1 smash out', () {
+      final events = [
+        {
+          'type': 'Rally',
+          'server': 'p1',
+          'lastHitBy': 'p1',
+          'shot': 'SM',
+          'depth': 'O',
+          'winner': 'p2'
+        }
+      ];
+      test('Then increment p1 smash stats', () {
+        expect(decidingPoints(events: events), {
+          'points': 1,
+          'p1': {
+            'points': 1,
+            'service': {
+              'points': 0,
+              'faults': 0,
+              'double-fault': 0,
+              'ace': 0,
+              'shots': 0,
+              'into-the-net': 0,
+              'out': 0,
+              'in': 0
+            },
+            'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'smash': {'points': 1, 'into-the-net': 0, 'out': 1, 'winner': 0},
+            'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
+          },
+          'p2': {
+            'points': 0,
+            'service': {
+              'points': 0,
+              'faults': 0,
+              'double-fault': 0,
+              'ace': 0,
+              'shots': 0,
+              'into-the-net': 0,
+              'out': 0,
+              'in': 0
+            },
+            'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
+          }
+        });
+      });
+    });
+    group('Given p1 smash winner', () {
+      final events = [
+        {
+          'type': 'Rally',
+          'server': 'p1',
+          'lastHitBy': 'p1',
+          'shot': 'SM',
+          'depth': 'I',
+          'winner': 'p1'
+        }
+      ];
+      test('Then increment p1 smash stats', () {
+        expect(decidingPoints(events: events), {
+          'points': 1,
+          'p1': {
+            'points': 1,
+            'service': {
+              'points': 0,
+              'faults': 0,
+              'double-fault': 0,
+              'ace': 0,
+              'shots': 0,
+              'into-the-net': 0,
+              'out': 0,
+              'in': 0
+            },
+            'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'smash': {'points': 1, 'into-the-net': 0, 'out': 0, 'winner': 1},
+            'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
+          },
+          'p2': {
+            'points': 0,
+            'service': {
+              'points': 0,
+              'faults': 0,
+              'double-fault': 0,
+              'ace': 0,
+              'shots': 0,
+              'into-the-net': 0,
+              'out': 0,
+              'in': 0
+            },
+            'forehand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
+          }
+        });
+      });
+    });
   });
 }
