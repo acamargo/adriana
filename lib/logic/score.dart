@@ -1,18 +1,35 @@
 import 'dart:math';
+import 'dart:core';
 
 String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
-  return (playerServingSet['tiebreak'] != null &&
-          playerReceivingSet['tiebreak'] != null)
-      ? '${playerServingSet['set']}-${playerReceivingSet['set']}(${min(playerServingSet['tiebreak'] as int, playerReceivingSet['tiebreak'] as int)})'
-      : '${playerServingSet['set']}-${playerReceivingSet['set']}';
+  final playerServingSetGames = playerServingSet['set'] as int;
+  final playerReceivingSetGames = playerReceivingSet['set'] as int;
+  final isTieBreak = min(playerServingSetGames, playerReceivingSetGames) == 6;
+  if (isTieBreak) {
+    final playerMax = max(playerServingSet['tiebreak'] as int,
+        playerReceivingSet['tiebreak'] as int);
+    final playerMin = min(playerServingSet['tiebreak'] as int,
+        playerReceivingSet['tiebreak'] as int);
+    final isFinished = (playerMax >= 7 && (playerMax - playerMin) <= 2);
+    if (isFinished)
+      return '$playerServingSetGames-$playerReceivingSetGames($playerMin)';
+    else
+      return '$playerServingSetGames-$playerReceivingSetGames';
+  } else {
+    return '$playerServingSetGames-$playerReceivingSetGames';
+  }
 }
 
 String formatScore(Map match, Map score) {
   var playerServing = score['server'];
   var playerServingName = match[playerServing];
-  var playerReceiving = playerServing == "p1" ? "p2" : "p1";
-  var playerServingGame = score[playerServing].last['game'];
-  var playerReceivingGame = score[playerReceiving].last['game'];
+  var playerReceiving = playerServing == 'p1' ? 'p2' : 'p1';
+  final isTieBreak = score[playerServing].last['set'] == 6 &&
+      score[playerReceiving].last['set'] == 6;
+  var playerServingGame =
+      score[playerServing].last[isTieBreak ? 'tiebreak' : 'game'];
+  var playerReceivingGame =
+      score[playerReceiving].last[isTieBreak ? 'tiebreak' : 'game'];
   var result = [
     playerServingName,
     if (score['isServiceFault'] == true) 'fault',

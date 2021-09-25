@@ -967,8 +967,8 @@ void main() {
     group('Given a match', () {
       final match = newMatch(
           createdAt: DateTime.now(),
-          p1: 'Isner',
-          p2: 'Opelka',
+          p1: 'P1',
+          p2: 'P2',
           surface: 'Hard',
           venue: 'US Open 2021');
       group('When this is a tie break and p1 is serving', () {
@@ -983,7 +983,7 @@ void main() {
           ],
         };
         test('Then displays the tiebreak result in the score', () {
-          expect(formatScore(match, score), 'Isner 0/0 6-7(5)');
+          expect(formatScore(match, score), 'P1 0/0 6-7(5)');
         });
       });
       group('When this is a tie break and p2 is serving', () {
@@ -998,7 +998,33 @@ void main() {
           ],
         };
         test('Then displays the tiebreak result in the score', () {
-          expect(formatScore(match, score), 'Opelka 0/0 7-6(5)');
+          expect(formatScore(match, score), 'P2 0/0 7-6(5)');
+        });
+      });
+      group('When tie break on the 3th set', () {
+        final score = {
+          "event": "Score",
+          "createdAt": "2021-09-24T10:35:51.262624",
+          "pointNumber": 212,
+          "p1": [
+            {"game": "0", "tiebreak": null, "set": 3},
+            {"game": "0", "tiebreak": null, "set": 3},
+            {"game": "0", "tiebreak": 6, "set": 6}
+          ],
+          "p2": [
+            {"game": "0", "tiebreak": null, "set": 6},
+            {"game": "0", "tiebreak": null, "set": 6},
+            {"game": "0", "tiebreak": 2, "set": 6}
+          ],
+          "state": "first service, P1",
+          "server": "p1",
+          "isServiceFault": false,
+          "courtSide": "deuce",
+          "tiebreakServer": "p1",
+          "tiebreakPointNumber": 9
+        };
+        test('Then displays the tiebreak result in the score', () {
+          expect(formatScore(match, score), 'P1 6/2 3-6 3-6 6-6');
         });
       });
     });
@@ -1007,18 +1033,18 @@ void main() {
   group('Given a Match', () {
     final match = newMatch(
         createdAt: DateTime.now(),
-        p1: 'Isner',
-        p2: 'Opelka',
+        p1: 'P1',
+        p2: 'P2',
         surface: 'Hard',
         venue: 'US Open 2021');
-    group('When it has just done the coin toss and Isner won it', () {
+    group('When it has just done the coin toss and P1 won it', () {
       final coinToss =
           newCoinTossEvent(createdAt: DateTime.now(), winner: 'p1');
       final newScore = newScoreFromCoinToss(match, coinToss);
       match['events'].add(coinToss);
       match['events'].add(newScore);
-      test('Then the Score is zeroed, starting with Isner', () {
-        expect(formatScore(match, newScore), 'Isner 0/0 0-0');
+      test('Then the Score is zeroed, starting with P1', () {
+        expect(formatScore(match, newScore), 'P1 0/0 0-0');
       });
     });
     group('When a game in the first set is in progress', () {
@@ -1032,11 +1058,11 @@ void main() {
           {'game': '40', 'set': 0}
         ],
       };
-      test('Then Opelka leads fourty fifteen', () {
-        expect(formatScore(match, score), 'Opelka 40/15 0-0');
+      test('Then P2 leads fourty fifteen', () {
+        expect(formatScore(match, score), 'P2 40/15 0-0');
       });
     });
-    group('When Opelka leads the second set', () {
+    group('When P2 leads the second set', () {
       final score = {
         'event': 'Score',
         'server': 'p2',
@@ -1050,7 +1076,7 @@ void main() {
         ],
       };
       test('Then formats two sets accordingly', () {
-        expect(formatScore(match, score), 'Opelka 40/30 4-6 5-3');
+        expect(formatScore(match, score), 'P2 40/30 4-6 5-3');
       });
     });
   });
