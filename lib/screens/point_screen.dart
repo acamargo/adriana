@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 
 import '../matches_storage.dart';
 import 'stats_screen.dart';
@@ -230,9 +231,12 @@ class _PointScreenState extends State<PointScreen> {
 
   _save() {
     if (_player != '' && _shot != '' && _depth != '') {
+      FlutterBeep.beep(false);
       _storeRallyEvent();
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
+    } else {
+      FlutterBeep.beep();
     }
   }
 
