@@ -5,6 +5,29 @@ import 'package:adriana/logic/stats.dart';
 import 'package:adriana/matches_storage.dart';
 
 void main() {
+  group('wonLost()', () {
+    group('Given a 3 set sample data', () {
+      final file =
+          new File('test_resources/2021-09-24-andre-angelo-pirituba.json');
+      test('Then generate the stats', () async {
+        final MatchesStorage storage = MatchesStorage();
+        final match = await storage.loadMatch(file);
+        List<Map<String, dynamic>> events =
+            new List<Map<String, dynamic>>.from(match['events']);
+        expect(wonLost(events: events), {
+          'p1': {
+            'match': {'played': 212, 'won': 98, 'lost': 114},
+            'serving': {'played': 104, 'won': 50, 'lost': 54}
+          },
+          'p2': {
+            'match': {'played': 212, 'won': 114, 'lost': 98},
+            'serving': {'played': 108, 'won': 60, 'lost': 48}
+          }
+        });
+      });
+    });
+  });
+
   group('decidingPoints()', () {
     group('Given no events', () {
       final events = <Map>[];

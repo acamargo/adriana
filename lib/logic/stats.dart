@@ -98,3 +98,43 @@ Map decidingPoints({required List<Map> events}) {
   }
   return report;
 }
+
+Map wonLost({required List<Map> events}) {
+  var report = <String, dynamic>{
+    'p1': {
+      'match': {'played': 0, 'won': 0, 'lost': 0},
+      'serving': {'played': 0, 'won': 0, 'lost': 0}
+    },
+    'p2': {
+      'match': {'played': 0, 'won': 0, 'lost': 0},
+      'serving': {'played': 0, 'won': 0, 'lost': 0}
+    }
+  };
+
+  for (var i = 0; i < events.length; i++) {
+    final event = events[i];
+    if (event['event'] == 'Rally') {
+      final winner = event['winner'];
+      if (winner != null) {
+        final server = event['server'];
+        report[server]['serving']['played']++;
+        if (winner == server) {
+          report[server]['serving']['won']++;
+        } else {
+          report[server]['serving']['lost']++;
+        }
+
+        report['p1']['match']['played']++;
+        report['p2']['match']['played']++;
+        if (winner == 'p1') {
+          report['p1']['match']['won']++;
+          report['p2']['match']['lost']++;
+        } else {
+          report['p2']['match']['won']++;
+          report['p1']['match']['lost']++;
+        }
+      }
+    }
+  }
+  return report;
+}
