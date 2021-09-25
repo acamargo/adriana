@@ -39,7 +39,7 @@ Map decidingPoints({required List<Map> events}) {
   var fault = false;
   for (var i = 0; i < events.length; i++) {
     final event = events[i];
-    if (event['type'] == 'Rally') {
+    if (event['event'] == 'Rally') {
       final lastHitBy = event['lastHitBy'];
       final server = event['server'];
       final winner = event['winner'];

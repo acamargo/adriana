@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 class MatchesStorage {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
+    // files are saved in /data/user/0/com.example.adriana/app_flutter/
 
     return directory.path;
   }
@@ -24,7 +25,7 @@ class MatchesStorage {
     return completer.future;
   }
 
-  Future<Map> _loadMatch(file) async {
+  Future<Map> loadMatch(file) async {
     final contents = await file.readAsString();
     final result = json.decode(contents, reviver: (key, value) {
       if (key == "createdAt") return DateTime.parse(value as String);
@@ -40,7 +41,7 @@ class MatchesStorage {
         .where((file) => file is File && file.path.endsWith('match.json'))
         .toList()
           ..sort((fileA, fileB) => fileB.path.compareTo(fileA.path));
-    return Future.wait(files.map((file) => _loadMatch(file)).toList());
+    return Future.wait(files.map((file) => loadMatch(file)).toList());
   }
 
   Future<File> get _localFile async {

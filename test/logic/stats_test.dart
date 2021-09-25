@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:test/test.dart';
 
 import 'package:adriana/logic/stats.dart';
+import 'package:adriana/matches_storage.dart';
 
 void main() {
   group('decidingPoints()', () {
@@ -50,7 +52,7 @@ void main() {
     group('Given p1 serving fault out service box', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SV',
@@ -102,7 +104,7 @@ void main() {
     group('Given p1 serving fault into the net', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SV',
@@ -154,7 +156,7 @@ void main() {
     group('Given p1 hits an ace', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SV',
@@ -206,7 +208,7 @@ void main() {
     group('Given p1 double fault', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SV',
@@ -214,7 +216,7 @@ void main() {
           'winner': null
         },
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SV',
@@ -266,7 +268,7 @@ void main() {
     group('Given p1 forehand into-the-net', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'FH',
@@ -317,7 +319,7 @@ void main() {
     group('Given p1 forehand out', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'FH',
@@ -368,7 +370,7 @@ void main() {
     group('Given p1 forehand winner', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'FH',
@@ -420,7 +422,7 @@ void main() {
     group('Given p1 backhand into-the-net', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'BH',
@@ -471,7 +473,7 @@ void main() {
     group('Given p1 backhand out', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'BH',
@@ -522,7 +524,7 @@ void main() {
     group('Given p1 backhand winner', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'BH',
@@ -574,7 +576,7 @@ void main() {
     group('Given p1 volley into-the-net', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'V',
@@ -625,7 +627,7 @@ void main() {
     group('Given p1 volley out', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'V',
@@ -676,7 +678,7 @@ void main() {
     group('Given p1 volley winner', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'V',
@@ -728,7 +730,7 @@ void main() {
     group('Given p1 smash into-the-net', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SM',
@@ -779,7 +781,7 @@ void main() {
     group('Given p1 smash out', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SM',
@@ -830,7 +832,7 @@ void main() {
     group('Given p1 smash winner', () {
       final events = [
         {
-          'type': 'Rally',
+          'event': 'Rally',
           'server': 'p1',
           'lastHitBy': 'p1',
           'shot': 'SM',
@@ -874,6 +876,74 @@ void main() {
             'backhand': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
             'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
             'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
+          }
+        });
+      });
+    });
+
+    group('Given a 3 set sample data', () {
+      final file =
+          new File('test_resources/2021-09-24-andre-angelo-pirituba.json');
+      test('Then generate the stats', () async {
+        final MatchesStorage storage = MatchesStorage();
+        final match = await storage.loadMatch(file);
+        List<Map<String, dynamic>> events =
+            new List<Map<String, dynamic>>.from(match['events']);
+        expect(decidingPoints(events: events), {
+          'points': 212,
+          'p1': {
+            'points': 115,
+            'service': {
+              'points': 20,
+              'faults': 48,
+              'double-fault': 19,
+              'ace': 1,
+              'shots': 68,
+              'into-the-net': 22,
+              'out': 45,
+              'in': 1
+            },
+            'forehand': {
+              'points': 53,
+              'into-the-net': 16,
+              'out': 29,
+              'winner': 8
+            },
+            'backhand': {
+              'points': 41,
+              'into-the-net': 9,
+              'out': 25,
+              'winner': 7
+            },
+            'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'volley': {'points': 1, 'into-the-net': 0, 'out': 0, 'winner': 1}
+          },
+          'p2': {
+            'points': 97,
+            'service': {
+              'points': 19,
+              'faults': 52,
+              'double-fault': 18,
+              'ace': 1,
+              'shots': 71,
+              'into-the-net': 23,
+              'out': 47,
+              'in': 1
+            },
+            'forehand': {
+              'points': 51,
+              'into-the-net': 16,
+              'out': 24,
+              'winner': 11
+            },
+            'backhand': {
+              'points': 23,
+              'into-the-net': 11,
+              'out': 10,
+              'winner': 2
+            },
+            'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'volley': {'points': 4, 'into-the-net': 1, 'out': 1, 'winner': 2}
           }
         });
       });
