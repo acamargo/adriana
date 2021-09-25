@@ -38,6 +38,17 @@ class _PointScreenState extends State<PointScreen> {
     widget.storage.create(widget.match);
   }
 
+  Widget choiceChip(
+      {required String label, required bool selected, required onSelected}) {
+    return ChoiceChip(
+        padding: EdgeInsets.all(10),
+        label: Text(label,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        selected: selected,
+        backgroundColor: Colors.white,
+        onSelected: onSelected);
+  }
+
   void handleClick(String value) async {
     switch (value) {
       case 'Finish':
@@ -151,9 +162,8 @@ class _PointScreenState extends State<PointScreen> {
         child: Wrap(
           spacing: 10,
           children: [
-            ChoiceChip(
-                padding: EdgeInsets.all(10),
-                label: Text(widget.match['p1']),
+            choiceChip(
+                label: widget.match['p1'],
                 selected: _player == 'p1',
                 onSelected: (bool selected) {
                   setState(() {
@@ -161,9 +171,8 @@ class _PointScreenState extends State<PointScreen> {
                     _save();
                   });
                 }),
-            ChoiceChip(
-                padding: EdgeInsets.all(10),
-                label: Text(widget.match['p2']),
+            choiceChip(
+                label: widget.match['p2'],
                 selected: _player == 'p2',
                 onSelected: (bool selected) {
                   setState(() {
@@ -190,9 +199,8 @@ class _PointScreenState extends State<PointScreen> {
           spacing: 10,
           children: <Widget>[
             for (var item in options['options'])
-              ChoiceChip(
-                padding: EdgeInsets.all(10),
-                label: Text(item['label']),
+              choiceChip(
+                label: item['label'],
                 selected: _shot == item['value'],
                 onSelected: (bool selected) => setState(() {
                   _shot = item['value'];
@@ -214,9 +222,8 @@ class _PointScreenState extends State<PointScreen> {
           spacing: 10,
           children: <Widget>[
             for (var item in options['options'])
-              ChoiceChip(
-                padding: EdgeInsets.all(10),
-                label: Text(item['label']),
+              choiceChip(
+                label: item['label'],
                 selected: _depth == item['value'],
                 onSelected: (bool selected) => setState(() {
                   _depth = item['value'];
