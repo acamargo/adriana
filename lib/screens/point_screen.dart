@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_beep/flutter_beep.dart';
+import 'package:vibration/vibration.dart';
+import 'package:excel/excel.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:open_file/open_file.dart';
 
 import '../matches_storage.dart';
 import 'stats_screen.dart';
@@ -52,6 +57,20 @@ class _PointScreenState extends State<PointScreen> {
 
   void handleClick(String value) async {
     switch (value) {
+      case 'Report':
+        var excel =
+            Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
+        var fileBytes = excel.save();
+        var directory = await getApplicationDocumentsDirectory();
+        final filePath = "${directory.path}/output_file_name.xlsx";
+
+        File(filePath)
+          ..createSync(recursive: true)
+          ..writeAsBytesSync(fileBytes as List<int>);
+
+        final _result = await OpenFile.open(filePath);
+        print(_result.message);
+        break;
       case 'Finish':
         bool result = await showDialog(
           context: context,
@@ -238,6 +257,7 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   _save() {
+    Vibration.vibrate();
     if (_player != '' && _shot != '' && _depth != '') {
       FlutterBeep.beep(false);
       _storeRallyEvent();
@@ -280,7 +300,7 @@ class _PointScreenState extends State<PointScreen> {
           PopupMenuButton<String>(
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
-              return {'Finish'}.map((String choice) {
+              return {'Report', 'Finish'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
