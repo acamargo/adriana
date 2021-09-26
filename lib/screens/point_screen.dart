@@ -46,6 +46,7 @@ class _PointScreenState extends State<PointScreen> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         selected: selected,
         backgroundColor: Colors.white,
+        selectedColor: Colors.lightGreenAccent,
         onSelected: onSelected);
   }
 
@@ -263,7 +264,8 @@ class _PointScreenState extends State<PointScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(formatScore(widget.match, widget.match['events'].last)),
+        title: Text(formatScore(widget.match, widget.match['events'].last),
+            style: TextStyle(color: Colors.lightGreenAccent)),
         actions: <Widget>[
           if (_undoAllowed())
             Padding(
