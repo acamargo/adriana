@@ -27,6 +27,8 @@ class _PointScreenState extends State<PointScreen> {
   String _player = '';
   String _shot = '';
   String _depth = '';
+  bool isVibrate = true;
+  bool isSound = true;
 
   _storeRallyEvent() {
     Map rallyEvent = newRallyEvent(
@@ -57,6 +59,18 @@ class _PointScreenState extends State<PointScreen> {
 
   void handleClick(String value) async {
     switch (value) {
+      case 'Enable vibrate':
+        isVibrate = true;
+        break;
+      case 'Disable vibrate':
+        isVibrate = false;
+        break;
+      case 'Enable sound':
+        isSound = true;
+        break;
+      case 'Disable sound':
+        isSound = false;
+        break;
       case 'Report':
         var excel =
             Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
@@ -257,14 +271,14 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   _save() {
-    Vibration.vibrate();
+    if (isVibrate) Vibration.vibrate(duration: 100);
     if (_player != '' && _shot != '' && _depth != '') {
-      FlutterBeep.beep(false);
+      if (isSound) FlutterBeep.beep(false);
       _storeRallyEvent();
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
     } else {
-      FlutterBeep.beep();
+      if (isSound) FlutterBeep.beep();
     }
   }
 
@@ -300,7 +314,12 @@ class _PointScreenState extends State<PointScreen> {
           PopupMenuButton<String>(
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
-              return {'Report', 'Finish'}.map((String choice) {
+              return {
+                isVibrate ? 'Disable vibrate' : 'Enable vibrate',
+                isSound ? 'Disable sound' : 'Enable sound',
+                'Report',
+                'Finish'
+              }.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
