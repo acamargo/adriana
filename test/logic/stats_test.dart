@@ -26,6 +26,27 @@ void main() {
         });
       });
     });
+
+    group('Given a 5 sets sample data', () {
+      final file =
+          new File('test_resources/2021-09-26T09:46:41.089075.match.json');
+      test('Then generate the stats', () async {
+        final MatchesStorage storage = MatchesStorage();
+        final match = await storage.loadMatch(file);
+        List<Map<String, dynamic>> events =
+            new List<Map<String, dynamic>>.from(match['events']);
+        expect(wonLost(events: events), {
+          'p1': {
+            'match': {'played': 238, 'won': 126, 'lost': 112},
+            'serving': {'played': 110, 'won': 56, 'lost': 54}
+          },
+          'p2': {
+            'match': {'played': 238, 'won': 112, 'lost': 126},
+            'serving': {'played': 128, 'won': 58, 'lost': 70}
+          }
+        });
+      });
+    });
   });
 
   group('decidingPoints()', () {
@@ -967,6 +988,74 @@ void main() {
             },
             'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
             'volley': {'points': 4, 'into-the-net': 1, 'out': 1, 'winner': 2}
+          }
+        });
+      });
+    });
+
+    group('Given a 5 sets sample data', () {
+      final file =
+          new File('test_resources/2021-09-26T09:46:41.089075.match.json');
+      test('Then generate the stats', () async {
+        final MatchesStorage storage = MatchesStorage();
+        final match = await storage.loadMatch(file);
+        List<Map<String, dynamic>> events =
+            new List<Map<String, dynamic>>.from(match['events']);
+        expect(decidingPoints(events: events), {
+          'points': 238,
+          'p1': {
+            'points': 114,
+            'service': {
+              'points': 6,
+              'faults': 38,
+              'double-fault': 6,
+              'ace': 0,
+              'shots': 44,
+              'into-the-net': 20,
+              'out': 24,
+              'in': 0
+            },
+            'forehand': {
+              'points': 43,
+              'into-the-net': 12,
+              'out': 22,
+              'winner': 9
+            },
+            'backhand': {
+              'points': 62,
+              'into-the-net': 14,
+              'out': 43,
+              'winner': 5
+            },
+            'smash': {'points': 1, 'into-the-net': 0, 'out': 1, 'winner': 0},
+            'volley': {'points': 2, 'into-the-net': 0, 'out': 1, 'winner': 1}
+          },
+          'p2': {
+            'points': 124,
+            'service': {
+              'points': 25,
+              'faults': 63,
+              'double-fault': 25,
+              'ace': 0,
+              'shots': 88,
+              'into-the-net': 38,
+              'out': 50,
+              'in': 0
+            },
+            'forehand': {
+              'points': 63,
+              'into-the-net': 22,
+              'out': 33,
+              'winner': 8
+            },
+            'backhand': {
+              'points': 36,
+              'into-the-net': 13,
+              'out': 18,
+              'winner': 5
+            },
+            'smash': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0},
+            'volley': {'points': 0, 'into-the-net': 0, 'out': 0, 'winner': 0}
           }
         });
       });
