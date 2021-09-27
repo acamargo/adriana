@@ -72,18 +72,7 @@ class _PointScreenState extends State<PointScreen> {
         isSound = false;
         break;
       case 'Report':
-        var excel =
-            Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
-        var fileBytes = excel.save();
-        var directory = await getApplicationDocumentsDirectory();
-        final filePath = "${directory.path}/output_file_name.xlsx";
-
-        File(filePath)
-          ..createSync(recursive: true)
-          ..writeAsBytesSync(fileBytes as List<int>);
-
-        final _result = await OpenFile.open(filePath);
-        print(_result.message);
+        report(match: widget.match);
         break;
       case 'Finish':
         bool result = await showDialog(
