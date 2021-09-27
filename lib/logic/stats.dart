@@ -16,8 +16,8 @@ Map matchStats({required Map match}) {
     'points-played': 0,
     'points-win': 0,
     'points-win-%': 0,
-    // 'aces': 0,
-    // 'double-faults': 0,
+    'aces': 0,
+    'double-faults': 0,
     // '1st-serve-played': 0,
     // '1st-serve-win': 0,
     // '1st-serve-win-%': 0,
@@ -46,21 +46,31 @@ Map matchStats({required Map match}) {
       final winner = event['winner'];
       final shot = event['shot'];
       final depth = event['depth'];
+      final currentSet = score['p1'].length;
 
       if (event['winner'] != null) {
         report['p1']['results'][0]['points-played']++;
-        report['p1']['results'][score['p1'].length]['points-played']++;
+        report['p1']['results'][currentSet]['points-played']++;
         report['p2']['results'][0]['points-played']++;
-        report['p2']['results'][score['p1'].length]['points-played']++;
+        report['p2']['results'][currentSet]['points-played']++;
 
         report[winner]['results'][0]['points-win']++;
         report[winner]['results'][0]['points-win-%'] = 100 *
             (report[winner]['results'][0]['points-win'] /
                 report[winner]['results'][0]['points-played']);
-        report[winner]['results'][score['p1'].length]['points-win']++;
-        report[winner]['results'][score['p1'].length]['points-win-%'] = 100 *
-            (report[winner]['results'][score['p1'].length]['points-win'] /
-                report[winner]['results'][score['p1'].length]['points-played']);
+        report[winner]['results'][currentSet]['points-win']++;
+        report[winner]['results'][currentSet]['points-win-%'] = 100 *
+            (report[winner]['results'][currentSet]['points-win'] /
+                report[winner]['results'][currentSet]['points-played']);
+
+        if (winner == lastHitBy && shot == 'SV' && depth == 'I') {
+          report[lastHitBy]['results'][0]['aces']++;
+          report[lastHitBy]['results'][currentSet]['aces']++;
+        }
+        if (winner != lastHitBy && shot == 'SV' && depth != 'I') {
+          report[lastHitBy]['results'][0]['double-faults']++;
+          report[lastHitBy]['results'][currentSet]['double-faults']++;
+        }
       }
     }
   }

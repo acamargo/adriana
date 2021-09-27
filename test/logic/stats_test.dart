@@ -21,28 +21,44 @@ void main() {
               {
                 'points-played': 238,
                 'points-win': 126,
-                'points-win-%': 52.94117647058824
+                'points-win-%': 52.94117647058824,
+                'aces': 0,
+                'double-faults': 6
               },
-              {'points-played': 50, 'points-win': 30, 'points-win-%': 60.0},
+              {
+                'points-played': 50,
+                'points-win': 30,
+                'points-win-%': 60.0,
+                'aces': 0,
+                'double-faults': 2
+              },
               {
                 'points-played': 57,
                 'points-win': 34,
-                'points-win-%': 59.64912280701754
+                'points-win-%': 59.64912280701754,
+                'aces': 0,
+                'double-faults': 0
               },
               {
                 'points-played': 48,
                 'points-win': 22,
-                'points-win-%': 48.888888888888886
+                'points-win-%': 48.888888888888886,
+                'aces': 0,
+                'double-faults': 2
               },
               {
                 'points-played': 52,
                 'points-win': 22,
-                'points-win-%': 43.13725490196079
+                'points-win-%': 43.13725490196079,
+                'aces': 0,
+                'double-faults': 2
               },
               {
                 'points-played': 31,
                 'points-win': 18,
-                'points-win-%': 58.06451612903226
+                'points-win-%': 58.06451612903226,
+                'aces': 0,
+                'double-faults': 0
               }
             ]
           },
@@ -52,32 +68,44 @@ void main() {
               {
                 'points-played': 238,
                 'points-win': 112,
-                'points-win-%': 47.863247863247864
+                'points-win-%': 47.863247863247864,
+                'aces': 0,
+                'double-faults': 25
               },
               {
                 'points-played': 50,
                 'points-win': 20,
-                'points-win-%': 40.816326530612244
+                'points-win-%': 40.816326530612244,
+                'aces': 0,
+                'double-faults': 6
               },
               {
                 'points-played': 57,
                 'points-win': 23,
-                'points-win-%': 41.81818181818181
+                'points-win-%': 41.81818181818181,
+                'aces': 0,
+                'double-faults': 2
               },
               {
                 'points-played': 48,
                 'points-win': 26,
-                'points-win-%': 54.166666666666664
+                'points-win-%': 54.166666666666664,
+                'aces': 0,
+                'double-faults': 6
               },
               {
                 'points-played': 52,
                 'points-win': 30,
-                'points-win-%': 57.692307692307686
+                'points-win-%': 57.692307692307686,
+                'aces': 0,
+                'double-faults': 9
               },
               {
                 'points-played': 31,
                 'points-win': 13,
-                'points-win-%': 48.148148148148145
+                'points-win-%': 48.148148148148145,
+                'aces': 0,
+                'double-faults': 2
               }
             ]
           }
