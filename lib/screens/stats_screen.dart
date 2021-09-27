@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
+import '../logic/stats.dart';
 
 // match statistics
 // aces
@@ -38,97 +39,7 @@ import 'package:excel/excel.dart';
 // P2: 1st set lost in tournament
 // P1 vs P2: winner of 1st set won last 10 meetings
 
-void statsSheet({required sheet}) {
-  Map stats = {
-    'score': 'P1 6-2 6-2',
-    'match-time': '1:23',
-    'p1': {
-      'name': 'P1',
-      'results': [
-        {
-          'points-played': 2,
-          'points-win': 1,
-          'points-win-%': 50,
-          'aces': 1,
-          'double-faults': 1,
-          '1st-serve-played': 10,
-          '1st-serve-win': 2,
-          '1st-serve-win-%': 20,
-          '2nd-serve-played': 10,
-          '2nd-serve-win': 3,
-          '2nd-serve-win-%': 30,
-          'break-points-played': 10,
-          'break-points-win': 4,
-          'break-point-win-%': 40,
-          'game-points-played': 10,
-          'game-points-win': 5,
-          'game-points-win-%': 50,
-        },
-        {
-          'points-played': 2,
-          'points-win': 1,
-          'points-win-%': 50,
-          'aces': 1,
-          'double-faults': 1,
-          '1st-serve-played': 10,
-          '1st-serve-win': 2,
-          '1st-serve-win-%': 20,
-          '2nd-serve-played': 10,
-          '2nd-serve-win': 3,
-          '2nd-serve-win-%': 30,
-          'break-points-played': 10,
-          'break-points-win': 4,
-          'break-point-win-%': 40,
-          'game-points-played': 10,
-          'game-points-win': 5,
-          'game-points-win-%': 50,
-        }
-      ]
-    },
-    'p2': {
-      'name': 'P2',
-      'results': [
-        {
-          'points-played': 2,
-          'points-win': 1,
-          'points-win-%': 50,
-          'aces': 1,
-          'double-faults': 1,
-          '1st-serve-played': 10,
-          '1st-serve-win': 2,
-          '1st-serve-win-%': 20,
-          '2nd-serve-played': 10,
-          '2nd-serve-win': 3,
-          '2nd-serve-win-%': 30,
-          'break-points-played': 10,
-          'break-points-win': 4,
-          'break-point-win-%': 40,
-          'game-points-played': 10,
-          'game-points-win': 5,
-          'game-points-win-%': 50,
-        },
-        {
-          'points-played': 2,
-          'points-win': 1,
-          'points-win-%': 50,
-          'aces': 1,
-          'double-faults': 1,
-          '1st-serve-played': 10,
-          '1st-serve-win': 2,
-          '1st-serve-win-%': 20,
-          '2nd-serve-played': 10,
-          '2nd-serve-win': 3,
-          '2nd-serve-win-%': 30,
-          'break-points-played': 10,
-          'break-points-win': 4,
-          'break-point-win-%': 40,
-          'game-points-played': 10,
-          'game-points-win': 5,
-          'game-points-win-%': 50,
-        }
-      ]
-    }
-  };
+void statsSheet({required sheet, required Map stats}) {
   sheet.appendRow(['Training session statistics']);
   sheet.appendRow(['Score', stats['score']]);
   sheet.appendRow(['Training time', stats['match-time']]);
@@ -353,7 +264,7 @@ void report({required Map match}) async {
     }
   }
 
-  statsSheet(sheet: excel['Stats']);
+  statsSheet(sheet: excel['Stats'], stats: matchStats(match: match));
 
   var fileBytes = excel.save();
   var directory = await getApplicationDocumentsDirectory();

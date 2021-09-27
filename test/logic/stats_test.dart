@@ -5,6 +5,87 @@ import 'package:adriana/logic/stats.dart';
 import 'package:adriana/matches_storage.dart';
 
 void main() {
+  group('matchStats()', () {
+    group('Given a 5 sets sample data', () {
+      final file =
+          new File('test_resources/2021-09-26T09:46:41.089075.match.json');
+      test('Then generate the stats', () async {
+        final MatchesStorage storage = MatchesStorage();
+        final match = await storage.loadMatch(file);
+        expect(matchStats(match: match), {
+          'score': 'André 0/0 6-2 6-2 2-6 3-6 3-1',
+          'match-time': '1:23', // TODO
+          'p1': {
+            'name': 'André',
+            'results': [
+              {
+                'points-played': 238,
+                'points-win': 126,
+                'points-win-%': 52.94117647058824
+              },
+              {'points-played': 50, 'points-win': 30, 'points-win-%': 60.0},
+              {
+                'points-played': 57,
+                'points-win': 34,
+                'points-win-%': 59.64912280701754
+              },
+              {
+                'points-played': 48,
+                'points-win': 22,
+                'points-win-%': 48.888888888888886
+              },
+              {
+                'points-played': 52,
+                'points-win': 22,
+                'points-win-%': 43.13725490196079
+              },
+              {
+                'points-played': 31,
+                'points-win': 18,
+                'points-win-%': 58.06451612903226
+              }
+            ]
+          },
+          'p2': {
+            'name': 'Ângelo',
+            'results': [
+              {
+                'points-played': 238,
+                'points-win': 112,
+                'points-win-%': 47.863247863247864
+              },
+              {
+                'points-played': 50,
+                'points-win': 20,
+                'points-win-%': 40.816326530612244
+              },
+              {
+                'points-played': 57,
+                'points-win': 23,
+                'points-win-%': 41.81818181818181
+              },
+              {
+                'points-played': 48,
+                'points-win': 26,
+                'points-win-%': 54.166666666666664
+              },
+              {
+                'points-played': 52,
+                'points-win': 30,
+                'points-win-%': 57.692307692307686
+              },
+              {
+                'points-played': 31,
+                'points-win': 13,
+                'points-win-%': 48.148148148148145
+              }
+            ]
+          }
+        });
+      });
+    });
+  });
+
   group('wonLost()', () {
     group('Given a 3 set sample data', () {
       final file =

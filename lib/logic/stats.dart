@@ -1,3 +1,73 @@
+import 'score.dart';
+
+Map matchStats({required Map match}) {
+  final events = match['events'];
+  var lastScore = events.last['event'] == 'FinalScore'
+      ? events[match['events'].length - 2]
+      : events.last;
+  Map<String, dynamic> report = {
+    'score': formatScore(match, lastScore),
+    'match-time': '1:23',
+    'p1': {'name': match['p1'], 'results': []},
+    'p2': {'name': match['p2'], 'results': []}
+  };
+
+  Map statsBlueprint = {
+    'points-played': 0,
+    'points-win': 0,
+    'points-win-%': 0,
+    // 'aces': 0,
+    // 'double-faults': 0,
+    // '1st-serve-played': 0,
+    // '1st-serve-win': 0,
+    // '1st-serve-win-%': 0,
+    // '2nd-serve-played': 0,
+    // '2nd-serve-win': 0,
+    // '2nd-serve-win-%': 0,
+    // 'break-points-played': 0,
+    // 'break-points-win': 0,
+    // 'break-point-win-%': 0,
+    // 'game-points-played': 0,
+    // 'game-points-win': 0,
+    // 'game-points-win-%': 0,
+  };
+  for (var i = 0; i <= lastScore['p1'].length; i++) {
+    report['p1']['results'].add({...statsBlueprint});
+    report['p2']['results'].add({...statsBlueprint});
+  }
+
+  var fault = false;
+  for (var i = 0; i < events.length; i++) {
+    final event = events[i];
+    if (event['event'] == 'Rally') {
+      final score = events[i + 1];
+      final lastHitBy = event['lastHitBy'];
+      final server = event['server'];
+      final winner = event['winner'];
+      final shot = event['shot'];
+      final depth = event['depth'];
+
+      if (event['winner'] != null) {
+        report['p1']['results'][0]['points-played']++;
+        report['p1']['results'][score['p1'].length]['points-played']++;
+        report['p2']['results'][0]['points-played']++;
+        report['p2']['results'][score['p1'].length]['points-played']++;
+
+        report[winner]['results'][0]['points-win']++;
+        report[winner]['results'][0]['points-win-%'] = 100 *
+            (report[winner]['results'][0]['points-win'] /
+                report[winner]['results'][0]['points-played']);
+        report[winner]['results'][score['p1'].length]['points-win']++;
+        report[winner]['results'][score['p1'].length]['points-win-%'] = 100 *
+            (report[winner]['results'][score['p1'].length]['points-win'] /
+                report[winner]['results'][score['p1'].length]['points-played']);
+      }
+    }
+  }
+
+  return report;
+}
+
 Map decidingPoints({required List<Map> events}) {
   var report = <String, dynamic>{
     'points': 0,
