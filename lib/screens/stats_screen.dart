@@ -4,6 +4,225 @@ import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
 
+// match statistics
+// aces
+// double faults
+// first serve %
+// win % on 1st serve
+// win % on 2nd serve
+// break points
+
+// set time
+// 1st serve %
+// aces
+// double faults
+// winners
+// unforced errors
+// break point errors
+// net points won
+// total points won
+
+// double faults
+// winners
+// unforced errors
+// break points won
+// net points won
+// total points won
+// aces
+// 1st serve %
+// 2nd serve pts won %
+
+// 1st set
+// P1: won 20 of 21 service points
+// P2: broken for 1st time since First Round (won previous 66 straight service games)
+// P2: 1st set lost in tournament
+// P1 vs P2: winner of 1st set won last 10 meetings
+
+void statsSheet({required sheet}) {
+  Map stats = {
+    'score': 'P1 6-2 6-2',
+    'match-time': '1:23',
+    'p1': {
+      'name': 'P1',
+      'results': [
+        {
+          'points-played': 2,
+          'points-win': 1,
+          'points-win-%': 50,
+          'aces': 1,
+          'double-faults': 1,
+          '1st-serve-played': 10,
+          '1st-serve-win': 2,
+          '1st-serve-win-%': 20,
+          '2nd-serve-played': 10,
+          '2nd-serve-win': 3,
+          '2nd-serve-win-%': 30,
+          'break-points-played': 10,
+          'break-points-win': 4,
+          'break-point-win-%': 40,
+          'game-points-played': 10,
+          'game-points-win': 5,
+          'game-points-win-%': 50,
+        },
+        {
+          'points-played': 2,
+          'points-win': 1,
+          'points-win-%': 50,
+          'aces': 1,
+          'double-faults': 1,
+          '1st-serve-played': 10,
+          '1st-serve-win': 2,
+          '1st-serve-win-%': 20,
+          '2nd-serve-played': 10,
+          '2nd-serve-win': 3,
+          '2nd-serve-win-%': 30,
+          'break-points-played': 10,
+          'break-points-win': 4,
+          'break-point-win-%': 40,
+          'game-points-played': 10,
+          'game-points-win': 5,
+          'game-points-win-%': 50,
+        }
+      ]
+    },
+    'p2': {
+      'name': 'P2',
+      'results': [
+        {
+          'points-played': 2,
+          'points-win': 1,
+          'points-win-%': 50,
+          'aces': 1,
+          'double-faults': 1,
+          '1st-serve-played': 10,
+          '1st-serve-win': 2,
+          '1st-serve-win-%': 20,
+          '2nd-serve-played': 10,
+          '2nd-serve-win': 3,
+          '2nd-serve-win-%': 30,
+          'break-points-played': 10,
+          'break-points-win': 4,
+          'break-point-win-%': 40,
+          'game-points-played': 10,
+          'game-points-win': 5,
+          'game-points-win-%': 50,
+        },
+        {
+          'points-played': 2,
+          'points-win': 1,
+          'points-win-%': 50,
+          'aces': 1,
+          'double-faults': 1,
+          '1st-serve-played': 10,
+          '1st-serve-win': 2,
+          '1st-serve-win-%': 20,
+          '2nd-serve-played': 10,
+          '2nd-serve-win': 3,
+          '2nd-serve-win-%': 30,
+          'break-points-played': 10,
+          'break-points-win': 4,
+          'break-point-win-%': 40,
+          'game-points-played': 10,
+          'game-points-win': 5,
+          'game-points-win-%': 50,
+        }
+      ]
+    }
+  };
+  sheet.appendRow(['Training session statistics']);
+  sheet.appendRow(['Score', stats['score']]);
+  sheet.appendRow(['Training time', stats['match-time']]);
+  sheet.appendRow(['', stats['p1']['name'], stats['p2']['name']]);
+  for (var i = 0; i < stats['p1']['results'].length; i++) {
+    sheet.appendRow((i == 0) ? ['Overall'] : ['Set $i']);
+    sheet.appendRow([
+      'Points played',
+      stats['p1']['results'][i]['points-played'],
+      stats['p2']['results'][i]['points-played']
+    ]);
+    sheet.appendRow([
+      'Points win',
+      stats['p1']['results'][i]['points-win'],
+      stats['p2']['results'][i]['points-win']
+    ]);
+    sheet.appendRow([
+      'Points win %',
+      stats['p1']['results'][i]['points-win-%'],
+      stats['p2']['results'][i]['points-win-%']
+    ]);
+    sheet.appendRow([
+      'Aces',
+      stats['p1']['results'][i]['aces'],
+      stats['p2']['results'][i]['aces']
+    ]);
+    sheet.appendRow([
+      'Double faults',
+      stats['p1']['results'][i]['double-faults'],
+      stats['p2']['results'][i]['double-faults']
+    ]);
+    sheet.appendRow([
+      '1st serve points played',
+      stats['p1']['results'][i]['1st-serve-played'],
+      stats['p2']['results'][i]['1st-serve-played']
+    ]);
+    sheet.appendRow([
+      '1st serve points win',
+      stats['p1']['results'][i]['1st-serve-win'],
+      stats['p2']['results'][i]['1st-serve-win']
+    ]);
+    sheet.appendRow([
+      '1st serve points win %',
+      stats['p1']['results'][i]['1st-serve-win-%'],
+      stats['p2']['results'][i]['1st-serve-win-%']
+    ]);
+    sheet.appendRow([
+      '2nd serve points played',
+      stats['p1']['results'][i]['2nd-serve-played'],
+      stats['p2']['results'][i]['2nd-serve-played']
+    ]);
+    sheet.appendRow([
+      '2nd serve points win',
+      stats['p1']['results'][i]['2nd-serve-win'],
+      stats['p2']['results'][i]['2nd-serve-win']
+    ]);
+    sheet.appendRow([
+      '2nd serve points win %',
+      stats['p1']['results'][i]['2nd-serve-win-%'],
+      stats['p2']['results'][i]['2nd-serve-win-%']
+    ]);
+    sheet.appendRow([
+      'Break points played',
+      stats['p1']['results'][i]['break-points-played'],
+      stats['p2']['results'][i]['break-points-played']
+    ]);
+    sheet.appendRow([
+      'Break points win',
+      stats['p1']['results'][i]['break-points-win'],
+      stats['p2']['results'][i]['break-points-win']
+    ]);
+    sheet.appendRow([
+      'Break points win %',
+      stats['p1']['results'][i]['break-points-win-%'],
+      stats['p2']['results'][i]['break-points-win-%']
+    ]);
+    sheet.appendRow([
+      'Game points played',
+      stats['p1']['results'][i]['game-points-played'],
+      stats['p2']['results'][i]['game-points-played']
+    ]);
+    sheet.appendRow([
+      'Game points win',
+      stats['p1']['results'][i]['game-points-win'],
+      stats['p2']['results'][i]['game-points-win']
+    ]);
+    sheet.appendRow([
+      'Game points win %',
+      stats['p1']['results'][i]['game-points-win-%'],
+      stats['p2']['results'][i]['game-points-win-%']
+    ]);
+  }
+}
+
 void report({required Map match}) async {
   final shots = {
     'FH': 'Forehand',
@@ -133,6 +352,8 @@ void report({required Map match}) async {
       }
     }
   }
+
+  statsSheet(sheet: excel['Stats']);
 
   var fileBytes = excel.save();
   var directory = await getApplicationDocumentsDirectory();
