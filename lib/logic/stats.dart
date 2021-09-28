@@ -24,9 +24,9 @@ Map matchStats({required Map match}) {
     '2nd-serve-played': 0,
     '2nd-serve-win': 0,
     '2nd-serve-win-%': 0,
-    // 'break-points-played': 0,
-    // 'break-points-win': 0,
-    // 'break-point-win-%': 0,
+    'break-points-played': 0,
+    'break-points-win': 0,
+    'break-points-win-%': 0,
     // 'game-points-played': 0,
     // 'game-points-win': 0,
     // 'game-points-win-%': 0,
@@ -43,6 +43,7 @@ Map matchStats({required Map match}) {
       final score = events[i + 1];
       final lastHitBy = event['lastHitBy'];
       final server = event['server'];
+      final receiver = server == 'p1' ? 'p2' : 'p1';
       final winner = event['winner'];
       final shot = event['shot'];
       final depth = event['depth'];
@@ -108,6 +109,27 @@ Map matchStats({required Map match}) {
           }
         }
         fault = false;
+
+        if ((score[receiver][currentSet - 1]['game'] == '40' &&
+                !['40', 'Ad']
+                    .contains(score[server][currentSet - 1]['game'])) ||
+            (score[receiver][currentSet - 1]['game'] == 'Ad')) {
+          report[receiver]['results'][0]['break-points-played']++;
+          report[receiver]['results'][currentSet]['break-points-played']++;
+          if (receiver == winner) {
+            report[receiver]['results'][0]['break-points-win']++;
+            report[receiver]['results'][0]['break-points-win-%'] = 100 *
+                (report[receiver]['results'][0]['break-points-win'] /
+                    report[receiver]['results'][0]['break-points-played']);
+            report[receiver]['results'][currentSet]['break-points-win']++;
+            report[receiver]['results'][currentSet]['break-points-win-%'] =
+                100 *
+                    (report[receiver]['results'][currentSet]
+                            ['break-points-win'] /
+                        report[receiver]['results'][currentSet]
+                            ['break-points-played']);
+          }
+        }
       }
     }
   }
