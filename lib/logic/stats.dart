@@ -27,9 +27,9 @@ Map matchStats({required Map match}) {
     'break-points-played': 0,
     'break-points-win': 0,
     'break-points-win-%': 0,
-    // 'game-points-played': 0,
-    // 'game-points-win': 0,
-    // 'game-points-win-%': 0,
+    'game-points-played': 0,
+    'game-points-win': 0,
+    'game-points-win-%': 0,
   };
   for (var i = 0; i <= lastScore['p1'].length; i++) {
     report['p1']['results'].add({...statsBlueprint});
@@ -116,6 +116,8 @@ Map matchStats({required Map match}) {
             (score[receiver][currentSet - 1]['game'] == 'Ad')) {
           report[receiver]['results'][0]['break-points-played']++;
           report[receiver]['results'][currentSet]['break-points-played']++;
+          report[receiver]['results'][0]['game-points-played']++;
+          report[receiver]['results'][currentSet]['game-points-played']++;
           if (receiver == winner) {
             report[receiver]['results'][0]['break-points-win']++;
             report[receiver]['results'][0]['break-points-win-%'] = 100 *
@@ -128,6 +130,34 @@ Map matchStats({required Map match}) {
                             ['break-points-win'] /
                         report[receiver]['results'][currentSet]
                             ['break-points-played']);
+            report[receiver]['results'][0]['game-points-win']++;
+            report[receiver]['results'][0]['game-points-win-%'] = 100 *
+                (report[receiver]['results'][0]['game-points-win'] /
+                    report[receiver]['results'][0]['game-points-played']);
+            report[receiver]['results'][currentSet]['game-points-win']++;
+            report[receiver]['results'][currentSet]['game-points-win-%'] = 100 *
+                (report[receiver]['results'][currentSet]['game-points-win'] /
+                    report[receiver]['results'][currentSet]
+                        ['game-points-played']);
+          }
+        }
+
+        if ((score[server][currentSet - 1]['game'] == '40' &&
+                !['40', 'Ad']
+                    .contains(score[receiver][currentSet - 1]['game'])) ||
+            (score[server][currentSet - 1]['game'] == 'Ad')) {
+          report[server]['results'][0]['game-points-played']++;
+          report[server]['results'][currentSet]['game-points-played']++;
+          if (server == winner) {
+            report[server]['results'][0]['game-points-win']++;
+            report[server]['results'][0]['game-points-win-%'] = 100 *
+                (report[server]['results'][0]['game-points-win'] /
+                    report[server]['results'][0]['game-points-played']);
+            report[server]['results'][currentSet]['game-points-win']++;
+            report[server]['results'][currentSet]['game-points-win-%'] = 100 *
+                (report[server]['results'][currentSet]['game-points-win'] /
+                    report[server]['results'][currentSet]
+                        ['game-points-played']);
           }
         }
       }

@@ -32,7 +32,10 @@ void main() {
                 '2nd-serve-win-%': 54.054054054054056,
                 'break-points-played': 17,
                 'break-points-win': 16,
-                'break-points-win-%': 94.11764705882352
+                'break-points-win-%': 94.11764705882352,
+                'game-points-played': 34,
+                'game-points-win': 29,
+                'game-points-win-%': 85.29411764705883
               },
               {
                 'points-played': 50,
@@ -48,7 +51,10 @@ void main() {
                 '2nd-serve-win-%': 54.54545454545454,
                 'break-points-played': 5,
                 'break-points-win': 5,
-                'break-points-win-%': 100.0
+                'break-points-win-%': 100.0,
+                'game-points-played': 10,
+                'game-points-win': 9,
+                'game-points-win-%': 90.0
               },
               {
                 'points-played': 57,
@@ -64,7 +70,10 @@ void main() {
                 '2nd-serve-win-%': 85.71428571428571,
                 'break-points-played': 5,
                 'break-points-win': 4,
-                'break-points-win-%': 100.0
+                'break-points-win-%': 100.0,
+                'game-points-played': 11,
+                'game-points-win': 9,
+                'game-points-win-%': 81.81818181818183
               },
               {
                 'points-played': 48,
@@ -80,7 +89,10 @@ void main() {
                 '2nd-serve-win-%': 33.33333333333333,
                 'break-points-played': 2,
                 'break-points-win': 2,
-                'break-points-win-%': 100.0
+                'break-points-win-%': 100.0,
+                'game-points-played': 3,
+                'game-points-win': 3,
+                'game-points-win-%': 100.0
               },
               {
                 'points-played': 52,
@@ -96,7 +108,10 @@ void main() {
                 '2nd-serve-win-%': 54.54545454545454,
                 'break-points-played': 2,
                 'break-points-win': 2,
-                'break-points-win-%': 100.0
+                'break-points-win-%': 100.0,
+                'game-points-played': 3,
+                'game-points-win': 3,
+                'game-points-win-%': 100.0
               },
               {
                 'points-played': 31,
@@ -112,7 +127,10 @@ void main() {
                 '2nd-serve-win-%': 100.0,
                 'break-points-played': 3,
                 'break-points-win': 3,
-                'break-points-win-%': 100.0
+                'break-points-win-%': 100.0,
+                'game-points-played': 7,
+                'game-points-win': 5,
+                'game-points-win-%': 71.42857142857143
               }
             ]
           },
@@ -133,7 +151,10 @@ void main() {
                 '2nd-serve-win-%': 34.42622950819672,
                 'break-points-played': 15,
                 'break-points-win': 11,
-                'break-points-win-%': 73.33333333333333
+                'break-points-win-%': 73.33333333333333,
+                'game-points-played': 32,
+                'game-points-win': 25,
+                'game-points-win-%': 78.125
               },
               {
                 'points-played': 50,
@@ -149,7 +170,10 @@ void main() {
                 '2nd-serve-win-%': 27.27272727272727,
                 'break-points-played': 2,
                 'break-points-win': 1,
-                'break-points-win-%': 100.0
+                'break-points-win-%': 100.0,
+                'game-points-played': 5,
+                'game-points-win': 3,
+                'game-points-win-%': 60.0
               },
               {
                 'points-played': 57,
@@ -165,7 +189,10 @@ void main() {
                 '2nd-serve-win-%': 46.15384615384615,
                 'break-points-played': 0,
                 'break-points-win': 0,
-                'break-points-win-%': 0
+                'break-points-win-%': 0,
+                'game-points-played': 6,
+                'game-points-win': 5,
+                'game-points-win-%': 83.33333333333334
               },
               {
                 'points-played': 48,
@@ -181,7 +208,10 @@ void main() {
                 '2nd-serve-win-%': 42.857142857142854,
                 'break-points-played': 6,
                 'break-points-win': 5,
-                'break-points-win-%': 83.33333333333334
+                'break-points-win-%': 83.33333333333334,
+                'game-points-played': 9,
+                'game-points-win': 7,
+                'game-points-win-%': 77.77777777777779
               },
               {
                 'points-played': 52,
@@ -197,7 +227,10 @@ void main() {
                 '2nd-serve-win-%': 33.33333333333333,
                 'break-points-played': 5,
                 'break-points-win': 3,
-                'break-points-win-%': 60.0
+                'break-points-win-%': 60.0,
+                'game-points-played': 9,
+                'game-points-win': 7,
+                'game-points-win-%': 77.77777777777779
               },
               {
                 'points-played': 31,
@@ -213,7 +246,10 @@ void main() {
                 '2nd-serve-win-%': 50.0,
                 'break-points-played': 2,
                 'break-points-win': 2,
-                'break-points-win-%': 100.0
+                'break-points-win-%': 100.0,
+                'game-points-played': 3,
+                'game-points-win': 3,
+                'game-points-win-%': 100.0
               }
             ]
           }
