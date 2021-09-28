@@ -26,7 +26,10 @@ void main() {
                 'double-faults': 6,
                 '1st-serve-played': 72,
                 '1st-serve-win': 36,
-                '1st-serve-win-%': 51.42857142857142
+                '1st-serve-win-%': 51.42857142857142,
+                '2nd-serve-played': 38,
+                '2nd-serve-win': 20,
+                '2nd-serve-win-%': 54.054054054054056
               },
               {
                 'points-played': 50,
@@ -36,7 +39,10 @@ void main() {
                 'double-faults': 2,
                 '1st-serve-played': 11,
                 '1st-serve-win': 7,
-                '1st-serve-win-%': 63.63636363636363
+                '1st-serve-win-%': 63.63636363636363,
+                '2nd-serve-played': 12,
+                '2nd-serve-win': 6,
+                '2nd-serve-win-%': 54.54545454545454
               },
               {
                 'points-played': 57,
@@ -46,7 +52,10 @@ void main() {
                 'double-faults': 0,
                 '1st-serve-played': 16,
                 '1st-serve-win': 11,
-                '1st-serve-win-%': 73.33333333333333
+                '1st-serve-win-%': 73.33333333333333,
+                '2nd-serve-played': 7,
+                '2nd-serve-win': 6,
+                '2nd-serve-win-%': 85.71428571428571
               },
               {
                 'points-played': 48,
@@ -56,7 +65,10 @@ void main() {
                 'double-faults': 2,
                 '1st-serve-played': 21,
                 '1st-serve-win': 9,
-                '1st-serve-win-%': 47.368421052631575
+                '1st-serve-win-%': 47.368421052631575,
+                '2nd-serve-played': 6,
+                '2nd-serve-win': 1,
+                '2nd-serve-win-%': 33.33333333333333
               },
               {
                 'points-played': 52,
@@ -66,7 +78,10 @@ void main() {
                 'double-faults': 2,
                 '1st-serve-played': 11,
                 '1st-serve-win': 2,
-                '1st-serve-win-%': 18.181818181818183
+                '1st-serve-win-%': 18.181818181818183,
+                '2nd-serve-played': 11,
+                '2nd-serve-win': 6,
+                '2nd-serve-win-%': 54.54545454545454
               },
               {
                 'points-played': 31,
@@ -76,7 +91,10 @@ void main() {
                 'double-faults': 0,
                 '1st-serve-played': 13,
                 '1st-serve-win': 7,
-                '1st-serve-win-%': 63.63636363636363
+                '1st-serve-win-%': 63.63636363636363,
+                '2nd-serve-played': 2,
+                '2nd-serve-win': 1,
+                '2nd-serve-win-%': 100.0
               }
             ]
           },
@@ -91,7 +109,10 @@ void main() {
                 'double-faults': 25,
                 '1st-serve-played': 65,
                 '1st-serve-win': 37,
-                '1st-serve-win-%': 59.67741935483871
+                '1st-serve-win-%': 59.67741935483871,
+                '2nd-serve-played': 63,
+                '2nd-serve-win': 21,
+                '2nd-serve-win-%': 34.42622950819672
               },
               {
                 'points-played': 50,
@@ -101,7 +122,10 @@ void main() {
                 'double-faults': 6,
                 '1st-serve-played': 14,
                 '1st-serve-win': 7,
-                '1st-serve-win-%': 50.0
+                '1st-serve-win-%': 50.0,
+                '2nd-serve-played': 13,
+                '2nd-serve-win': 3,
+                '2nd-serve-win-%': 27.27272727272727
               },
               {
                 'points-played': 57,
@@ -111,7 +135,10 @@ void main() {
                 'double-faults': 2,
                 '1st-serve-played': 20,
                 '1st-serve-win': 11,
-                '1st-serve-win-%': 55.00000000000001
+                '1st-serve-win-%': 55.00000000000001,
+                '2nd-serve-played': 14,
+                '2nd-serve-win': 6,
+                '2nd-serve-win-%': 46.15384615384615
               },
               {
                 'points-played': 48,
@@ -121,7 +148,10 @@ void main() {
                 'double-faults': 6,
                 '1st-serve-played': 12,
                 '1st-serve-win': 6,
-                '1st-serve-win-%': 60.0
+                '1st-serve-win-%': 60.0,
+                '2nd-serve-played': 9,
+                '2nd-serve-win': 3,
+                '2nd-serve-win-%': 42.857142857142854
               },
               {
                 'points-played': 52,
@@ -131,7 +161,10 @@ void main() {
                 'double-faults': 9,
                 '1st-serve-played': 11,
                 '1st-serve-win': 10,
-                '1st-serve-win-%': 90.9090909090909
+                '1st-serve-win-%': 90.9090909090909,
+                '2nd-serve-played': 19,
+                '2nd-serve-win': 6,
+                '2nd-serve-win-%': 33.33333333333333
               },
               {
                 'points-played': 31,
@@ -141,7 +174,10 @@ void main() {
                 'double-faults': 2,
                 '1st-serve-played': 8,
                 '1st-serve-win': 3,
-                '1st-serve-win-%': 60.0
+                '1st-serve-win-%': 60.0,
+                '2nd-serve-played': 8,
+                '2nd-serve-win': 3,
+                '2nd-serve-win-%': 50.0
               }
             ]
           }

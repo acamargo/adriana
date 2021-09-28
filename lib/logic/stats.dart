@@ -21,9 +21,9 @@ Map matchStats({required Map match}) {
     '1st-serve-played': 0,
     '1st-serve-win': 0,
     '1st-serve-win-%': 0,
-    // '2nd-serve-played': 0,
-    // '2nd-serve-win': 0,
-    // '2nd-serve-win-%': 0,
+    '2nd-serve-played': 0,
+    '2nd-serve-win': 0,
+    '2nd-serve-win-%': 0,
     // 'break-points-played': 0,
     // 'break-points-win': 0,
     // 'break-point-win-%': 0,
@@ -80,21 +80,33 @@ Map matchStats({required Map match}) {
           report[lastHitBy]['results'][currentSet]['double-faults']++;
         }
 
-        if (!fault) {
+        if (fault) {
+          report[server]['results'][0]['2nd-serve-played']++;
+          report[server]['results'][currentSet]['2nd-serve-played']++;
+          if (server == winner) {
+            report[server]['results'][0]['2nd-serve-win']++;
+            report[server]['results'][0]['2nd-serve-win-%'] = 100 *
+                (report[server]['results'][0]['2nd-serve-win'] /
+                    report[server]['results'][0]['2nd-serve-played']);
+            report[server]['results'][currentSet]['2nd-serve-win']++;
+            report[server]['results'][currentSet]['2nd-serve-win-%'] = 100 *
+                (report[server]['results'][currentSet]['2nd-serve-win'] /
+                    report[server]['results'][currentSet]['2nd-serve-played']);
+          }
+        } else {
           report[server]['results'][0]['1st-serve-played']++;
           report[server]['results'][currentSet]['1st-serve-played']++;
           if (server == winner) {
-            report[winner]['results'][0]['1st-serve-win']++;
-            report[winner]['results'][0]['1st-serve-win-%'] = 100 *
-                (report[winner]['results'][0]['1st-serve-win'] /
-                    report[winner]['results'][0]['1st-serve-played']);
-            report[winner]['results'][currentSet]['1st-serve-win']++;
-            report[winner]['results'][currentSet]['1st-serve-win-%'] = 100 *
-                (report[winner]['results'][currentSet]['1st-serve-win'] /
-                    report[winner]['results'][currentSet]['1st-serve-played']);
+            report[server]['results'][0]['1st-serve-win']++;
+            report[server]['results'][0]['1st-serve-win-%'] = 100 *
+                (report[server]['results'][0]['1st-serve-win'] /
+                    report[server]['results'][0]['1st-serve-played']);
+            report[server]['results'][currentSet]['1st-serve-win']++;
+            report[server]['results'][currentSet]['1st-serve-win-%'] = 100 *
+                (report[server]['results'][currentSet]['1st-serve-win'] /
+                    report[server]['results'][currentSet]['1st-serve-played']);
           }
         }
-
         fault = false;
       }
     }
