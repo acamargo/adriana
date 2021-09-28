@@ -40,14 +40,15 @@ Map matchStats({required Map match}) {
   for (var i = 0; i < events.length; i++) {
     final event = events[i];
     if (event['event'] == 'Rally') {
-      final score = events[i + 1];
+      final scoreBefore = events[i - 1];
+      final scoreAfter = events[i + 1];
       final lastHitBy = event['lastHitBy'];
       final server = event['server'];
       final receiver = server == 'p1' ? 'p2' : 'p1';
       final winner = event['winner'];
       final shot = event['shot'];
       final depth = event['depth'];
-      final currentSet = score['p1'].length;
+      final currentSet = scoreBefore['p1'].length;
 
       if (event['winner'] == null) {
         fault = true;
@@ -110,10 +111,10 @@ Map matchStats({required Map match}) {
         }
         fault = false;
 
-        if ((score[receiver][currentSet - 1]['game'] == '40' &&
+        if ((scoreBefore[receiver][currentSet - 1]['game'] == '40' &&
                 !['40', 'Ad']
-                    .contains(score[server][currentSet - 1]['game'])) ||
-            (score[receiver][currentSet - 1]['game'] == 'Ad')) {
+                    .contains(scoreBefore[server][currentSet - 1]['game'])) ||
+            (scoreBefore[receiver][currentSet - 1]['game'] == 'Ad')) {
           report[receiver]['results'][0]['break-points-played']++;
           report[receiver]['results'][currentSet]['break-points-played']++;
           report[receiver]['results'][0]['game-points-played']++;
@@ -142,10 +143,10 @@ Map matchStats({required Map match}) {
           }
         }
 
-        if ((score[server][currentSet - 1]['game'] == '40' &&
+        if ((scoreBefore[server][currentSet - 1]['game'] == '40' &&
                 !['40', 'Ad']
-                    .contains(score[receiver][currentSet - 1]['game'])) ||
-            (score[server][currentSet - 1]['game'] == 'Ad')) {
+                    .contains(scoreBefore[receiver][currentSet - 1]['game'])) ||
+            (scoreBefore[server][currentSet - 1]['game'] == 'Ad')) {
           report[server]['results'][0]['game-points-played']++;
           report[server]['results'][currentSet]['game-points-played']++;
           if (server == winner) {

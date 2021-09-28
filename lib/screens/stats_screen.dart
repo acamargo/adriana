@@ -5,39 +5,17 @@ import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
 import '../logic/stats.dart';
 
-// match statistics
+// set time
 // aces
 // double faults
 // first serve %
 // win % on 1st serve
 // win % on 2nd serve
 // break points
-
-// set time
-// 1st serve %
-// aces
-// double faults
 // winners
 // unforced errors
-// break point errors
 // net points won
 // total points won
-
-// double faults
-// winners
-// unforced errors
-// break points won
-// net points won
-// total points won
-// aces
-// 1st serve %
-// 2nd serve pts won %
-
-// 1st set
-// P1: won 20 of 21 service points
-// P2: broken for 1st time since First Round (won previous 66 straight service games)
-// P2: 1st set lost in tournament
-// P1 vs P2: winner of 1st set won last 10 meetings
 
 void statsSheet({required sheet, required Map stats}) {
   sheet.appendRow(['Training session statistics']);
@@ -102,21 +80,6 @@ void statsSheet({required sheet, required Map stats}) {
       stats['p2']['results'][i]['2nd-serve-win-%']
     ]);
     sheet.appendRow([
-      'Break points played',
-      stats['p1']['results'][i]['break-points-played'],
-      stats['p2']['results'][i]['break-points-played']
-    ]);
-    sheet.appendRow([
-      'Break points win',
-      stats['p1']['results'][i]['break-points-win'],
-      stats['p2']['results'][i]['break-points-win']
-    ]);
-    sheet.appendRow([
-      'Break points win %',
-      stats['p1']['results'][i]['break-points-win-%'],
-      stats['p2']['results'][i]['break-points-win-%']
-    ]);
-    sheet.appendRow([
       'Game points played',
       stats['p1']['results'][i]['game-points-played'],
       stats['p2']['results'][i]['game-points-played']
@@ -131,10 +94,25 @@ void statsSheet({required sheet, required Map stats}) {
       stats['p1']['results'][i]['game-points-win-%'],
       stats['p2']['results'][i]['game-points-win-%']
     ]);
+    sheet.appendRow([
+      'Break points played',
+      stats['p1']['results'][i]['break-points-played'],
+      stats['p2']['results'][i]['break-points-played']
+    ]);
+    sheet.appendRow([
+      'Break points win',
+      stats['p1']['results'][i]['break-points-win'],
+      stats['p2']['results'][i]['break-points-win']
+    ]);
+    sheet.appendRow([
+      'Break points win %',
+      stats['p1']['results'][i]['break-points-win-%'],
+      stats['p2']['results'][i]['break-points-win-%']
+    ]);
   }
 }
 
-void report({required Map match}) async {
+void timelineSheet({required sheet, required match}) {
   final shots = {
     'FH': 'Forehand',
     'BH': 'Backhand',
@@ -147,123 +125,69 @@ void report({required Map match}) async {
     'O': 'Out',
     'N': 'Into the net',
   };
+  var row = [
+    'Time',
+    'Point Number',
+    'Event',
+    'Server',
+    'Decider',
+    'Shot',
+    'Call',
+    'Points ${match['p1']}',
+    'Points ${match['p2']}'
+  ];
+  final numberOfSets = match['events'].last['p1'].length;
+  for (var i = 0; i < numberOfSets; i++) {
+    row.add('Set ${i + 1} ${match['p1']}');
+    row.add('Set ${i + 1} ${match['p2']}');
+  }
+  sheet.appendRow(row);
+
+  for (int index = 0; index < match['events'].length; index++) {
+    final event = match['events'][index];
+    var row = [
+      event['createdAt'].toIso8601String(),
+      event['pointNumber'],
+      event['event'],
+    ];
+    if (event['event'] == 'CoinToss') {
+      row.addAll([match[event['server']]]);
+    } else if (event['event'] == 'Score' || event['event'] == 'FinalScore') {
+      row.addAll(['', '', '', '']);
+      final p1Sets = event['p1'];
+      final numberOfSets = p1Sets.length;
+      row.add(p1Sets.last['game']);
+
+      final p2Sets = event['p2'];
+      row.add(p2Sets.last['game']);
+
+      for (var i = 0; i < numberOfSets; i++) {
+        row.add(p1Sets[i]['set']);
+        row.add(p2Sets[i]['set']);
+      }
+    } else if (event['event'] == 'Rally') {
+      row.addAll([
+        match[event['server']],
+        match[event['lastHitBy']],
+        shots[event['shot']],
+        (event['server'] == event['lastHitBy'] &&
+                event['shot'] == 'SV' &&
+                event['depth'] == 'I')
+            ? 'Ace'
+            : depths[event['depth']]
+      ]);
+    }
+    sheet.appendRow(row);
+  }
+}
+
+void report({required Map match}) async {
   var excel =
       Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
 
   excel.rename('Sheet1', 'Timeline');
 
-  var timeline = excel['Timeline'];
-  var row = 1;
-  var column = 65; // A character in ASCII
-  timeline
-      .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-      .value = 'Time';
-  column++;
-  timeline
-      .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-      .value = 'Server';
-  column++;
-  timeline
-      .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-      .value = 'Decider';
-  column++;
-  timeline
-      .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-      .value = 'Shot';
-  column++;
-  timeline
-      .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-      .value = 'Call';
-  column++;
-  timeline
-      .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-      .value = 'Points ${match['p1']}';
-  column++;
-  timeline
-      .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-      .value = 'Points ${match['p2']}';
-  column++;
-  final numberOfSets = match['events'].last['p1'].length;
-  for (var i = 0; i < numberOfSets; i++) {
-    timeline
-        .cell(CellIndex.indexByString(
-            '${String.fromCharCode(column + (2 * i))}$row'))
-        .value = 'Set ${i + 1} ${match['p1']}';
-    timeline
-        .cell(CellIndex.indexByString(
-            '${String.fromCharCode(column + (2 * i) + 1)}$row'))
-        .value = 'Set ${i + 1} ${match['p2']}';
-  }
-
-  for (int index = 0; index < match['events'].length; index++) {
-    final event = match['events'][index];
-    var column = 65; // "A" character in ASCII
-    if (event['event'] == 'CoinToss') {
-      row++;
-      timeline.cell(CellIndex.indexByString('A$row')).value =
-          event['createdAt'].toIso8601String();
-      timeline.cell(CellIndex.indexByString('B$row')).value =
-          match[event['server']];
-      timeline.cell(CellIndex.indexByString('F$row')).value = '0';
-      timeline.cell(CellIndex.indexByString('G$row')).value = '0';
-      timeline.cell(CellIndex.indexByString('H$row')).value = 0;
-      timeline.cell(CellIndex.indexByString('I$row')).value = 0;
-    } else if (event['event'] == 'Rally') {
-      row++;
-      timeline
-          .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-          .value = event['createdAt'].toIso8601String();
-      column++;
-      timeline
-          .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-          .value = match[event['server']];
-      column++;
-      timeline
-          .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-          .value = match[event['lastHitBy']];
-      column++;
-      timeline
-          .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-          .value = shots[event['shot']];
-      column++;
-      timeline
-          .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-          .value = depths[event['depth']];
-      if (event['server'] == event['lastHitBy'] &&
-          event['shot'] == 'SV' &&
-          event['depth'] == 'I')
-        timeline
-            .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-            .value = 'Ace';
-
-      final score = match['events'][index + 1];
-      final p1Sets = score['p1'];
-      final numberOfSets = p1Sets.length;
-      column++;
-      timeline
-          .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-          .value = p1Sets.last['game'];
-
-      final p2Sets = score['p2'];
-      column++;
-      timeline
-          .cell(CellIndex.indexByString('${String.fromCharCode(column)}$row'))
-          .value = p2Sets.last['game'];
-
-      column++;
-      for (var i = 0; i < numberOfSets; i++) {
-        timeline
-            .cell(CellIndex.indexByString(
-                '${String.fromCharCode(column + (2 * i))}$row'))
-            .value = p1Sets[i]['set'];
-        timeline
-            .cell(CellIndex.indexByString(
-                '${String.fromCharCode(column + (2 * i) + 1)}$row'))
-            .value = p2Sets[i]['set'];
-      }
-    }
-  }
-
+  timelineSheet(sheet: excel['Timeline'], match: match);
   statsSheet(sheet: excel['Stats'], stats: matchStats(match: match));
 
   var fileBytes = excel.save();
