@@ -133,6 +133,7 @@ void timelineSheet({required sheet, required match}) {
     'Decider',
     'Shot',
     'Call',
+    'Winner',
     'Points ${match['p1']}',
     'Points ${match['p2']}'
   ];
@@ -153,7 +154,7 @@ void timelineSheet({required sheet, required match}) {
     if (event['event'] == 'CoinToss') {
       row.addAll([match[event['server']]]);
     } else if (event['event'] == 'Score' || event['event'] == 'FinalScore') {
-      row.addAll(['', '', '', '']);
+      row.addAll(['', '', '', '', '']);
       final p1Sets = event['p1'];
       final numberOfSets = p1Sets.length;
       row.add(p1Sets.last['game']);
@@ -174,7 +175,8 @@ void timelineSheet({required sheet, required match}) {
                 event['shot'] == 'SV' &&
                 event['depth'] == 'I')
             ? 'Ace'
-            : depths[event['depth']]
+            : depths[event['depth']],
+        event['winner'] == null ? 'FAULT' : match[event['winner']]
       ]);
     }
     sheet.appendRow(row);
