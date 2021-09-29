@@ -17,16 +17,14 @@ import '../logic/stats.dart';
 // net points won
 // total points won
 
-void statsSheet({required sheet, required Map stats}) {
-  sheet.appendRow(['Training session statistics']);
-  sheet.appendRow(['Score', stats['score']]);
-  sheet.appendRow(['', stats['p1']['name'], stats['p2']['name']]);
+void statsSheet({required spreadsheet, required Map stats}) {
   for (var i = 0; i < stats['p1']['results'].length; i++) {
-    sheet.appendRow((i == 0) ? ['Overall'] : ['Set $i']);
-    sheet.appendRow([
-      'Duration',
-      stats['match-duration'][i].toString().split('.').first.padLeft(8, "0")
-    ]);
+    final title = (i == 0) ? 'Overall' : 'Set $i';
+    var sheet = spreadsheet[title];
+    sheet.appendRow([title]);
+    sheet.appendRow(
+        ['Duration', stats['match-duration'][i].toString().split('.').first]);
+    sheet.appendRow(['', stats['p1']['name'], stats['p2']['name']]);
     sheet.appendRow([
       'Points played',
       stats['p1']['results'][i]['points-played'],
@@ -193,7 +191,7 @@ void report({required Map match}) async {
   excel.rename('Sheet1', 'Timeline');
 
   timelineSheet(sheet: excel['Timeline'], match: match);
-  statsSheet(sheet: excel['Stats'], stats: matchStats(match: match));
+  statsSheet(spreadsheet: excel, stats: matchStats(match: match));
 
   var fileBytes = excel.save();
   var directory = await getApplicationDocumentsDirectory();
