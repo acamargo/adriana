@@ -20,10 +20,13 @@ import '../logic/stats.dart';
 void statsSheet({required sheet, required Map stats}) {
   sheet.appendRow(['Training session statistics']);
   sheet.appendRow(['Score', stats['score']]);
-  sheet.appendRow(['Training time', stats['match-time']]);
   sheet.appendRow(['', stats['p1']['name'], stats['p2']['name']]);
   for (var i = 0; i < stats['p1']['results'].length; i++) {
     sheet.appendRow((i == 0) ? ['Overall'] : ['Set $i']);
+    sheet.appendRow([
+      'Duration',
+      stats['match-duration'][i].toString().split('.').first.padLeft(8, "0")
+    ]);
     sheet.appendRow([
       'Points played',
       stats['p1']['results'][i]['points-played'],

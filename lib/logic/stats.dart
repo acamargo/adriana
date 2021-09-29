@@ -7,7 +7,8 @@ Map matchStats({required Map match}) {
       : events.last;
   Map<String, dynamic> report = {
     'score': formatScore(match, lastScore),
-    'match-time': '1:23',
+    'match-duration': [],
+    'match-time': [],
     'p1': {'name': match['p1'], 'results': []},
     'p2': {'name': match['p2'], 'results': []}
   };
@@ -32,6 +33,8 @@ Map matchStats({required Map match}) {
     'game-points-win-%': 0,
   };
   for (var i = 0; i <= lastScore['p1'].length; i++) {
+    report['match-time']
+        .add({'start': match['createdAt'], 'end': match['createdAt']});
     report['p1']['results'].add({...statsBlueprint});
     report['p2']['results'].add({...statsBlueprint});
   }
@@ -41,7 +44,6 @@ Map matchStats({required Map match}) {
     final event = events[i];
     if (event['event'] == 'Rally') {
       final scoreBefore = events[i - 1];
-      final scoreAfter = events[i + 1];
       final lastHitBy = event['lastHitBy'];
       final server = event['server'];
       final receiver = server == 'p1' ? 'p2' : 'p1';
@@ -49,6 +51,11 @@ Map matchStats({required Map match}) {
       final shot = event['shot'];
       final depth = event['depth'];
       final currentSet = scoreBefore['p1'].length;
+
+      if (report['match-time'][currentSet]['start'] == match['createdAt']) {
+        report['match-time'][currentSet]['start'] = event['createdAt'];
+      }
+      report['match-time'][currentSet]['end'] = event['createdAt'];
 
       if (event['winner'] == null) {
         fault = true;
@@ -164,6 +171,14 @@ Map matchStats({required Map match}) {
       }
     }
   }
+
+  for (var i = 0; i <= lastScore['p1'].length; i++) {
+    final duration = report['match-time'][i]['end']
+        .difference(report['match-time'][i]['start']);
+    report['match-duration'].add(duration);
+  }
+  report['match-duration'][0] =
+      report['match-duration'].reduce((value, element) => value + element);
 
   return report;
 }
