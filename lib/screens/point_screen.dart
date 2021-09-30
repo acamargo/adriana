@@ -3,9 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:vibration/vibration.dart';
-import 'package:excel/excel.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'package:open_file/open_file.dart';
 
 import '../matches_storage.dart';
@@ -71,8 +68,11 @@ class _PointScreenState extends State<PointScreen> {
       case 'Disable sound':
         isSound = false;
         break;
-      case 'Report':
-        report(match: widget.match);
+      case 'Stats':
+        var result = await openStatsSpreadsheet(match: widget.match);
+        if (result.type != ResultType.done)
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(result.message)));
         break;
       case 'Finish':
         bool result = await showDialog(
@@ -110,12 +110,7 @@ class _PointScreenState extends State<PointScreen> {
           };
           widget.match['events'].add(finalScoreEvent);
           widget.storage.create(widget.match);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => StatsScreen(widget.match),
-            ),
-          );
+          Navigator.pop(context);
         }
         break;
     }
@@ -306,7 +301,7 @@ class _PointScreenState extends State<PointScreen> {
               return {
                 isVibrate ? 'Disable vibrate' : 'Enable vibrate',
                 isSound ? 'Disable sound' : 'Enable sound',
-                'Report',
+                'Stats',
                 'Finish'
               }.map((String choice) {
                 return PopupMenuItem<String>(

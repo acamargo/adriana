@@ -184,7 +184,14 @@ void timelineSheet({required sheet, required match}) {
   }
 }
 
-void report({required Map match}) async {
+Future<String> statsSpreadsheetFilename({required Map match}) async {
+  var directory = await getApplicationDocumentsDirectory();
+  final fileName = match['createdAt'].toIso8601String();
+  final filePath = "${directory.path}/$fileName.match.xlsx";
+  return filePath;
+}
+
+void generateStatsSpreadsheet({required Map match}) async {
   var excel =
       Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
 
@@ -194,16 +201,18 @@ void report({required Map match}) async {
   statsSheet(spreadsheet: excel, stats: matchStats(match: match));
 
   var fileBytes = excel.save();
-  var directory = await getApplicationDocumentsDirectory();
-  final fileName = match['createdAt'].toIso8601String();
-  final filePath = "${directory.path}/$fileName.match.xlsx";
+  final filePath = await statsSpreadsheetFilename(match: match);
 
   File(filePath)
     ..createSync(recursive: true)
     ..writeAsBytesSync(fileBytes as List<int>);
+}
 
-  final _result = await OpenFile.open(filePath);
-  print(_result.message);
+Future<OpenResult> openStatsSpreadsheet({required Map match}) async {
+  generateStatsSpreadsheet(match: match);
+  final filePath = await statsSpreadsheetFilename(match: match);
+  final result = await OpenFile.open(filePath);
+  return result;
 }
 
 class StatsScreen extends StatefulWidget {
@@ -228,7 +237,7 @@ class _StatsScreenState extends State<StatsScreen> {
             Text('${widget.match['p1']} vs ${widget.match['p2']}'),
             ElevatedButton(
               onPressed: () {
-                report(match: widget.match);
+                generateStatsSpreadsheet(match: widget.match);
               },
               child: Text('Open report'),
             )
