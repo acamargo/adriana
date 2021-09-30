@@ -80,21 +80,21 @@ void statsSheet({required spreadsheet, required Map stats}) {
       stats['p1']['results'][i]['2nd-serve-win-%'],
       stats['p2']['results'][i]['2nd-serve-win-%']
     ]);
-    sheet.appendRow([
-      'Game points played',
-      stats['p1']['results'][i]['game-points-played'],
-      stats['p2']['results'][i]['game-points-played']
-    ]);
-    sheet.appendRow([
-      'Game points win',
-      stats['p1']['results'][i]['game-points-win'],
-      stats['p2']['results'][i]['game-points-win']
-    ]);
-    sheet.appendRow([
-      'Game points win %',
-      stats['p1']['results'][i]['game-points-win-%'],
-      stats['p2']['results'][i]['game-points-win-%']
-    ]);
+    // sheet.appendRow([
+    //   'Game points played',
+    //   stats['p1']['results'][i]['game-points-played'],
+    //   stats['p2']['results'][i]['game-points-played']
+    // ]);
+    // sheet.appendRow([
+    //   'Game points win',
+    //   stats['p1']['results'][i]['game-points-win'],
+    //   stats['p2']['results'][i]['game-points-win']
+    // ]);
+    // sheet.appendRow([
+    //   'Game points win %',
+    //   stats['p1']['results'][i]['game-points-win-%'],
+    //   stats['p2']['results'][i]['game-points-win-%']
+    // ]);
     sheet.appendRow([
       'Break points played',
       stats['p1']['results'][i]['break-points-played'],

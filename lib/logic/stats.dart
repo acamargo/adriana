@@ -1,5 +1,24 @@
 import 'score.dart';
 
+void updatePercentages(report, currentSet, prefix) {
+  if (report['p1']['results'][0][prefix + '-played'] > 0)
+    report['p1']['results'][0][prefix + '-win-%'] = 100 *
+        (report['p1']['results'][0][prefix + '-win'] /
+            report['p1']['results'][0][prefix + '-played']);
+  if (report['p1']['results'][currentSet][prefix + '-played'] > 0)
+    report['p1']['results'][currentSet][prefix + '-win-%'] = 100 *
+        (report['p1']['results'][currentSet][prefix + '-win'] /
+            report['p1']['results'][currentSet][prefix + '-played']);
+  if (report['p2']['results'][currentSet][prefix + '-played'] > 0)
+    report['p2']['results'][0][prefix + '-win-%'] = 100 *
+        (report['p2']['results'][0][prefix + '-win'] /
+            report['p2']['results'][0][prefix + '-played']);
+  if (report['p2']['results'][currentSet][prefix + '-played'] > 0)
+    report['p2']['results'][currentSet][prefix + '-win-%'] = 100 *
+        (report['p2']['results'][currentSet][prefix + '-win'] /
+            report['p2']['results'][currentSet][prefix + '-played']);
+}
+
 Map matchStats({required Map match}) {
   final events = match['events'];
   var lastScore = events.last['event'] == 'FinalScore'
@@ -16,21 +35,21 @@ Map matchStats({required Map match}) {
   Map statsBlueprint = {
     'points-played': 0,
     'points-win': 0,
-    'points-win-%': 0,
+    'points-win-%': 0.0,
     'aces': 0,
     'double-faults': 0,
     '1st-serve-played': 0,
     '1st-serve-win': 0,
-    '1st-serve-win-%': 0,
+    '1st-serve-win-%': 0.0,
     '2nd-serve-played': 0,
     '2nd-serve-win': 0,
-    '2nd-serve-win-%': 0,
+    '2nd-serve-win-%': 0.0,
     'break-points-played': 0,
     'break-points-win': 0,
-    'break-points-win-%': 0,
+    'break-points-win-%': 0.0,
     'game-points-played': 0,
     'game-points-win': 0,
-    'game-points-win-%': 0,
+    'game-points-win-%': 0.0,
   };
   for (var i = 0; i <= lastScore['p1'].length; i++) {
     report['match-time']
@@ -66,13 +85,8 @@ Map matchStats({required Map match}) {
         report['p2']['results'][currentSet]['points-played']++;
 
         report[winner]['results'][0]['points-win']++;
-        report[winner]['results'][0]['points-win-%'] = 100 *
-            (report[winner]['results'][0]['points-win'] /
-                report[winner]['results'][0]['points-played']);
         report[winner]['results'][currentSet]['points-win']++;
-        report[winner]['results'][currentSet]['points-win-%'] = 100 *
-            (report[winner]['results'][currentSet]['points-win'] /
-                report[winner]['results'][currentSet]['points-played']);
+        updatePercentages(report, currentSet, 'points');
 
         if (lastHitBy == server &&
             winner == lastHitBy &&
@@ -94,27 +108,17 @@ Map matchStats({required Map match}) {
           report[server]['results'][currentSet]['2nd-serve-played']++;
           if (server == winner) {
             report[server]['results'][0]['2nd-serve-win']++;
-            report[server]['results'][0]['2nd-serve-win-%'] = 100 *
-                (report[server]['results'][0]['2nd-serve-win'] /
-                    report[server]['results'][0]['2nd-serve-played']);
             report[server]['results'][currentSet]['2nd-serve-win']++;
-            report[server]['results'][currentSet]['2nd-serve-win-%'] = 100 *
-                (report[server]['results'][currentSet]['2nd-serve-win'] /
-                    report[server]['results'][currentSet]['2nd-serve-played']);
           }
+          updatePercentages(report, currentSet, '2nd-serve');
         } else {
           report[server]['results'][0]['1st-serve-played']++;
           report[server]['results'][currentSet]['1st-serve-played']++;
           if (server == winner) {
             report[server]['results'][0]['1st-serve-win']++;
-            report[server]['results'][0]['1st-serve-win-%'] = 100 *
-                (report[server]['results'][0]['1st-serve-win'] /
-                    report[server]['results'][0]['1st-serve-played']);
             report[server]['results'][currentSet]['1st-serve-win']++;
-            report[server]['results'][currentSet]['1st-serve-win-%'] = 100 *
-                (report[server]['results'][currentSet]['1st-serve-win'] /
-                    report[server]['results'][currentSet]['1st-serve-played']);
           }
+          updatePercentages(report, currentSet, '1st-serve');
         }
         fault = false;
 
@@ -128,25 +132,11 @@ Map matchStats({required Map match}) {
           report[receiver]['results'][currentSet]['game-points-played']++;
           if (receiver == winner) {
             report[receiver]['results'][0]['break-points-win']++;
-            report[receiver]['results'][0]['break-points-win-%'] = 100 *
-                (report[receiver]['results'][0]['break-points-win'] /
-                    report[receiver]['results'][0]['break-points-played']);
             report[receiver]['results'][currentSet]['break-points-win']++;
-            report[receiver]['results'][currentSet]['break-points-win-%'] =
-                100 *
-                    (report[receiver]['results'][currentSet]
-                            ['break-points-win'] /
-                        report[receiver]['results'][currentSet]
-                            ['break-points-played']);
             report[receiver]['results'][0]['game-points-win']++;
-            report[receiver]['results'][0]['game-points-win-%'] = 100 *
-                (report[receiver]['results'][0]['game-points-win'] /
-                    report[receiver]['results'][0]['game-points-played']);
             report[receiver]['results'][currentSet]['game-points-win']++;
-            report[receiver]['results'][currentSet]['game-points-win-%'] = 100 *
-                (report[receiver]['results'][currentSet]['game-points-win'] /
-                    report[receiver]['results'][currentSet]
-                        ['game-points-played']);
+            updatePercentages(report, currentSet, 'break-points');
+            updatePercentages(report, currentSet, 'game-points');
           }
         }
 
@@ -158,14 +148,8 @@ Map matchStats({required Map match}) {
           report[server]['results'][currentSet]['game-points-played']++;
           if (server == winner) {
             report[server]['results'][0]['game-points-win']++;
-            report[server]['results'][0]['game-points-win-%'] = 100 *
-                (report[server]['results'][0]['game-points-win'] /
-                    report[server]['results'][0]['game-points-played']);
             report[server]['results'][currentSet]['game-points-win']++;
-            report[server]['results'][currentSet]['game-points-win-%'] = 100 *
-                (report[server]['results'][currentSet]['game-points-win'] /
-                    report[server]['results'][currentSet]
-                        ['game-points-played']);
+            updatePercentages(report, currentSet, 'game-points');
           }
         }
       }
