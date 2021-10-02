@@ -5,6 +5,7 @@ import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
 import '../logic/stats.dart';
 import '../logic/score.dart';
+import '../logic/date_time.dart';
 // set time
 // aces
 // double faults
@@ -26,6 +27,15 @@ void statsSheet(
   for (var i = 0; i < stats['p1']['results'].length; i++) {
     final title = (i == 0) ? 'Overall' : 'Set $i';
     var sheet = spreadsheet[title];
+    sheet.appendRow(['Players', '${match['p1']} vs ${match['p2']}']);
+    sheet.appendRow(['Court surface', match['surface']]);
+    sheet.appendRow(['Venue', match['venue']]);
+    sheet.appendRow([
+      'Date',
+      formatStatsWeekday(match['createdAt']),
+      match['createdAt'].toString()
+    ]);
+    sheet.appendRow(['']);
     sheet.appendRow([title]);
     sheet.appendRow([
       'Score',

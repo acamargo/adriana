@@ -11,3 +11,7 @@ String formatDateTime(DateTime asOf, DateTime now) {
   }
   return DateFormat("yyyy-MM-dd").format(asOf);
 }
+
+String formatStatsWeekday(DateTime asOf) {
+  return DateFormat('EEEE').format(asOf);
+}
