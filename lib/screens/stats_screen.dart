@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
 import '../logic/stats.dart';
-
+import '../logic/score.dart';
 // set time
 // aces
 // double faults
@@ -17,19 +17,27 @@ import '../logic/stats.dart';
 // net points won
 // total points won
 
-void statsSheet({required spreadsheet, required Map stats}) {
+void statsSheet(
+    {required spreadsheet, required Map stats, required Map match}) {
+  final matchWinner = stats['p1']['results'][0]['points-win'] >=
+          stats['p2']['results'][0]['points-win']
+      ? 'p1'
+      : 'p2';
   for (var i = 0; i < stats['p1']['results'].length; i++) {
     final title = (i == 0) ? 'Overall' : 'Set $i';
     var sheet = spreadsheet[title];
     sheet.appendRow([title]);
+    sheet.appendRow([
+      'Score',
+      (i == 0)
+          ? formatStatsScore(match, stats['scores'][0], matchWinner)
+          : formatStatsSet(match['p1'], match['p2'], stats['scores'][i])
+    ]);
     sheet.appendRow(
         ['Duration', stats['match-duration'][i].toString().split('.').first]);
+    sheet.appendRow(
+        ['Points played', stats['p1']['results'][i]['points-played']]);
     sheet.appendRow(['', stats['p1']['name'], stats['p2']['name']]);
-    sheet.appendRow([
-      'Points played',
-      stats['p1']['results'][i]['points-played'],
-      stats['p2']['results'][i]['points-played']
-    ]);
     sheet.appendRow([
       'Points win',
       stats['p1']['results'][i]['points-win'],
@@ -195,10 +203,10 @@ void generateStatsSpreadsheet({required Map match}) async {
   var excel =
       Excel.createExcel(); // automatically creates 1 empty sheet: Sheet1
 
-  excel.rename('Sheet1', 'Timeline');
-
+  statsSheet(spreadsheet: excel, stats: matchStats(match: match), match: match);
   timelineSheet(sheet: excel['Timeline'], match: match);
-  statsSheet(spreadsheet: excel, stats: matchStats(match: match));
+
+  excel.delete('Sheet1');
 
   var fileBytes = excel.save();
   final filePath = await statsSpreadsheetFilename(match: match);

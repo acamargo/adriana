@@ -2,21 +2,25 @@ import 'score.dart';
 
 void updatePercentages(report, currentSet, prefix) {
   if (report['p1']['results'][0][prefix + '-played'] > 0)
-    report['p1']['results'][0][prefix + '-win-%'] = 100 *
-        (report['p1']['results'][0][prefix + '-win'] /
-            report['p1']['results'][0][prefix + '-played']);
+    report['p1']['results'][0][prefix + '-win-%'] = (100 *
+            (report['p1']['results'][0][prefix + '-win'] /
+                report['p1']['results'][0][prefix + '-played']))
+        .round();
   if (report['p1']['results'][currentSet][prefix + '-played'] > 0)
-    report['p1']['results'][currentSet][prefix + '-win-%'] = 100 *
-        (report['p1']['results'][currentSet][prefix + '-win'] /
-            report['p1']['results'][currentSet][prefix + '-played']);
+    report['p1']['results'][currentSet][prefix + '-win-%'] = (100 *
+            (report['p1']['results'][currentSet][prefix + '-win'] /
+                report['p1']['results'][currentSet][prefix + '-played']))
+        .round();
   if (report['p2']['results'][currentSet][prefix + '-played'] > 0)
-    report['p2']['results'][0][prefix + '-win-%'] = 100 *
-        (report['p2']['results'][0][prefix + '-win'] /
-            report['p2']['results'][0][prefix + '-played']);
+    report['p2']['results'][0][prefix + '-win-%'] = (100 *
+            (report['p2']['results'][0][prefix + '-win'] /
+                report['p2']['results'][0][prefix + '-played']))
+        .round();
   if (report['p2']['results'][currentSet][prefix + '-played'] > 0)
-    report['p2']['results'][currentSet][prefix + '-win-%'] = 100 *
-        (report['p2']['results'][currentSet][prefix + '-win'] /
-            report['p2']['results'][currentSet][prefix + '-played']);
+    report['p2']['results'][currentSet][prefix + '-win-%'] = (100 *
+            (report['p2']['results'][currentSet][prefix + '-win'] /
+                report['p2']['results'][currentSet][prefix + '-played']))
+        .round();
 }
 
 Map matchStats({required Map match}) {
@@ -25,9 +29,10 @@ Map matchStats({required Map match}) {
       ? events[match['events'].length - 2]
       : events.last;
   Map<String, dynamic> report = {
-    'score': formatScore(match, lastScore),
+    'score': formatScore(match, lastScore, lastScore['server']),
     'match-duration': [],
     'match-time': [],
+    'scores': [],
     'p1': {'name': match['p1'], 'results': []},
     'p2': {'name': match['p2'], 'results': []}
   };
@@ -56,13 +61,16 @@ Map matchStats({required Map match}) {
         .add({'start': match['createdAt'], 'end': match['createdAt']});
     report['p1']['results'].add({...statsBlueprint});
     report['p2']['results'].add({...statsBlueprint});
+    report['scores'].add({});
   }
+  report['scores'][0] = lastScore;
 
   var fault = false;
   for (var i = 0; i < events.length; i++) {
     final event = events[i];
     if (event['event'] == 'Rally') {
       final scoreBefore = events[i - 1];
+      final scoreAfter = events[i + 1];
       final lastHitBy = event['lastHitBy'];
       final server = event['server'];
       final receiver = server == 'p1' ? 'p2' : 'p1';
@@ -70,6 +78,8 @@ Map matchStats({required Map match}) {
       final shot = event['shot'];
       final depth = event['depth'];
       final currentSet = scoreBefore['p1'].length;
+
+      report['scores'][currentSet] = scoreAfter;
 
       if (report['match-time'][currentSet]['start'] == match['createdAt']) {
         report['match-time'][currentSet]['start'] = event['createdAt'];

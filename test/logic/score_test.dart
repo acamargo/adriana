@@ -5,6 +5,37 @@ import 'package:adriana/logic/match.dart';
 import 'package:adriana/logic/coin_toss.dart';
 
 void main() {
+  group('formatStatsSet()', () {
+    group('Given a score with 5 sets', () {
+      final score = {
+        'event': 'Score',
+        'createdAt': DateTime.parse('2021-09-26 13:57:42.568975'),
+        'pointNumber': 238,
+        'p1': [
+          {'game': '0', 'tiebreak': null, 'set': 6},
+          {'game': '0', 'tiebreak': null, 'set': 6},
+          {'game': '0', 'tiebreak': null, 'set': 2},
+          {'game': '0', 'tiebreak': null, 'set': 3},
+          {'game': '0', 'tiebreak': null, 'set': 0}
+        ],
+        'p2': [
+          {'game': '0', 'tiebreak': null, 'set': 2},
+          {'game': '0', 'tiebreak': null, 'set': 2},
+          {'game': '0', 'tiebreak': null, 'set': 6},
+          {'game': '0', 'tiebreak': null, 'set': 6},
+          {'game': '0', 'tiebreak': null, 'set': 0}
+        ],
+        'state': 'first service, André',
+        'server': 'p1',
+        'isServiceFault': false,
+        'courtSide': 'deuce'
+      };
+      test('Then formats the score correctly', () {
+        expect(formatStatsSet('P1', 'P2', score), 'P2 6-3');
+      });
+    });
+  });
+
   group('newScoreFromRally()', () {
     final now = DateTime.now();
     group('Given a Match', () {
@@ -983,7 +1014,7 @@ void main() {
           ],
         };
         test('Then displays the tiebreak result in the score', () {
-          expect(formatScore(match, score), 'P1 0/0 6-7(5)');
+          expect(formatScore(match, score, 'p1'), 'P1 0/0 6-7(5)');
         });
       });
       group('When this is a tie break and p2 is serving', () {
@@ -998,7 +1029,7 @@ void main() {
           ],
         };
         test('Then displays the tiebreak result in the score', () {
-          expect(formatScore(match, score), 'P2 0/0 7-6(5)');
+          expect(formatScore(match, score, 'p2'), 'P2 0/0 7-6(5)');
         });
       });
       group('When tie break on the 3th set', () {
@@ -1024,7 +1055,7 @@ void main() {
           "tiebreakPointNumber": 9
         };
         test('Then displays the tiebreak result in the score', () {
-          expect(formatScore(match, score), 'P1 6/2 3-6 3-6 6-6');
+          expect(formatScore(match, score, 'p1'), 'P1 6/2 3-6 3-6 6-6');
         });
       });
     });
@@ -1044,7 +1075,7 @@ void main() {
       match['events'].add(coinToss);
       match['events'].add(newScore);
       test('Then the Score is zeroed, starting with P1', () {
-        expect(formatScore(match, newScore), 'P1 0/0 0-0');
+        expect(formatScore(match, newScore, 'p1'), 'P1 0/0 0-0');
       });
     });
     group('When a game in the first set is in progress', () {
@@ -1059,7 +1090,7 @@ void main() {
         ],
       };
       test('Then P2 leads fourty fifteen', () {
-        expect(formatScore(match, score), 'P2 40/15 0-0');
+        expect(formatScore(match, score, 'p2'), 'P2 40/15 0-0');
       });
     });
     group('When P2 leads the second set', () {
@@ -1076,7 +1107,7 @@ void main() {
         ],
       };
       test('Then formats two sets accordingly', () {
-        expect(formatScore(match, score), 'P2 40/30 4-6 5-3');
+        expect(formatScore(match, score, 'p2'), 'P2 40/30 4-6 5-3');
       });
     });
   });

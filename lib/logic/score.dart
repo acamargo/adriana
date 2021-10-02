@@ -1,6 +1,41 @@
 import 'dart:math';
 import 'dart:core';
 
+String formatStatsSet(String p1Name, String p2Name, Map score) {
+  var numberOfSets = score['p1'].length;
+  var p1SetLast = score['p1'].last;
+  var p2SetLast = score['p2'].last;
+
+  if (p1SetLast['set'] == 0 && p2SetLast['set'] == 0 && numberOfSets > 1) {
+    numberOfSets--;
+    p1SetLast = score['p1'][numberOfSets - 1];
+    p2SetLast = score['p2'][numberOfSets - 1];
+  }
+
+  if (p1SetLast['set'] == 7) {
+    return '$p1Name ${p1SetLast['set']}-${p2SetLast['set']}(${p2SetLast['tiebreak']})';
+  } else if (p2SetLast['set'] == 7) {
+    return '$p2Name ${p2SetLast['set']}-${p1SetLast['set']}(${p1SetLast['tiebreak']})';
+  } else if (p1SetLast['set'] == 6 && p2SetLast['set'] == 6) {
+    if (p1SetLast['tiebreak'] >= p2SetLast['tiebreak'])
+      return '$p1Name ${p1SetLast['tiebreak']}/${p2SetLast['tiebreak']} ${p1SetLast['set']}-${p2SetLast['set']}';
+    else
+      return '$p2Name ${p2SetLast['tiebreak']}/${p1SetLast['tiebreak']} ${p2SetLast['set']}-${p1SetLast['set']}';
+  } else if (p1SetLast['set'] >= p2SetLast['set']) {
+    var p1Game = '${p1SetLast['game']}/${p2SetLast['game']}';
+    if (p1Game == '0/0')
+      return '$p1Name ${p1SetLast['set']}-${p2SetLast['set']}';
+    else
+      return '$p1Name $p1Game ${p1SetLast['set']}-${p2SetLast['set']}';
+  } else {
+    var p2Game = '${p2SetLast['game']}/${p1SetLast['game']}';
+    if (p2Game == '0/0')
+      return '$p2Name ${p2SetLast['set']}-${p1SetLast['set']}';
+    else
+      return '$p2Name $p2Game ${p2SetLast['set']}-${p1SetLast['set']}';
+  }
+}
+
 String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
   final playerServingSetGames = playerServingSet['set'] as int;
   final playerReceivingSetGames = playerReceivingSet['set'] as int;
@@ -20,8 +55,7 @@ String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
   }
 }
 
-String formatScore(Map match, Map score) {
-  var playerServing = score['server'];
+String formatScore(Map match, Map score, String playerServing) {
   var playerServingName = match[playerServing];
   var playerReceiving = playerServing == 'p1' ? 'p2' : 'p1';
   final isTieBreak = score[playerServing].last['set'] == 6 &&
@@ -35,6 +69,25 @@ String formatScore(Map match, Map score) {
     if (score['isServiceFault'] == true) 'fault',
     '$playerServingGame/$playerReceivingGame'
   ];
+  for (var i = 0; i < score[playerServing].length; i++) {
+    result.add(
+        formatScoreSet(score[playerServing][i], score[playerReceiving][i]));
+  }
+  return result.join(' ');
+}
+
+String formatStatsScore(Map match, Map score, String playerServing) {
+  var playerServingName = match[playerServing];
+  var playerReceiving = playerServing == 'p1' ? 'p2' : 'p1';
+  final isTieBreak = score[playerServing].last['set'] == 6 &&
+      score[playerReceiving].last['set'] == 6;
+  var playerServingGame =
+      score[playerServing].last[isTieBreak ? 'tiebreak' : 'game'];
+  var playerReceivingGame =
+      score[playerReceiving].last[isTieBreak ? 'tiebreak' : 'game'];
+  var result = [playerServingName];
+  var game = '$playerServingGame/$playerReceivingGame';
+  if (game != '0/0') result.add(game);
   for (var i = 0; i < score[playerServing].length; i++) {
     result.add(
         formatScoreSet(score[playerServing][i], score[playerReceiving][i]));

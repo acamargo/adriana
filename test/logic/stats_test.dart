@@ -48,89 +48,217 @@ void main() {
               'end': DateTime.parse('2021-09-26 13:57:42.568929')
             }
           ],
+          'scores': [
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-09-26 13:57:42.568975'),
+              'pointNumber': 238,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 3},
+                {'game': '0', 'tiebreak': null, 'set': 3}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 1}
+              ],
+              'state': 'first service, André',
+              'server': 'p1',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-09-26 10:39:29.081756'),
+              'pointNumber': 51,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, Ângelo',
+              'server': 'p2',
+              'isServiceFault': false,
+              'courtSide': 'ad'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-09-26 11:09:15.857956'),
+              'pointNumber': 108,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, Ângelo',
+              'server': 'p2',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-09-26 11:36:33.792222'),
+              'pointNumber': 156,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, Ângelo',
+              'server': 'p2',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-09-26 13:42:22.161896'),
+              'pointNumber': 208,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 3},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, André',
+              'server': 'p1',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-09-26 13:57:42.568975'),
+              'pointNumber': 238,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 3},
+                {'game': '0', 'tiebreak': null, 'set': 3}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 2},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 1}
+              ],
+              'state': 'first service, André',
+              'server': 'p1',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            }
+          ],
           'p1': {
             'name': 'André',
             'results': [
               {
                 'points-played': 238,
                 'points-win': 126,
-                'points-win-%': 52.94117647058824,
+                'points-win-%': 53,
                 'aces': 0,
                 'double-faults': 6,
                 '1st-serve-played': 72,
                 '1st-serve-win': 36,
-                '1st-serve-win-%': 50.0,
+                '1st-serve-win-%': 50,
                 '2nd-serve-played': 38,
                 '2nd-serve-win': 20,
-                '2nd-serve-win-%': 52.63157894736842,
+                '2nd-serve-win-%': 53,
                 'break-points-played': 17,
                 'break-points-win': 11,
-                'break-points-win-%': 64.70588235294117,
+                'break-points-win-%': 65,
                 'game-points-played': 34,
                 'game-points-win': 20,
-                'game-points-win-%': 58.82352941176471
+                'game-points-win-%': 59
               },
               {
                 'points-played': 51,
                 'points-win': 31,
-                'points-win-%': 60.78431372549019,
+                'points-win-%': 61,
                 'aces': 0,
                 'double-faults': 2,
                 '1st-serve-played': 12,
                 '1st-serve-win': 8,
-                '1st-serve-win-%': 66.66666666666666,
+                '1st-serve-win-%': 67,
                 '2nd-serve-played': 12,
                 '2nd-serve-win': 6,
-                '2nd-serve-win-%': 50.0,
+                '2nd-serve-win-%': 50,
                 'break-points-played': 5,
                 'break-points-win': 3,
-                'break-points-win-%': 60.0,
+                'break-points-win-%': 60,
                 'game-points-played': 10,
                 'game-points-win': 6,
-                'game-points-win-%': 60.0
+                'game-points-win-%': 60
               },
               {
                 'points-played': 57,
                 'points-win': 34,
-                'points-win-%': 59.64912280701754,
+                'points-win-%': 60,
                 'aces': 0,
                 'double-faults': 0,
                 '1st-serve-played': 16,
                 '1st-serve-win': 11,
-                '1st-serve-win-%': 68.75,
+                '1st-serve-win-%': 69,
                 '2nd-serve-played': 7,
                 '2nd-serve-win': 6,
-                '2nd-serve-win-%': 85.71428571428571,
+                '2nd-serve-win-%': 86,
                 'break-points-played': 5,
                 'break-points-win': 2,
-                'break-points-win-%': 40.0,
+                'break-points-win-%': 40,
                 'game-points-played': 11,
                 'game-points-win': 6,
-                'game-points-win-%': 54.54545454545454
+                'game-points-win-%': 55
               },
               {
                 'points-played': 48,
                 'points-win': 21,
-                'points-win-%': 43.75,
+                'points-win-%': 44,
                 'aces': 0,
                 'double-faults': 2,
                 '1st-serve-played': 21,
                 '1st-serve-win': 8,
-                '1st-serve-win-%': 38.095238095238095,
+                '1st-serve-win-%': 38,
                 '2nd-serve-played': 6,
                 '2nd-serve-win': 1,
-                '2nd-serve-win-%': 16.666666666666664,
+                '2nd-serve-win-%': 17,
                 'break-points-played': 2,
                 'break-points-win': 2,
                 'break-points-win-%': 100.0,
                 'game-points-played': 3,
                 'game-points-win': 2,
-                'game-points-win-%': 66.66666666666666
+                'game-points-win-%': 67
               },
               {
                 'points-played': 52,
                 'points-win': 22,
-                'points-win-%': 42.30769230769231,
+                'points-win-%': 42,
                 'aces': 0,
                 'double-faults': 2,
                 '1st-serve-played': 10,
@@ -138,32 +266,32 @@ void main() {
                 '1st-serve-win-%': 20.0,
                 '2nd-serve-played': 11,
                 '2nd-serve-win': 6,
-                '2nd-serve-win-%': 54.54545454545454,
+                '2nd-serve-win-%': 55,
                 'break-points-played': 2,
                 'break-points-win': 2,
-                'break-points-win-%': 100.0,
+                'break-points-win-%': 100,
                 'game-points-played': 3,
                 'game-points-win': 3,
-                'game-points-win-%': 100.0
+                'game-points-win-%': 100
               },
               {
                 'points-played': 30,
                 'points-win': 18,
-                'points-win-%': 60.0,
+                'points-win-%': 60,
                 'aces': 0,
                 'double-faults': 0,
                 '1st-serve-played': 13,
                 '1st-serve-win': 7,
-                '1st-serve-win-%': 53.84615384615385,
+                '1st-serve-win-%': 54,
                 '2nd-serve-played': 2,
                 '2nd-serve-win': 1,
-                '2nd-serve-win-%': 50.0,
+                '2nd-serve-win-%': 50,
                 'break-points-played': 3,
                 'break-points-win': 2,
-                'break-points-win-%': 66.66666666666666,
+                'break-points-win-%': 67,
                 'game-points-played': 7,
                 'game-points-win': 3,
-                'game-points-win-%': 42.857142857142854
+                'game-points-win-%': 43
               }
             ]
           },
@@ -173,116 +301,116 @@ void main() {
               {
                 'points-played': 238,
                 'points-win': 112,
-                'points-win-%': 47.05882352941176,
+                'points-win-%': 47,
                 'aces': 0,
                 'double-faults': 25,
                 '1st-serve-played': 65,
                 '1st-serve-win': 37,
-                '1st-serve-win-%': 56.92307692307692,
+                '1st-serve-win-%': 57,
                 '2nd-serve-played': 63,
                 '2nd-serve-win': 21,
-                '2nd-serve-win-%': 33.33333333333333,
+                '2nd-serve-win-%': 33,
                 'break-points-played': 15,
                 'break-points-win': 9,
-                'break-points-win-%': 60.0,
+                'break-points-win-%': 60,
                 'game-points-played': 32,
                 'game-points-win': 17,
-                'game-points-win-%': 53.125
+                'game-points-win-%': 53
               },
               {
                 'points-played': 51,
                 'points-win': 20,
-                'points-win-%': 39.21568627450981,
+                'points-win-%': 39,
                 'aces': 0,
                 'double-faults': 6,
                 '1st-serve-played': 14,
                 '1st-serve-win': 7,
-                '1st-serve-win-%': 50.0,
+                '1st-serve-win-%': 50,
                 '2nd-serve-played': 13,
                 '2nd-serve-win': 3,
-                '2nd-serve-win-%': 23.076923076923077,
+                '2nd-serve-win-%': 23,
                 'break-points-played': 2,
                 'break-points-win': 1,
-                'break-points-win-%': 50.0,
+                'break-points-win-%': 50,
                 'game-points-played': 5,
                 'game-points-win': 2,
-                'game-points-win-%': 40.0
+                'game-points-win-%': 40
               },
               {
                 'points-played': 57,
                 'points-win': 23,
-                'points-win-%': 40.35087719298245,
+                'points-win-%': 40,
                 'aces': 0,
                 'double-faults': 2,
                 '1st-serve-played': 20,
                 '1st-serve-win': 11,
-                '1st-serve-win-%': 55.00000000000001,
+                '1st-serve-win-%': 55,
                 '2nd-serve-played': 14,
                 '2nd-serve-win': 6,
-                '2nd-serve-win-%': 42.857142857142854,
+                '2nd-serve-win-%': 43,
                 'break-points-played': 0,
                 'break-points-win': 0,
                 'break-points-win-%': 0.0,
                 'game-points-played': 6,
                 'game-points-win': 2,
-                'game-points-win-%': 33.33333333333333
+                'game-points-win-%': 33
               },
               {
                 'points-played': 48,
                 'points-win': 27,
-                'points-win-%': 56.25,
+                'points-win-%': 56,
                 'aces': 0,
                 'double-faults': 6,
                 '1st-serve-played': 12,
                 '1st-serve-win': 6,
-                '1st-serve-win-%': 50.0,
+                '1st-serve-win-%': 50,
                 '2nd-serve-played': 9,
                 '2nd-serve-win': 3,
-                '2nd-serve-win-%': 33.33333333333333,
+                '2nd-serve-win-%': 33,
                 'break-points-played': 6,
                 'break-points-win': 4,
-                'break-points-win-%': 66.66666666666666,
+                'break-points-win-%': 67,
                 'game-points-played': 9,
                 'game-points-win': 6,
-                'game-points-win-%': 66.66666666666666
+                'game-points-win-%': 67
               },
               {
                 'points-played': 52,
                 'points-win': 30,
-                'points-win-%': 57.692307692307686,
+                'points-win-%': 58,
                 'aces': 0,
                 'double-faults': 9,
                 '1st-serve-played': 11,
                 '1st-serve-win': 10,
-                '1st-serve-win-%': 90.9090909090909,
+                '1st-serve-win-%': 91,
                 '2nd-serve-played': 20,
                 '2nd-serve-win': 7,
-                '2nd-serve-win-%': 35.0,
+                '2nd-serve-win-%': 35,
                 'break-points-played': 5,
                 'break-points-win': 3,
-                'break-points-win-%': 60.0,
+                'break-points-win-%': 60,
                 'game-points-played': 9,
                 'game-points-win': 6,
-                'game-points-win-%': 66.66666666666666
+                'game-points-win-%': 67
               },
               {
                 'points-played': 30,
                 'points-win': 12,
-                'points-win-%': 40.0,
+                'points-win-%': 40,
                 'aces': 0,
                 'double-faults': 2,
                 '1st-serve-played': 8,
                 '1st-serve-win': 3,
-                '1st-serve-win-%': 37.5,
+                '1st-serve-win-%': 38,
                 '2nd-serve-played': 7,
                 '2nd-serve-win': 2,
-                '2nd-serve-win-%': 28.57142857142857,
+                '2nd-serve-win-%': 29,
                 'break-points-played': 2,
                 'break-points-win': 1,
-                'break-points-win-%': 50.0,
+                'break-points-win-%': 50,
                 'game-points-played': 3,
                 'game-points-win': 1,
-                'game-points-win-%': 33.33333333333333
+                'game-points-win-%': 33
               }
             ]
           }

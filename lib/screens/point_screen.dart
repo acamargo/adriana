@@ -282,7 +282,9 @@ class _PointScreenState extends State<PointScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(formatScore(widget.match, widget.match['events'].last),
+        title: Text(
+            formatScore(widget.match, widget.match['events'].last,
+                widget.match['events'].last['server']),
             style: TextStyle(color: Colors.lightGreenAccent)),
         actions: <Widget>[
           if (_undoAllowed())
