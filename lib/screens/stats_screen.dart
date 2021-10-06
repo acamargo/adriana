@@ -18,6 +18,26 @@ import '../logic/date_time.dart';
 // net points won
 // total points won
 
+// service stats *
+// serve rating
+// aces
+// double faults
+// 1st serve
+// 1st serve points won
+// 2nd serve points won
+// break points saved
+// service games played
+// return stats *
+// return rating
+// 1st serve return points won
+// 2nd serve return points won
+// break points converted
+// return games played
+// point stats *
+// service points won
+// return points won
+// total points won: 47% (64/137)
+
 void statsSheet(
     {required spreadsheet, required Map stats, required Map match}) {
   final matchWinner = stats['p1']['results'][0]['points-win'] >=
@@ -33,7 +53,7 @@ void statsSheet(
     sheet.appendRow([
       'Date',
       formatStatsWeekday(match['createdAt']),
-      match['createdAt'].toString()
+      match['createdAt'].toString().split('.').first
     ]);
     sheet.appendRow(['']);
     sheet.appendRow([title]);
@@ -45,19 +65,30 @@ void statsSheet(
     ]);
     sheet.appendRow(
         ['Duration', stats['match-duration'][i].toString().split('.').first]);
+    sheet.appendRow(['']);
+    sheet.appendRow(['Point Stats']);
     sheet.appendRow(
         ['Points played', stats['p1']['results'][i]['points-played']]);
     sheet.appendRow(['', stats['p1']['name'], stats['p2']['name']]);
     sheet.appendRow([
-      'Points win',
+      'Total points won',
       stats['p1']['results'][i]['points-win'],
       stats['p2']['results'][i]['points-win']
     ]);
     sheet.appendRow([
-      'Points win %',
+      'Total points won %',
       stats['p1']['results'][i]['points-win-%'],
       stats['p2']['results'][i]['points-win-%']
     ]);
+    // sheet.appendRow(['Service points played']);
+    // sheet.appendRow(['Service points won']);
+    // sheet.appendRow(['Service points won %']);
+    // sheet.appendRow(['Return points played']);
+    // sheet.appendRow(['Return points won']);
+    // sheet.appendRow(['Return points won %']);
+
+    sheet.appendRow(['']);
+    sheet.appendRow(['Serve Stats']);
     sheet.appendRow([
       'Aces',
       stats['p1']['results'][i]['aces'],
