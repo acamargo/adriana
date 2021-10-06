@@ -11,6 +11,7 @@ import 'stats_screen.dart';
 import '../models/match.dart';
 import '../logic/date_time.dart';
 import '../logic/match.dart';
+import 'match_screen.dart';
 
 class MatchesScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
@@ -67,23 +68,26 @@ class _MatchesScreenState extends State<MatchesScreen> {
           return Card(
             child: ListTile(
               onTap: () {
-                if (match['events'].last['event'] == 'FinalScore') {
-                  openStatsSpreadsheet(match: match).then((result) {
-                    if (result.type != ResultType.done)
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(result.message)));
-                  });
-                } else {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    bool hasCoinToss = match['events']
-                        .where((event) => event['event'] == 'CoinToss')
-                        .isNotEmpty;
-                    return hasCoinToss
-                        ? PointScreen(match)
-                        : CoinTossScreen(match);
-                  }));
-                }
+                // if (match['events'].last['event'] == 'FinalScore') {
+                //   openStatsSpreadsheet(match: match).then((result) {
+                //     if (result.type != ResultType.done)
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //           SnackBar(content: Text(result.message)));
+                //   });
+                // } else {
+                //   Navigator.of(context)
+                //       .push(MaterialPageRoute(builder: (context) {
+                //     bool hasCoinToss = match['events']
+                //         .where((event) => event['event'] == 'CoinToss')
+                //         .isNotEmpty;
+                //     return hasCoinToss
+                //         ? PointScreen(match)
+                //         : CoinTossScreen(match);
+                //   }));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return MatchScreen(match);
+                }));
               },
               title: Text(
                   '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
