@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:open_file/open_file.dart';
 
 import 'point_screen.dart';
 import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
+import '../logic/rally.dart';
 import '../logic/score.dart';
-import '../logic/date_time.dart';
+import '../logic/stats.dart';
 
 class MatchScreen extends StatefulWidget {
   final Map match;
@@ -74,6 +74,41 @@ class _MatchScreenState extends State<MatchScreen> {
     Wakelock.enable();
 
     final events = widget.match['events'].reversed.toList();
+    List<Map> items = [];
+    for (var i = 0; i < widget.match['events'].length; i++) {
+      final item = widget.match['events'][i];
+      if (item['event'] == 'CoinToss') {
+        final serverName = widget.match[item['server']];
+        items.add({
+          'title': '$serverName to serve',
+          'subtitle': '$serverName 0/0 0-0',
+        });
+      } else if (item['event'] == 'Rally') {
+        final score = widget.match['events'][i + 1];
+        items.add({
+          'title': formatRally(widget.match, item),
+          'subtitle': formatScore(widget.match, score, score['server']),
+        });
+      } else if (item['event'] == 'FinalScore') {
+        final stats = matchStats(match: widget.match);
+        final finalScoreFormatted = ([
+                  widget.match[stats['winner']],
+                  'd.',
+                  widget.match[stats['looser']]
+                ] +
+                statsScoreList(item, stats['winner']))
+            .join(' ');
+        final matchDuration = stats['match-duration'][0];
+        String matchDurationFormatted =
+            matchDuration.toString().split('.').first;
+        final pointsPlayed = stats['p1']['results'][0]['points-played'];
+        items.add({
+          'title': finalScoreFormatted,
+          'subtitle': '$pointsPlayed points played in $matchDurationFormatted'
+        });
+      }
+    }
+    items = items.reversed.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -96,9 +131,9 @@ class _MatchScreenState extends State<MatchScreen> {
         ],
       ),
       body: ListView.builder(
-        itemCount: events.length,
+        itemCount: items.length,
         itemBuilder: (context, index) {
-          final event = events[index];
+          final item = items[index];
 
           return Card(
             child: ListTile(
@@ -121,8 +156,8 @@ class _MatchScreenState extends State<MatchScreen> {
                 //   }));
                 // }
               },
-              title: Text(event['event']),
-              subtitle: Text(event['createdAt'].toString()),
+              title: Text(item['title']),
+              subtitle: Text(item['subtitle']),
             ),
           );
         },

@@ -14,6 +14,8 @@ void main() {
         final match = await storage.loadMatch(file);
         expect(matchStats(match: match), {
           'score': 'Ângelo 6-0 6-1 6-1 5-7',
+          'winner': 'p1',
+          'looser': 'p2',
           'match-duration': [
             Duration(hours: 1, minutes: 38, seconds: 32, microseconds: 154162),
             Duration(minutes: 19, seconds: 24, microseconds: 214000),
@@ -360,6 +362,8 @@ void main() {
         final match = await storage.loadMatch(file);
         expect(matchStats(match: match), {
           'score': 'André 6-2 6-2 2-6 3-6 3-1',
+          'winner': 'p1',
+          'looser': 'p2',
           'match-duration': [
             Duration(hours: 2, minutes: 5, seconds: 40, microseconds: 449736),
             Duration(minutes: 26, seconds: 54, microseconds: 179033),

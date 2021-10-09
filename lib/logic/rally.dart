@@ -49,3 +49,19 @@ Map whereDidTheBallLandOptions({required String shot}) {
     ]
   };
 }
+
+String formatRally(Map match, Map event) {
+  final lastHitBy = event['lastHitBy'];
+  final playerName = match[lastHitBy];
+  final shot = event['shot'];
+  final shotName = whatWasTheShotHitOptions(
+          isServing: event['server'] == event['lastHitBy'])['options']
+      .where((option) => option['value'] == shot)
+      .first['label'];
+  final depth = event['depth'];
+  final depthName = whereDidTheBallLandOptions(shot: shot)['options']
+      .where((option) => option['value'] == depth)
+      .first['label'];
+
+  return '$playerName $shotName $depthName';
+}
