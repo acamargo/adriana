@@ -82,7 +82,10 @@ class _MatchScreenState extends State<MatchScreen> {
           PopupMenuButton<String>(
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
-              return {'Stats', 'Finish'}.map((String choice) {
+              return {
+                'Stats',
+                if (events.first['event'] != 'FinalScore') 'Finish'
+              }.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -125,7 +128,7 @@ class _MatchScreenState extends State<MatchScreen> {
         },
       ),
       floatingActionButton: Visibility(
-        visible: (events.first['event'] != 'FinalScore'),
+        visible: events.first['event'] != 'FinalScore',
         child: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
