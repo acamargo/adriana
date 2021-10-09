@@ -25,11 +25,10 @@ void updatePercentages(report, currentSet, prefix) {
 
 Map matchStats({required Map match}) {
   final events = match['events'];
-  var lastScore = events.last['event'] == 'FinalScore'
-      ? events[match['events'].length - 2]
-      : events.last;
+  final isMatchFinished = events.last['event'] == 'FinalScore';
+  var lastScore =
+      isMatchFinished ? events[match['events'].length - 2] : events.last;
   Map<String, dynamic> report = {
-    'score': formatScore(match, lastScore, lastScore['server']),
     'match-duration': [],
     'match-time': [],
     'scores': [],
@@ -37,26 +36,34 @@ Map matchStats({required Map match}) {
     'p2': {'name': match['p2'], 'results': []}
   };
 
+  var lastSet = lastScore['p1'].length;
+  final lastScoreP1Set = lastScore['p1'][lastSet - 1];
+  final lastScoreP2Set = lastScore['p2'][lastSet - 1];
+  if (isMatchFinished &&
+      (lastScoreP1Set['set'] == 0 &&
+          lastScoreP2Set['set'] == 0 &&
+          lastScoreP1Set['game'] == '0' &&
+          lastScoreP2Set['game'] == '0')) lastSet--;
   Map statsBlueprint = {
     'points-played': 0,
     'points-win': 0,
-    'points-win-%': 0.0,
+    'points-win-%': 0,
     'aces': 0,
     'double-faults': 0,
     '1st-serve-played': 0,
     '1st-serve-win': 0,
-    '1st-serve-win-%': 0.0,
+    '1st-serve-win-%': 0,
     '2nd-serve-played': 0,
     '2nd-serve-win': 0,
-    '2nd-serve-win-%': 0.0,
+    '2nd-serve-win-%': 0,
     'break-points-played': 0,
     'break-points-win': 0,
-    'break-points-win-%': 0.0,
+    'break-points-win-%': 0,
     'game-points-played': 0,
     'game-points-win': 0,
-    'game-points-win-%': 0.0,
+    'game-points-win-%': 0,
   };
-  for (var i = 0; i <= lastScore['p1'].length; i++) {
+  for (var i = 0; i <= lastSet; i++) {
     report['match-time']
         .add({'start': match['createdAt'], 'end': match['createdAt']});
     report['p1']['results'].add({...statsBlueprint});
@@ -166,7 +173,7 @@ Map matchStats({required Map match}) {
     }
   }
 
-  for (var i = 0; i <= lastScore['p1'].length; i++) {
+  for (var i = 0; i <= lastSet; i++) {
     final duration = report['match-time'][i]['end']
         .difference(report['match-time'][i]['start']);
     report['match-duration'].add(duration);
@@ -174,6 +181,11 @@ Map matchStats({required Map match}) {
   report['match-duration'][0] =
       report['match-duration'].reduce((value, element) => value + element);
 
+  final matchWinner = report['p1']['results'][0]['points-win'] >=
+          report['p2']['results'][0]['points-win']
+      ? 'p1'
+      : 'p2';
+  report['score'] = formatStatsScore(match, lastScore, matchWinner);
   return report;
 }
 

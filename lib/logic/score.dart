@@ -79,8 +79,10 @@ String formatScore(Map match, Map score, String playerServing) {
 String formatStatsScore(Map match, Map score, String playerServing) {
   var playerServingName = match[playerServing];
   var playerReceiving = playerServing == 'p1' ? 'p2' : 'p1';
-  final isTieBreak = score[playerServing].last['set'] == 6 &&
-      score[playerReceiving].last['set'] == 6;
+  final scorePlayerServingLastSet = score[playerServing].last['set'];
+  final scorePlayerReceivingLastSet = score[playerReceiving].last['set'];
+  final isTieBreak =
+      scorePlayerServingLastSet == 6 && scorePlayerReceivingLastSet == 6;
   var playerServingGame =
       score[playerServing].last[isTieBreak ? 'tiebreak' : 'game'];
   var playerReceivingGame =
@@ -92,6 +94,10 @@ String formatStatsScore(Map match, Map score, String playerServing) {
     result.add(
         formatScoreSet(score[playerServing][i], score[playerReceiving][i]));
   }
+  final isMatchFinished = match['events'].last['event'] == 'FinalScore';
+  if (isMatchFinished &&
+      scorePlayerServingLastSet == 0 &&
+      scorePlayerReceivingLastSet == 0) result.removeAt(result.length - 1);
   return result.join(' ');
 }
 

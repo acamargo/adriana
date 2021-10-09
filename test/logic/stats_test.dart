@@ -6,6 +6,352 @@ import 'package:adriana/matches_storage.dart';
 
 void main() {
   group('matchStats()', () {
+    group('Given a 5 sets sample with empty fifth set', () {
+      final file =
+          new File('test_resources/2021-10-07T07:27:00.467303.match.json');
+      test('Then generate the stats', () async {
+        final MatchesStorage storage = MatchesStorage();
+        final match = await storage.loadMatch(file);
+        expect(matchStats(match: match), {
+          'score': 'Ângelo 6-0 6-1 6-1 5-7',
+          'match-duration': [
+            Duration(hours: 1, minutes: 38, seconds: 32, microseconds: 154162),
+            Duration(minutes: 19, seconds: 24, microseconds: 214000),
+            Duration(minutes: 21, seconds: 23, microseconds: 724047),
+            Duration(minutes: 18, seconds: 14, microseconds: 462279),
+            Duration(minutes: 39, seconds: 29, microseconds: 753836)
+          ],
+          'match-time': [
+            {
+              'start': DateTime.parse('2021-10-07 07:27:00.467303'),
+              'end': DateTime.parse('2021-10-07 07:27:00.467303')
+            },
+            {
+              'start': DateTime.parse('2021-10-07 07:59:27.178893'),
+              'end': DateTime.parse('2021-10-07 08:18:51.392893')
+            },
+            {
+              'start': DateTime.parse('2021-10-07 08:19:16.925583'),
+              'end': DateTime.parse('2021-10-07 08:40:40.649630')
+            },
+            {
+              'start': DateTime.parse('2021-10-07 08:42:04.194297'),
+              'end': DateTime.parse('2021-10-07 09:00:18.656576')
+            },
+            {
+              'start': DateTime.parse('2021-10-07 09:01:15.994431'),
+              'end': DateTime.parse('2021-10-07 09:40:45.748267')
+            }
+          ],
+          'scores': [
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-10-07 09:40:45.748328'),
+              'pointNumber': 210,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 5},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 0},
+                {'game': '0', 'tiebreak': null, 'set': 1},
+                {'game': '0', 'tiebreak': null, 'set': 1},
+                {'game': '0', 'tiebreak': null, 'set': 7},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, André',
+              'server': 'p2',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-10-07 08:18:51.392950'),
+              'pointNumber': 38,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 0},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, André',
+              'server': 'p2',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-10-07 08:40:40.649679'),
+              'pointNumber': 83,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 0},
+                {'game': '0', 'tiebreak': null, 'set': 1},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, Ângelo',
+              'server': 'p1',
+              'isServiceFault': false,
+              'courtSide': 'ad'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-10-07 09:00:18.656617'),
+              'pointNumber': 121,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 0},
+                {'game': '0', 'tiebreak': null, 'set': 1},
+                {'game': '0', 'tiebreak': null, 'set': 1},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, André',
+              'server': 'p2',
+              'isServiceFault': false,
+              'courtSide': 'ad'
+            },
+            {
+              'event': 'Score',
+              'createdAt': DateTime.parse('2021-10-07 09:40:45.748328'),
+              'pointNumber': 210,
+              'p1': [
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 6},
+                {'game': '0', 'tiebreak': null, 'set': 5},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'p2': [
+                {'game': '0', 'tiebreak': null, 'set': 0},
+                {'game': '0', 'tiebreak': null, 'set': 1},
+                {'game': '0', 'tiebreak': null, 'set': 1},
+                {'game': '0', 'tiebreak': null, 'set': 7},
+                {'game': '0', 'tiebreak': null, 'set': 0}
+              ],
+              'state': 'first service, André',
+              'server': 'p2',
+              'isServiceFault': false,
+              'courtSide': 'deuce'
+            }
+          ],
+          'p1': {
+            'name': 'Ângelo',
+            'results': [
+              {
+                'points-played': 210,
+                'points-win': 127,
+                'points-win-%': 60,
+                'aces': 1,
+                'double-faults': 9,
+                '1st-serve-played': 65,
+                '1st-serve-win': 40,
+                '1st-serve-win-%': 62,
+                '2nd-serve-played': 38,
+                '2nd-serve-win': 24,
+                '2nd-serve-win-%': 63,
+                'break-points-played': 20,
+                'break-points-win': 11,
+                'break-points-win-%': 55,
+                'game-points-played': 38,
+                'game-points-win': 23,
+                'game-points-win-%': 61
+              },
+              {
+                'points-played': 38,
+                'points-win': 26,
+                'points-win-%': 68,
+                'aces': 1,
+                'double-faults': 0,
+                '1st-serve-played': 14,
+                '1st-serve-win': 9,
+                '1st-serve-win-%': 64,
+                '2nd-serve-played': 6,
+                '2nd-serve-win': 4,
+                '2nd-serve-win-%': 67,
+                'break-points-played': 3,
+                'break-points-win': 3,
+                'break-points-win-%': 100,
+                'game-points-played': 6,
+                'game-points-win': 6,
+                'game-points-win-%': 100
+              },
+              {
+                'points-played': 45,
+                'points-win': 30,
+                'points-win-%': 67,
+                'aces': 0,
+                'double-faults': 2,
+                '1st-serve-played': 10,
+                '1st-serve-win': 8,
+                '1st-serve-win-%': 80,
+                '2nd-serve-played': 6,
+                '2nd-serve-win': 4,
+                '2nd-serve-win-%': 67,
+                'break-points-played': 5,
+                'break-points-win': 3,
+                'break-points-win-%': 60,
+                'game-points-played': 11,
+                'game-points-win': 6,
+                'game-points-win-%': 55
+              },
+              {
+                'points-played': 38,
+                'points-win': 27,
+                'points-win-%': 71,
+                'aces': 0,
+                'double-faults': 1,
+                '1st-serve-played': 11,
+                '1st-serve-win': 9,
+                '1st-serve-win-%': 82,
+                '2nd-serve-played': 8,
+                '2nd-serve-win': 7,
+                '2nd-serve-win-%': 88,
+                'break-points-played': 3,
+                'break-points-win': 2,
+                'break-points-win-%': 67,
+                'game-points-played': 9,
+                'game-points-win': 6,
+                'game-points-win-%': 67
+              },
+              {
+                'points-played': 89,
+                'points-win': 44,
+                'points-win-%': 49,
+                'aces': 0,
+                'double-faults': 6,
+                '1st-serve-played': 30,
+                '1st-serve-win': 14,
+                '1st-serve-win-%': 47,
+                '2nd-serve-played': 18,
+                '2nd-serve-win': 9,
+                '2nd-serve-win-%': 50,
+                'break-points-played': 9,
+                'break-points-win': 3,
+                'break-points-win-%': 33,
+                'game-points-played': 12,
+                'game-points-win': 5,
+                'game-points-win-%': 42
+              }
+            ]
+          },
+          'p2': {
+            'name': 'André',
+            'results': [
+              {
+                'points-played': 210,
+                'points-win': 83,
+                'points-win-%': 40,
+                'aces': 0,
+                'double-faults': 17,
+                '1st-serve-played': 37,
+                '1st-serve-win': 17,
+                '1st-serve-win-%': 46,
+                '2nd-serve-played': 70,
+                '2nd-serve-win': 27,
+                '2nd-serve-win-%': 39,
+                'break-points-played': 14,
+                'break-points-win': 4,
+                'break-points-win-%': 29,
+                'game-points-played': 26,
+                'game-points-win': 9,
+                'game-points-win-%': 35
+              },
+              {
+                'points-played': 38,
+                'points-win': 12,
+                'points-win-%': 32,
+                'aces': 0,
+                'double-faults': 4,
+                '1st-serve-played': 5,
+                '1st-serve-win': 2,
+                '1st-serve-win-%': 40,
+                '2nd-serve-played': 13,
+                '2nd-serve-win': 3,
+                '2nd-serve-win-%': 23,
+                'break-points-played': 2,
+                'break-points-win': 0,
+                'break-points-win-%': 0,
+                'game-points-played': 5,
+                'game-points-win': 0,
+                'game-points-win-%': 0
+              },
+              {
+                'points-played': 45,
+                'points-win': 15,
+                'points-win-%': 33,
+                'aces': 0,
+                'double-faults': 5,
+                '1st-serve-played': 12,
+                '1st-serve-win': 6,
+                '1st-serve-win-%': 50,
+                '2nd-serve-played': 17,
+                '2nd-serve-win': 5,
+                '2nd-serve-win-%': 29,
+                'break-points-played': 0,
+                'break-points-win': 0,
+                'break-points-win-%': 0,
+                'game-points-played': 3,
+                'game-points-win': 1,
+                'game-points-win-%': 33
+              },
+              {
+                'points-played': 38,
+                'points-win': 11,
+                'points-win-%': 29,
+                'aces': 0,
+                'double-faults': 1,
+                '1st-serve-played': 7,
+                '1st-serve-win': 2,
+                '1st-serve-win-%': 29,
+                '2nd-serve-played': 12,
+                '2nd-serve-win': 6,
+                '2nd-serve-win-%': 50,
+                'break-points-played': 0,
+                'break-points-win': 0,
+                'break-points-win-%': 0,
+                'game-points-played': 1,
+                'game-points-win': 1,
+                'game-points-win-%': 100
+              },
+              {
+                'points-played': 89,
+                'points-win': 45,
+                'points-win-%': 51,
+                'aces': 0,
+                'double-faults': 7,
+                '1st-serve-played': 13,
+                '1st-serve-win': 7,
+                '1st-serve-win-%': 54,
+                '2nd-serve-played': 28,
+                '2nd-serve-win': 13,
+                '2nd-serve-win-%': 46,
+                'break-points-played': 12,
+                'break-points-win': 4,
+                'break-points-win-%': 33,
+                'game-points-played': 17,
+                'game-points-win': 7,
+                'game-points-win-%': 41
+              }
+            ]
+          }
+        });
+      });
+    });
+
     group('Given a 5 sets sample data', () {
       final file =
           new File('test_resources/2021-09-26T09:46:41.089075.match.json');
@@ -13,7 +359,7 @@ void main() {
         final MatchesStorage storage = MatchesStorage();
         final match = await storage.loadMatch(file);
         expect(matchStats(match: match), {
-          'score': 'André 0/0 6-2 6-2 2-6 3-6 3-1',
+          'score': 'André 6-2 6-2 2-6 3-6 3-1',
           'match-duration': [
             Duration(hours: 2, minutes: 5, seconds: 40, microseconds: 449736),
             Duration(minutes: 26, seconds: 54, microseconds: 179033),
