@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:open_file/open_file.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'point_screen.dart';
 import 'coin_toss_screen.dart';
@@ -22,7 +23,19 @@ class MatchScreen extends StatefulWidget {
 class _MatchScreenState extends State<MatchScreen> {
   void handleClick(String value) async {
     switch (value) {
-      case 'Stats':
+      case 'Share stats':
+        generateStatsSpreadsheet(match: widget.match);
+        final box = context.findRenderObject() as RenderBox?;
+        final filePath = await statsSpreadsheetFilename(match: widget.match);
+        final description =
+            '${widget.match['p1']} vs ${widget.match['p2']} tennis match stats';
+        await Share.shareFiles([filePath],
+            mimeTypes: ['application/vnd.ms-excel'],
+            text: description,
+            subject: description,
+            sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+        break;
+      case 'Open stats':
         var result = await openStatsSpreadsheet(match: widget.match);
         if (result.type != ResultType.done)
           ScaffoldMessenger.of(context)
@@ -123,8 +136,8 @@ class _MatchScreenState extends State<MatchScreen> {
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return {
-                'Share',
-                'Stats',
+                'Share stats',
+                'Open stats',
                 if (events.first['event'] != 'FinalScore') 'Finish'
               }.map((String choice) {
                 return PopupMenuItem<String>(
