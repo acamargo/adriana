@@ -5,7 +5,7 @@ String formatDateTime(DateTime asOf, DateTime now) {
       .difference(DateTime(now.year, now.month, now.day))
       .inDays;
   if (difference == 0) {
-    return DateFormat("Hm").format(asOf);
+    return formatTime(asOf);
   } else if (difference == -1) {
     return "Yesterday";
   }
@@ -14,4 +14,8 @@ String formatDateTime(DateTime asOf, DateTime now) {
 
 String formatStatsWeekday(DateTime asOf) {
   return DateFormat('EEEE').format(asOf);
+}
+
+String formatTime(DateTime asOf) {
+  return DateFormat('Hm').format(asOf);
 }

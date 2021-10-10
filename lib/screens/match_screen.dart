@@ -8,6 +8,7 @@ import 'stats_screen.dart';
 import '../logic/rally.dart';
 import '../logic/score.dart';
 import '../logic/stats.dart';
+import '../logic/date_time.dart';
 
 class MatchScreen extends StatefulWidget {
   final Map match;
@@ -83,6 +84,7 @@ class _MatchScreenState extends State<MatchScreen> {
           'pointNumber': '',
           'title': '$serverName to serve',
           'subtitle': '$serverName 0/0 0-0',
+          'time': '',
         });
       } else if (item['event'] == 'Rally') {
         final score = widget.match['events'][i + 1];
@@ -92,16 +94,10 @@ class _MatchScreenState extends State<MatchScreen> {
               : '#${widget.match['events'][i - 1]['pointNumber'] + 1}',
           'title': formatRally(widget.match, item),
           'subtitle': formatScore(widget.match, score, score['server']),
+          'time': formatTime(item['createdAt'])
         });
       } else if (item['event'] == 'FinalScore') {
         final stats = matchStats(match: widget.match);
-        final finalScoreFormatted = ([
-                  widget.match[stats['winner']],
-                  'd.',
-                  widget.match[stats['looser']]
-                ] +
-                statsScoreList(item, stats['winner']))
-            .join(' ');
         final matchFinishedResult =
             '${widget.match[stats['winner']]} d. ${widget.match[stats['looser']]}';
         final matchDuration = stats['match-duration'][0];
@@ -112,7 +108,8 @@ class _MatchScreenState extends State<MatchScreen> {
         items.add({
           'pointNumber': '',
           'title': matchFinishedResult,
-          'subtitle': '$matchFinishedScore in $matchFinishedDuration'
+          'subtitle': '$matchFinishedScore in $matchFinishedDuration',
+          'time': '',
         });
       }
     }
@@ -126,6 +123,7 @@ class _MatchScreenState extends State<MatchScreen> {
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return {
+                'Share',
                 'Stats',
                 if (events.first['event'] != 'FinalScore') 'Finish'
               }.map((String choice) {
@@ -167,7 +165,9 @@ class _MatchScreenState extends State<MatchScreen> {
               title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [Text(item['title']), Text(item['pointNumber'])]),
-              subtitle: Text(item['subtitle']),
+              subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text(item['subtitle']), Text(item['time'])]),
             ),
           );
         },
