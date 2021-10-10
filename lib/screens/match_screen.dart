@@ -87,7 +87,9 @@ class _MatchScreenState extends State<MatchScreen> {
       } else if (item['event'] == 'Rally') {
         final score = widget.match['events'][i + 1];
         items.add({
-          'pointNumber': '#${score['pointNumber']}',
+          'pointNumber': score['isServiceFault']
+              ? ''
+              : '#${widget.match['events'][i - 1]['pointNumber'] + 1}',
           'title': formatRally(widget.match, item),
           'subtitle': formatScore(widget.match, score, score['server']),
         });
@@ -100,14 +102,17 @@ class _MatchScreenState extends State<MatchScreen> {
                 ] +
                 statsScoreList(item, stats['winner']))
             .join(' ');
+        final matchFinishedResult =
+            '${widget.match[stats['winner']]} d. ${widget.match[stats['looser']]}';
         final matchDuration = stats['match-duration'][0];
-        String matchDurationFormatted =
+        String matchFinishedDuration =
             matchDuration.toString().split('.').first;
-        final pointsPlayed = stats['p1']['results'][0]['points-played'];
+        String matchFinishedScore =
+            statsScoreList(item, stats['winner']).join(' ');
         items.add({
           'pointNumber': '',
-          'title': finalScoreFormatted,
-          'subtitle': '$pointsPlayed points played in $matchDurationFormatted'
+          'title': matchFinishedResult,
+          'subtitle': '$matchFinishedScore in $matchFinishedDuration'
         });
       }
     }
