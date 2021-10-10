@@ -6,42 +6,11 @@ import 'package:excel/excel.dart';
 import '../logic/stats.dart';
 import '../logic/score.dart';
 import '../logic/date_time.dart';
-// set time
-// aces
-// double faults
-// first serve %
-// win % on 1st serve
-// win % on 2nd serve
-// break points
-// winners
-// unforced errors
-// net points won
-// total points won
-
-// service stats *
-// serve rating
-// aces
-// double faults
-// 1st serve
-// 1st serve points won
-// 2nd serve points won
-// break points saved
-// service games played
-// return stats *
-// return rating
-// 1st serve return points won
-// 2nd serve return points won
-// break points converted
-// return games played
-// point stats *
-// service points won
-// return points won
-// total points won: 47% (64/137)
 
 void statsSheet(
     {required spreadsheet, required Map stats, required Map match}) {
-  final matchWinner = stats['p1']['results'][0]['points-win'] >=
-          stats['p2']['results'][0]['points-win']
+  final matchWinner = stats['p1']['results'][0]['points-won'] >=
+          stats['p2']['results'][0]['points-won']
       ? 'p1'
       : 'p2';
   for (var i = 0; i < stats['p1']['results'].length; i++) {
@@ -72,23 +41,66 @@ void statsSheet(
       stats['p1']['results'][i]['points-played'],
       stats['p2']['results'][i]['points-played']
     ]);
-
     sheet.appendRow([
       'Total won',
-      stats['p1']['results'][i]['points-win'],
-      stats['p2']['results'][i]['points-win']
+      stats['p1']['results'][i]['points-won'],
+      stats['p2']['results'][i]['points-won']
     ]);
     sheet.appendRow([
       'Total won %',
-      stats['p1']['results'][i]['points-win-%'],
-      stats['p2']['results'][i]['points-win-%']
+      stats['p1']['results'][i]['points-won-%'],
+      stats['p2']['results'][i]['points-won-%']
     ]);
-    // sheet.appendRow(['Service points played']);
-    // sheet.appendRow(['Service points won']);
-    // sheet.appendRow(['Service points won %']);
-    // sheet.appendRow(['Return points played']);
-    // sheet.appendRow(['Return points won']);
-    // sheet.appendRow(['Return points won %']);
+    sheet.appendRow([
+      'Winners',
+      stats['p1']['results'][i]['winners'],
+      stats['p2']['results'][i]['winners']
+    ]);
+    sheet.appendRow([
+      'Service points played',
+      stats['p1']['results'][i]['service-points-played'],
+      stats['p2']['results'][i]['service-points-played']
+    ]);
+    sheet.appendRow([
+      'Service points won',
+      stats['p1']['results'][i]['service-points-won'],
+      stats['p2']['results'][i]['service-points-won']
+    ]);
+    sheet.appendRow([
+      'Service points won %',
+      stats['p1']['results'][i]['service-points-won-%'],
+      stats['p2']['results'][i]['service-points-won-%']
+    ]);
+    sheet.appendRow([
+      'Return points played',
+      stats['p1']['results'][i]['return-points-played'],
+      stats['p2']['results'][i]['return-points-played']
+    ]);
+    sheet.appendRow([
+      'Return points won',
+      stats['p1']['results'][i]['return-points-won'],
+      stats['p2']['results'][i]['return-points-won']
+    ]);
+    sheet.appendRow([
+      'Return points won %',
+      stats['p1']['results'][i]['return-points-won-%'],
+      stats['p2']['results'][i]['return-points-won-%']
+    ]);
+    sheet.appendRow([
+      'Net points played',
+      stats['p1']['results'][i]['net-points-played'],
+      stats['p2']['results'][i]['net-points-played']
+    ]);
+    sheet.appendRow([
+      'Net points won',
+      stats['p1']['results'][i]['net-points-won'],
+      stats['p2']['results'][i]['net-points-won']
+    ]);
+    sheet.appendRow([
+      'Net points won %',
+      stats['p1']['results'][i]['net-points-won-%'],
+      stats['p2']['results'][i]['net-points-won-%']
+    ]);
 
     sheet.appendRow(['']);
     sheet.appendRow(['Serve Stats', stats['p1']['name'], stats['p2']['name']]);
@@ -108,14 +120,14 @@ void statsSheet(
       stats['p2']['results'][i]['1st-serve-played']
     ]);
     sheet.appendRow([
-      '1st serve points win',
-      stats['p1']['results'][i]['1st-serve-win'],
-      stats['p2']['results'][i]['1st-serve-win']
+      '1st serve points won',
+      stats['p1']['results'][i]['1st-serve-won'],
+      stats['p2']['results'][i]['1st-serve-won']
     ]);
     sheet.appendRow([
-      '1st serve points win %',
-      stats['p1']['results'][i]['1st-serve-win-%'],
-      stats['p2']['results'][i]['1st-serve-win-%']
+      '1st serve points won %',
+      stats['p1']['results'][i]['1st-serve-won-%'],
+      stats['p2']['results'][i]['1st-serve-won-%']
     ]);
     sheet.appendRow([
       '2nd serve points played',
@@ -123,44 +135,44 @@ void statsSheet(
       stats['p2']['results'][i]['2nd-serve-played']
     ]);
     sheet.appendRow([
-      '2nd serve points win',
-      stats['p1']['results'][i]['2nd-serve-win'],
-      stats['p2']['results'][i]['2nd-serve-win']
+      '2nd serve points won',
+      stats['p1']['results'][i]['2nd-serve-won'],
+      stats['p2']['results'][i]['2nd-serve-won']
     ]);
     sheet.appendRow([
-      '2nd serve points win %',
-      stats['p1']['results'][i]['2nd-serve-win-%'],
-      stats['p2']['results'][i]['2nd-serve-win-%']
+      '2nd serve points won %',
+      stats['p1']['results'][i]['2nd-serve-won-%'],
+      stats['p2']['results'][i]['2nd-serve-won-%']
     ]);
-    // sheet.appendRow([
-    //   'Game points played',
-    //   stats['p1']['results'][i]['game-points-played'],
-    //   stats['p2']['results'][i]['game-points-played']
-    // ]);
-    // sheet.appendRow([
-    //   'Game points win',
-    //   stats['p1']['results'][i]['game-points-win'],
-    //   stats['p2']['results'][i]['game-points-win']
-    // ]);
-    // sheet.appendRow([
-    //   'Game points win %',
-    //   stats['p1']['results'][i]['game-points-win-%'],
-    //   stats['p2']['results'][i]['game-points-win-%']
-    // ]);
+    sheet.appendRow([
+      'Game points played',
+      stats['p1']['results'][i]['game-points-played'],
+      stats['p2']['results'][i]['game-points-played']
+    ]);
+    sheet.appendRow([
+      'Game points won',
+      stats['p1']['results'][i]['game-points-won'],
+      stats['p2']['results'][i]['game-points-won']
+    ]);
+    sheet.appendRow([
+      'Game points won %',
+      stats['p1']['results'][i]['game-points-won-%'],
+      stats['p2']['results'][i]['game-points-won-%']
+    ]);
     sheet.appendRow([
       'Break points played',
       stats['p1']['results'][i]['break-points-played'],
       stats['p2']['results'][i]['break-points-played']
     ]);
     sheet.appendRow([
-      'Break points win',
-      stats['p1']['results'][i]['break-points-win'],
-      stats['p2']['results'][i]['break-points-win']
+      'Break points won',
+      stats['p1']['results'][i]['break-points-won'],
+      stats['p2']['results'][i]['break-points-won']
     ]);
     sheet.appendRow([
-      'Break points win %',
-      stats['p1']['results'][i]['break-points-win-%'],
-      stats['p2']['results'][i]['break-points-win-%']
+      'Break points won %',
+      stats['p1']['results'][i]['break-points-won-%'],
+      stats['p2']['results'][i]['break-points-won-%']
     ]);
 
     sheet.appendRow(['']);
@@ -173,13 +185,13 @@ void statsSheet(
     ]);
     sheet.appendRow([
       'Winners',
-      stats['p1']['results'][i]['forehand-win'],
-      stats['p2']['results'][i]['forehand-win']
+      stats['p1']['results'][i]['forehand-won'],
+      stats['p2']['results'][i]['forehand-won']
     ]);
     sheet.appendRow([
       'Winners %',
-      stats['p1']['results'][i]['forehand-win-%'],
-      stats['p2']['results'][i]['forehand-win-%']
+      stats['p1']['results'][i]['forehand-won-%'],
+      stats['p2']['results'][i]['forehand-won-%']
     ]);
     sheet.appendRow([
       'Into the net',
@@ -212,13 +224,13 @@ void statsSheet(
     ]);
     sheet.appendRow([
       'Winners',
-      stats['p1']['results'][i]['backhand-win'],
-      stats['p2']['results'][i]['backhand-win']
+      stats['p1']['results'][i]['backhand-won'],
+      stats['p2']['results'][i]['backhand-won']
     ]);
     sheet.appendRow([
       'Winners %',
-      stats['p1']['results'][i]['backhand-win-%'],
-      stats['p2']['results'][i]['backhand-win-%']
+      stats['p1']['results'][i]['backhand-won-%'],
+      stats['p2']['results'][i]['backhand-won-%']
     ]);
     sheet.appendRow([
       'Into the net',
@@ -250,13 +262,13 @@ void statsSheet(
     ]);
     sheet.appendRow([
       'Winners',
-      stats['p1']['results'][i]['volley-win'],
-      stats['p2']['results'][i]['volley-win']
+      stats['p1']['results'][i]['volley-won'],
+      stats['p2']['results'][i]['volley-won']
     ]);
     sheet.appendRow([
       'Winners %',
-      stats['p1']['results'][i]['volley-win-%'],
-      stats['p2']['results'][i]['volley-win-%']
+      stats['p1']['results'][i]['volley-won-%'],
+      stats['p2']['results'][i]['volley-won-%']
     ]);
     sheet.appendRow([
       'Into the net',
@@ -288,13 +300,13 @@ void statsSheet(
     ]);
     sheet.appendRow([
       'Winners',
-      stats['p1']['results'][i]['smash-win'],
-      stats['p2']['results'][i]['smash-win']
+      stats['p1']['results'][i]['smash-won'],
+      stats['p2']['results'][i]['smash-won']
     ]);
     sheet.appendRow([
       'Winners %',
-      stats['p1']['results'][i]['smash-win-%'],
-      stats['p2']['results'][i]['smash-win-%']
+      stats['p1']['results'][i]['smash-won-%'],
+      stats['p2']['results'][i]['smash-won-%']
     ]);
     sheet.appendRow([
       'Into the net',
@@ -453,43 +465,3 @@ class _StatsScreenState extends State<StatsScreen> {
     );
   }
 }
-
-// time played
-// time point average
-
-// |  24 points played in the match                                                                                                        |
-// | 10 decided by p1 (1 hits/9 misses)                                                                                 | 14 decided by p2 |
-// | 2 serve      | 6 forehand               | 2 backhand               | 0 volley              | 0 smash               |
-// | 0 ace | 2 DF | 1 winner | 3 net | 2 out | 0 winner | 2 net | 0 out | 0 win | 0 net | 0 out | 0 win | 0 net | 0 out |
-
-// points | total  | 1st set | 2nd set | 3rd set
-// -------+--------+---------+---------+--------
-// match  | 143    | 64      | 55      | 24
-// p1     | 30/113 | 10/54
-// p2     | 113/30 | 54/10
-// * points
-//    * number of points played/won/lost
-//    * points won/lost by stroke
-// * games
-//   * number of games played/won/lost
-//   * number of games played serving/won/lost
-//   * number of games played receiving/won/lost
-// * forehand
-//   * overall number of hit/winner/into the net/out
-// * backhand
-//   * overall number of hit/winner/into the net/out
-// * smash
-//   * overall number of hit/winner/into the net/out
-// * volley
-//   * overall number of hit/winner/into the net/out
-// * service
-//   * overall number of services hit/ace/into the net/out
-//   * 1st service 
-//     * consistency (how many times the ball was in / the ball was into the net or out)
-//     * points won (number of points won when the first serve was in / number of times the first serve was in)
-//     * unreturned serves (number of times the opponent returned into the net or out / number of time the first serve was in)
-//   * 2st service 
-//     * consistency (how many times the ball was in / the ball was into the net or out)
-//     * points won (number of points won when the first serve was in / number of times the first serve was in)
-//     * unreturned serves (number of times the opponent returned into the net or out / number of time the first serve was in)
-// 

@@ -2,8 +2,8 @@ import 'score.dart';
 
 void updatePercentages(report, currentSet, prefix) {
   if (report['p1']['results'][0][prefix + '-played'] > 0) {
-    report['p1']['results'][0][prefix + '-win-%'] = (100 *
-            (report['p1']['results'][0][prefix + '-win'] /
+    report['p1']['results'][0][prefix + '-won-%'] = (100 *
+            (report['p1']['results'][0][prefix + '-won'] /
                 report['p1']['results'][0][prefix + '-played']))
         .round();
     if (report['p1']['results'][0][prefix + '-out'] != null)
@@ -18,8 +18,8 @@ void updatePercentages(report, currentSet, prefix) {
           .round();
   }
   if (report['p1']['results'][currentSet][prefix + '-played'] > 0) {
-    report['p1']['results'][currentSet][prefix + '-win-%'] = (100 *
-            (report['p1']['results'][currentSet][prefix + '-win'] /
+    report['p1']['results'][currentSet][prefix + '-won-%'] = (100 *
+            (report['p1']['results'][currentSet][prefix + '-won'] /
                 report['p1']['results'][currentSet][prefix + '-played']))
         .round();
     if (report['p1']['results'][currentSet][prefix + '-out'] != null)
@@ -34,8 +34,8 @@ void updatePercentages(report, currentSet, prefix) {
           .round();
   }
   if (report['p2']['results'][currentSet][prefix + '-played'] > 0) {
-    report['p2']['results'][0][prefix + '-win-%'] = (100 *
-            (report['p2']['results'][0][prefix + '-win'] /
+    report['p2']['results'][0][prefix + '-won-%'] = (100 *
+            (report['p2']['results'][0][prefix + '-won'] /
                 report['p2']['results'][0][prefix + '-played']))
         .round();
     if (report['p2']['results'][0][prefix + '-out'] != null)
@@ -50,8 +50,8 @@ void updatePercentages(report, currentSet, prefix) {
           .round();
   }
   if (report['p2']['results'][currentSet][prefix + '-played'] > 0) {
-    report['p2']['results'][currentSet][prefix + '-win-%'] = (100 *
-            (report['p2']['results'][currentSet][prefix + '-win'] /
+    report['p2']['results'][currentSet][prefix + '-won-%'] = (100 *
+            (report['p2']['results'][currentSet][prefix + '-won'] /
                 report['p2']['results'][currentSet][prefix + '-played']))
         .round();
     if (report['p2']['results'][currentSet][prefix + '-out'] != null)
@@ -90,46 +90,56 @@ Map matchStats({required Map match}) {
           lastScoreP2Set['game'] == '0')) lastSet--;
   Map statsBlueprint = {
     'points-played': 0,
-    'points-win': 0,
-    'points-win-%': 0,
+    'points-won': 0,
+    'points-won-%': 0,
+    'return-points-played': 0,
+    'return-points-won': 0,
+    'return-points-won-%': 0,
+    'service-points-played': 0,
+    'service-points-won': 0,
+    'service-points-won-%': 0,
+    'winners': 0,
+    'net-points-played': 0,
+    'net-points-won': 0,
+    'net-points-won-%': 0,
     'aces': 0,
     'double-faults': 0,
     '1st-serve-played': 0,
-    '1st-serve-win': 0,
-    '1st-serve-win-%': 0,
+    '1st-serve-won': 0,
+    '1st-serve-won-%': 0,
     '2nd-serve-played': 0,
-    '2nd-serve-win': 0,
-    '2nd-serve-win-%': 0,
+    '2nd-serve-won': 0,
+    '2nd-serve-won-%': 0,
     'break-points-played': 0,
-    'break-points-win': 0,
-    'break-points-win-%': 0,
+    'break-points-won': 0,
+    'break-points-won-%': 0,
     'game-points-played': 0,
-    'game-points-win': 0,
-    'game-points-win-%': 0,
+    'game-points-won': 0,
+    'game-points-won-%': 0,
     'forehand-played': 0,
-    'forehand-win': 0,
-    'forehand-win-%': 0,
+    'forehand-won': 0,
+    'forehand-won-%': 0,
     'forehand-out': 0,
     'forehand-out-%': 0,
     'forehand-net': 0,
     'forehand-net-%': 0,
     'backhand-played': 0,
-    'backhand-win': 0,
-    'backhand-win-%': 0,
+    'backhand-won': 0,
+    'backhand-won-%': 0,
     'backhand-out': 0,
     'backhand-out-%': 0,
     'backhand-net': 0,
     'backhand-net-%': 0,
     'smash-played': 0,
-    'smash-win': 0,
-    'smash-win-%': 0,
+    'smash-won': 0,
+    'smash-won-%': 0,
     'smash-out': 0,
     'smash-out-%': 0,
     'smash-net': 0,
     'smash-net-%': 0,
     'volley-played': 0,
-    'volley-win': 0,
-    'volley-win-%': 0,
+    'volley-won': 0,
+    'volley-won-%': 0,
     'volley-out': 0,
     'volley-out-%': 0,
     'volley-net': 0,
@@ -173,9 +183,40 @@ Map matchStats({required Map match}) {
         report['p2']['results'][0]['points-played']++;
         report['p2']['results'][currentSet]['points-played']++;
 
-        report[winner]['results'][0]['points-win']++;
-        report[winner]['results'][currentSet]['points-win']++;
+        report[winner]['results'][0]['points-won']++;
+        report[winner]['results'][currentSet]['points-won']++;
         updatePercentages(report, currentSet, 'points');
+
+        if (depth == 'I') {
+          report[winner]['results'][0]['winners']++;
+          report[winner]['results'][currentSet]['winners']++;
+        }
+
+        if (shot == 'V' || shot == 'SM') {
+          report[lastHitBy]['results'][0]['net-points-played']++;
+          report[lastHitBy]['results'][currentSet]['net-points-played']++;
+          if (lastHitBy == winner) {
+            report[lastHitBy]['results'][0]['net-points-won']++;
+            report[lastHitBy]['results'][currentSet]['net-points-won']++;
+          }
+          updatePercentages(report, currentSet, 'net-points');
+        }
+
+        report[server]['results'][0]['service-points-played']++;
+        report[server]['results'][currentSet]['service-points-played']++;
+        if (server == winner) {
+          report[server]['results'][0]['service-points-won']++;
+          report[server]['results'][currentSet]['service-points-won']++;
+        }
+        updatePercentages(report, currentSet, 'service-points');
+
+        report[receiver]['results'][0]['return-points-played']++;
+        report[receiver]['results'][currentSet]['return-points-played']++;
+        if (receiver == winner) {
+          report[receiver]['results'][0]['return-points-won']++;
+          report[receiver]['results'][currentSet]['return-points-won']++;
+        }
+        updatePercentages(report, currentSet, 'return-points');
 
         if (lastHitBy == server &&
             winner == lastHitBy &&
@@ -196,16 +237,16 @@ Map matchStats({required Map match}) {
           report[server]['results'][0]['2nd-serve-played']++;
           report[server]['results'][currentSet]['2nd-serve-played']++;
           if (server == winner) {
-            report[server]['results'][0]['2nd-serve-win']++;
-            report[server]['results'][currentSet]['2nd-serve-win']++;
+            report[server]['results'][0]['2nd-serve-won']++;
+            report[server]['results'][currentSet]['2nd-serve-won']++;
           }
           updatePercentages(report, currentSet, '2nd-serve');
         } else {
           report[server]['results'][0]['1st-serve-played']++;
           report[server]['results'][currentSet]['1st-serve-played']++;
           if (server == winner) {
-            report[server]['results'][0]['1st-serve-win']++;
-            report[server]['results'][currentSet]['1st-serve-win']++;
+            report[server]['results'][0]['1st-serve-won']++;
+            report[server]['results'][currentSet]['1st-serve-won']++;
           }
           updatePercentages(report, currentSet, '1st-serve');
         }
@@ -220,10 +261,10 @@ Map matchStats({required Map match}) {
           report[receiver]['results'][0]['game-points-played']++;
           report[receiver]['results'][currentSet]['game-points-played']++;
           if (receiver == winner) {
-            report[receiver]['results'][0]['break-points-win']++;
-            report[receiver]['results'][currentSet]['break-points-win']++;
-            report[receiver]['results'][0]['game-points-win']++;
-            report[receiver]['results'][currentSet]['game-points-win']++;
+            report[receiver]['results'][0]['break-points-won']++;
+            report[receiver]['results'][currentSet]['break-points-won']++;
+            report[receiver]['results'][0]['game-points-won']++;
+            report[receiver]['results'][currentSet]['game-points-won']++;
             updatePercentages(report, currentSet, 'break-points');
             updatePercentages(report, currentSet, 'game-points');
           }
@@ -236,8 +277,8 @@ Map matchStats({required Map match}) {
           report[server]['results'][0]['game-points-played']++;
           report[server]['results'][currentSet]['game-points-played']++;
           if (server == winner) {
-            report[server]['results'][0]['game-points-win']++;
-            report[server]['results'][currentSet]['game-points-win']++;
+            report[server]['results'][0]['game-points-won']++;
+            report[server]['results'][currentSet]['game-points-won']++;
             updatePercentages(report, currentSet, 'game-points');
           }
         }
@@ -247,8 +288,8 @@ Map matchStats({required Map match}) {
           report[server]['results'][currentSet]['forehand-played']++;
           switch (depth) {
             case 'I':
-              report[server]['results'][0]['forehand-win']++;
-              report[server]['results'][currentSet]['forehand-win']++;
+              report[server]['results'][0]['forehand-won']++;
+              report[server]['results'][currentSet]['forehand-won']++;
               break;
             case 'O':
               report[server]['results'][0]['forehand-out']++;
@@ -266,8 +307,8 @@ Map matchStats({required Map match}) {
           report[server]['results'][currentSet]['backhand-played']++;
           switch (depth) {
             case 'I':
-              report[server]['results'][0]['backhand-win']++;
-              report[server]['results'][currentSet]['backhand-win']++;
+              report[server]['results'][0]['backhand-won']++;
+              report[server]['results'][currentSet]['backhand-won']++;
               break;
             case 'O':
               report[server]['results'][0]['backhand-out']++;
@@ -285,8 +326,8 @@ Map matchStats({required Map match}) {
           report[server]['results'][currentSet]['smash-played']++;
           switch (depth) {
             case 'I':
-              report[server]['results'][0]['smash-win']++;
-              report[server]['results'][currentSet]['smash-win']++;
+              report[server]['results'][0]['smash-won']++;
+              report[server]['results'][currentSet]['smash-won']++;
               break;
             case 'O':
               report[server]['results'][0]['smash-out']++;
@@ -304,8 +345,8 @@ Map matchStats({required Map match}) {
           report[server]['results'][currentSet]['volley-played']++;
           switch (depth) {
             case 'I':
-              report[server]['results'][0]['volley-win']++;
-              report[server]['results'][currentSet]['volley-win']++;
+              report[server]['results'][0]['volley-won']++;
+              report[server]['results'][currentSet]['volley-won']++;
               break;
             case 'O':
               report[server]['results'][0]['volley-out']++;
@@ -330,8 +371,8 @@ Map matchStats({required Map match}) {
   report['match-duration'][0] =
       report['match-duration'].reduce((value, element) => value + element);
 
-  final matchWinner = report['p1']['results'][0]['points-win'] >=
-          report['p2']['results'][0]['points-win']
+  final matchWinner = report['p1']['results'][0]['points-won'] >=
+          report['p2']['results'][0]['points-won']
       ? 'p1'
       : 'p2';
   report['winner'] = matchWinner;
