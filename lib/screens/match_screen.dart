@@ -196,7 +196,7 @@ class _MatchScreenState extends State<MatchScreen> {
               return hasCoinToss
                   ? PointScreen(widget.match)
                   : CoinTossScreen(widget.match);
-            }));
+            })).then((_) => setState(() {}));
           },
           tooltip: 'Add event',
           child: Icon(Icons.add),

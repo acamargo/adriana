@@ -39,22 +39,30 @@ class _MatchesScreenState extends State<MatchesScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    widget.storage.loadAll().then((matches) {
-      setState(() => _matches = matches);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  void _setupScreen() {
     Wakelock.disable();
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+  }
+
+  void _refresh() {
+    widget.storage.loadAll().then((matches) {
+      setState(() => _matches = matches);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refresh();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _setupScreen();
 
     return Scaffold(
       appBar: AppBar(
@@ -64,35 +72,21 @@ class _MatchesScreenState extends State<MatchesScreen> {
         itemCount: _matches.length,
         itemBuilder: (context, index) {
           final match = _matches[index];
+          final isFinished = match['events'].last['event'] == 'FinalScore';
+          final status = isFinished ? 'finished' : 'in progress';
 
           return Card(
             child: ListTile(
               onTap: () {
-                // if (match['events'].last['event'] == 'FinalScore') {
-                //   openStatsSpreadsheet(match: match).then((result) {
-                //     if (result.type != ResultType.done)
-                //       ScaffoldMessenger.of(context).showSnackBar(
-                //           SnackBar(content: Text(result.message)));
-                //   });
-                // } else {
-                //   Navigator.of(context)
-                //       .push(MaterialPageRoute(builder: (context) {
-                //     bool hasCoinToss = match['events']
-                //         .where((event) => event['event'] == 'CoinToss')
-                //         .isNotEmpty;
-                //     return hasCoinToss
-                //         ? PointScreen(match)
-                //         : CoinTossScreen(match);
-                //   }));
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
                   return MatchScreen(match);
-                }));
+                })).then((val) => _refresh());
               },
               title: Text(
                   '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
-              subtitle: Text(
-                  '${match['surface']} - ${match['venue']} - ${match['events'].last['state']}'),
+              subtitle:
+                  Text('${match['surface']} - ${match['venue']} - $status'),
             ),
           );
         },
