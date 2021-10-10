@@ -12,9 +12,9 @@ String formatStatsSet(String p1Name, String p2Name, Map score) {
     p2SetLast = score['p2'][numberOfSets - 1];
   }
 
-  if (p1SetLast['set'] == 7) {
+  if (p1SetLast['set'] == 7 && p2SetLast['set'] == 6) {
     return '$p1Name ${p1SetLast['set']}-${p2SetLast['set']}(${p2SetLast['tiebreak']})';
-  } else if (p2SetLast['set'] == 7) {
+  } else if (p2SetLast['set'] == 7 && p1SetLast['set'] == 6) {
     return '$p2Name ${p2SetLast['set']}-${p1SetLast['set']}(${p1SetLast['tiebreak']})';
   } else if (p1SetLast['set'] == 6 && p2SetLast['set'] == 6) {
     if (p1SetLast['tiebreak'] >= p2SetLast['tiebreak'])

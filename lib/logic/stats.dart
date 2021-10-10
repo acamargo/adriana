@@ -1,26 +1,70 @@
 import 'score.dart';
 
 void updatePercentages(report, currentSet, prefix) {
-  if (report['p1']['results'][0][prefix + '-played'] > 0)
+  if (report['p1']['results'][0][prefix + '-played'] > 0) {
     report['p1']['results'][0][prefix + '-win-%'] = (100 *
             (report['p1']['results'][0][prefix + '-win'] /
                 report['p1']['results'][0][prefix + '-played']))
         .round();
-  if (report['p1']['results'][currentSet][prefix + '-played'] > 0)
+    if (report['p1']['results'][0][prefix + '-out'] != null)
+      report['p1']['results'][0][prefix + '-out-%'] = (100 *
+              (report['p1']['results'][0][prefix + '-out'] /
+                  report['p1']['results'][0][prefix + '-played']))
+          .round();
+    if (report['p1']['results'][0][prefix + '-net'] != null)
+      report['p1']['results'][0][prefix + '-net-%'] = (100 *
+              (report['p1']['results'][0][prefix + '-net'] /
+                  report['p1']['results'][0][prefix + '-played']))
+          .round();
+  }
+  if (report['p1']['results'][currentSet][prefix + '-played'] > 0) {
     report['p1']['results'][currentSet][prefix + '-win-%'] = (100 *
             (report['p1']['results'][currentSet][prefix + '-win'] /
                 report['p1']['results'][currentSet][prefix + '-played']))
         .round();
-  if (report['p2']['results'][currentSet][prefix + '-played'] > 0)
+    if (report['p1']['results'][currentSet][prefix + '-out'] != null)
+      report['p1']['results'][currentSet][prefix + '-out-%'] = (100 *
+              (report['p1']['results'][currentSet][prefix + '-out'] /
+                  report['p1']['results'][currentSet][prefix + '-played']))
+          .round();
+    if (report['p1']['results'][currentSet][prefix + '-net'] != null)
+      report['p1']['results'][currentSet][prefix + '-net-%'] = (100 *
+              (report['p1']['results'][currentSet][prefix + '-net'] /
+                  report['p1']['results'][currentSet][prefix + '-played']))
+          .round();
+  }
+  if (report['p2']['results'][currentSet][prefix + '-played'] > 0) {
     report['p2']['results'][0][prefix + '-win-%'] = (100 *
             (report['p2']['results'][0][prefix + '-win'] /
                 report['p2']['results'][0][prefix + '-played']))
         .round();
-  if (report['p2']['results'][currentSet][prefix + '-played'] > 0)
+    if (report['p2']['results'][0][prefix + '-out'] != null)
+      report['p2']['results'][0][prefix + '-out-%'] = (100 *
+              (report['p2']['results'][0][prefix + '-out'] /
+                  report['p2']['results'][0][prefix + '-played']))
+          .round();
+    if (report['p2']['results'][0][prefix + '-net'] != null)
+      report['p2']['results'][0][prefix + '-net-%'] = (100 *
+              (report['p2']['results'][0][prefix + '-net'] /
+                  report['p2']['results'][0][prefix + '-played']))
+          .round();
+  }
+  if (report['p2']['results'][currentSet][prefix + '-played'] > 0) {
     report['p2']['results'][currentSet][prefix + '-win-%'] = (100 *
             (report['p2']['results'][currentSet][prefix + '-win'] /
                 report['p2']['results'][currentSet][prefix + '-played']))
         .round();
+    if (report['p2']['results'][currentSet][prefix + '-out'] != null)
+      report['p2']['results'][currentSet][prefix + '-out-%'] = (100 *
+              (report['p2']['results'][currentSet][prefix + '-out'] /
+                  report['p2']['results'][currentSet][prefix + '-played']))
+          .round();
+    if (report['p2']['results'][currentSet][prefix + '-net'] != null)
+      report['p2']['results'][currentSet][prefix + '-net-%'] = (100 *
+              (report['p2']['results'][currentSet][prefix + '-net'] /
+                  report['p2']['results'][currentSet][prefix + '-played']))
+          .round();
+  }
 }
 
 Map matchStats({required Map match}) {
@@ -62,6 +106,34 @@ Map matchStats({required Map match}) {
     'game-points-played': 0,
     'game-points-win': 0,
     'game-points-win-%': 0,
+    'forehand-played': 0,
+    'forehand-win': 0,
+    'forehand-win-%': 0,
+    'forehand-out': 0,
+    'forehand-out-%': 0,
+    'forehand-net': 0,
+    'forehand-net-%': 0,
+    'backhand-played': 0,
+    'backhand-win': 0,
+    'backhand-win-%': 0,
+    'backhand-out': 0,
+    'backhand-out-%': 0,
+    'backhand-net': 0,
+    'backhand-net-%': 0,
+    'smash-played': 0,
+    'smash-win': 0,
+    'smash-win-%': 0,
+    'smash-out': 0,
+    'smash-out-%': 0,
+    'smash-net': 0,
+    'smash-net-%': 0,
+    'volley-played': 0,
+    'volley-win': 0,
+    'volley-win-%': 0,
+    'volley-out': 0,
+    'volley-out-%': 0,
+    'volley-net': 0,
+    'volley-net-%': 0,
   };
   for (var i = 0; i <= lastSet; i++) {
     report['match-time']
@@ -168,6 +240,83 @@ Map matchStats({required Map match}) {
             report[server]['results'][currentSet]['game-points-win']++;
             updatePercentages(report, currentSet, 'game-points');
           }
+        }
+
+        if (shot == 'FH') {
+          report[server]['results'][0]['forehand-played']++;
+          report[server]['results'][currentSet]['forehand-played']++;
+          switch (depth) {
+            case 'I':
+              report[server]['results'][0]['forehand-win']++;
+              report[server]['results'][currentSet]['forehand-win']++;
+              break;
+            case 'O':
+              report[server]['results'][0]['forehand-out']++;
+              report[server]['results'][currentSet]['forehand-out']++;
+              break;
+            case 'N':
+              report[server]['results'][0]['forehand-net']++;
+              report[server]['results'][currentSet]['forehand-net']++;
+              break;
+          }
+          updatePercentages(report, currentSet, 'forehand');
+        }
+        if (shot == 'BH') {
+          report[server]['results'][0]['backhand-played']++;
+          report[server]['results'][currentSet]['backhand-played']++;
+          switch (depth) {
+            case 'I':
+              report[server]['results'][0]['backhand-win']++;
+              report[server]['results'][currentSet]['backhand-win']++;
+              break;
+            case 'O':
+              report[server]['results'][0]['backhand-out']++;
+              report[server]['results'][currentSet]['backhand-out']++;
+              break;
+            case 'N':
+              report[server]['results'][0]['backhand-net']++;
+              report[server]['results'][currentSet]['backhand-net']++;
+              break;
+          }
+          updatePercentages(report, currentSet, 'backhand');
+        }
+        if (shot == 'SM') {
+          report[server]['results'][0]['smash-played']++;
+          report[server]['results'][currentSet]['smash-played']++;
+          switch (depth) {
+            case 'I':
+              report[server]['results'][0]['smash-win']++;
+              report[server]['results'][currentSet]['smash-win']++;
+              break;
+            case 'O':
+              report[server]['results'][0]['smash-out']++;
+              report[server]['results'][currentSet]['smash-out']++;
+              break;
+            case 'N':
+              report[server]['results'][0]['smash-net']++;
+              report[server]['results'][currentSet]['smash-net']++;
+              break;
+          }
+          updatePercentages(report, currentSet, 'smash');
+        }
+        if (shot == 'V') {
+          report[server]['results'][0]['volley-played']++;
+          report[server]['results'][currentSet]['volley-played']++;
+          switch (depth) {
+            case 'I':
+              report[server]['results'][0]['volley-win']++;
+              report[server]['results'][currentSet]['volley-win']++;
+              break;
+            case 'O':
+              report[server]['results'][0]['volley-out']++;
+              report[server]['results'][currentSet]['volley-out']++;
+              break;
+            case 'N':
+              report[server]['results'][0]['volley-net']++;
+              report[server]['results'][currentSet]['volley-net']++;
+              break;
+          }
+          updatePercentages(report, currentSet, 'volley');
         }
       }
     }

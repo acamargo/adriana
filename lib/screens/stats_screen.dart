@@ -60,23 +60,26 @@ void statsSheet(
     sheet.appendRow([
       'Score',
       (i == 0)
-          ? formatStatsScore(match, stats['scores'][0], matchWinner)
+          ? formatStatsScore(match, match['events'].last, matchWinner)
           : formatStatsSet(match['p1'], match['p2'], stats['scores'][i])
     ]);
     sheet.appendRow(
         ['Duration', stats['match-duration'][i].toString().split('.').first]);
     sheet.appendRow(['']);
-    sheet.appendRow(['Point Stats']);
-    sheet.appendRow(
-        ['Points played', stats['p1']['results'][i]['points-played']]);
-    sheet.appendRow(['', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow(['Point Stats', stats['p1']['name'], stats['p2']['name']]);
     sheet.appendRow([
-      'Total points won',
+      'Played',
+      stats['p1']['results'][i]['points-played'],
+      stats['p2']['results'][i]['points-played']
+    ]);
+
+    sheet.appendRow([
+      'Total won',
       stats['p1']['results'][i]['points-win'],
       stats['p2']['results'][i]['points-win']
     ]);
     sheet.appendRow([
-      'Total points won %',
+      'Total won %',
       stats['p1']['results'][i]['points-win-%'],
       stats['p2']['results'][i]['points-win-%']
     ]);
@@ -88,7 +91,7 @@ void statsSheet(
     // sheet.appendRow(['Return points won %']);
 
     sheet.appendRow(['']);
-    sheet.appendRow(['Serve Stats']);
+    sheet.appendRow(['Serve Stats', stats['p1']['name'], stats['p2']['name']]);
     sheet.appendRow([
       'Aces',
       stats['p1']['results'][i]['aces'],
@@ -158,6 +161,160 @@ void statsSheet(
       'Break points win %',
       stats['p1']['results'][i]['break-points-win-%'],
       stats['p2']['results'][i]['break-points-win-%']
+    ]);
+
+    sheet.appendRow(['']);
+    sheet.appendRow(
+        ['Forehand Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([
+      'Total points decided with',
+      stats['p1']['results'][i]['forehand-played'],
+      stats['p2']['results'][i]['forehand-played']
+    ]);
+    sheet.appendRow([
+      'Winners',
+      stats['p1']['results'][i]['forehand-win'],
+      stats['p2']['results'][i]['forehand-win']
+    ]);
+    sheet.appendRow([
+      'Winners %',
+      stats['p1']['results'][i]['forehand-win-%'],
+      stats['p2']['results'][i]['forehand-win-%']
+    ]);
+    sheet.appendRow([
+      'Into the net',
+      stats['p1']['results'][i]['forehand-net'],
+      stats['p2']['results'][i]['forehand-net']
+    ]);
+    sheet.appendRow([
+      'Into the net %',
+      stats['p1']['results'][i]['forehand-net-%'],
+      stats['p2']['results'][i]['forehand-net-%']
+    ]);
+    sheet.appendRow([
+      'Out',
+      stats['p1']['results'][i]['forehand-out'],
+      stats['p2']['results'][i]['forehand-out']
+    ]);
+    sheet.appendRow([
+      'Out %',
+      stats['p1']['results'][i]['forehand-out-%'],
+      stats['p2']['results'][i]['forehand-out-%']
+    ]);
+
+    sheet.appendRow(['']);
+    sheet.appendRow(
+        ['Backhand Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([
+      'Total points decided with',
+      stats['p1']['results'][i]['backhand-played'],
+      stats['p2']['results'][i]['backhand-played']
+    ]);
+    sheet.appendRow([
+      'Winners',
+      stats['p1']['results'][i]['backhand-win'],
+      stats['p2']['results'][i]['backhand-win']
+    ]);
+    sheet.appendRow([
+      'Winners %',
+      stats['p1']['results'][i]['backhand-win-%'],
+      stats['p2']['results'][i]['backhand-win-%']
+    ]);
+    sheet.appendRow([
+      'Into the net',
+      stats['p1']['results'][i]['backhand-net'],
+      stats['p2']['results'][i]['backhand-net']
+    ]);
+    sheet.appendRow([
+      'Into the net %',
+      stats['p1']['results'][i]['backhand-net-%'],
+      stats['p2']['results'][i]['backhand-net-%']
+    ]);
+    sheet.appendRow([
+      'Out',
+      stats['p1']['results'][i]['backhand-out'],
+      stats['p2']['results'][i]['backhand-out']
+    ]);
+    sheet.appendRow([
+      'Out %',
+      stats['p1']['results'][i]['backhand-out-%'],
+      stats['p2']['results'][i]['backhand-out-%']
+    ]);
+
+    sheet.appendRow(['']);
+    sheet.appendRow(['Volley Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([
+      'Total points decided with',
+      stats['p1']['results'][i]['volley-played'],
+      stats['p2']['results'][i]['volley-played']
+    ]);
+    sheet.appendRow([
+      'Winners',
+      stats['p1']['results'][i]['volley-win'],
+      stats['p2']['results'][i]['volley-win']
+    ]);
+    sheet.appendRow([
+      'Winners %',
+      stats['p1']['results'][i]['volley-win-%'],
+      stats['p2']['results'][i]['volley-win-%']
+    ]);
+    sheet.appendRow([
+      'Into the net',
+      stats['p1']['results'][i]['volley-net'],
+      stats['p2']['results'][i]['volley-net']
+    ]);
+    sheet.appendRow([
+      'Into the net %',
+      stats['p1']['results'][i]['volley-net-%'],
+      stats['p2']['results'][i]['volley-net-%']
+    ]);
+    sheet.appendRow([
+      'Out',
+      stats['p1']['results'][i]['volley-out'],
+      stats['p2']['results'][i]['volley-out']
+    ]);
+    sheet.appendRow([
+      'Out %',
+      stats['p1']['results'][i]['volley-out-%'],
+      stats['p2']['results'][i]['volley-out-%']
+    ]);
+
+    sheet.appendRow(['']);
+    sheet.appendRow(['Smash Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([
+      'Total points decided with',
+      stats['p1']['results'][i]['smash-played'],
+      stats['p2']['results'][i]['smash-played']
+    ]);
+    sheet.appendRow([
+      'Winners',
+      stats['p1']['results'][i]['smash-win'],
+      stats['p2']['results'][i]['smash-win']
+    ]);
+    sheet.appendRow([
+      'Winners %',
+      stats['p1']['results'][i]['smash-win-%'],
+      stats['p2']['results'][i]['smash-win-%']
+    ]);
+    sheet.appendRow([
+      'Into the net',
+      stats['p1']['results'][i]['smash-net'],
+      stats['p2']['results'][i]['smash-net']
+    ]);
+    sheet.appendRow([
+      'Into the net %',
+      stats['p1']['results'][i]['smash-net-%'],
+      stats['p2']['results'][i]['smash-net-%']
+    ]);
+    sheet.appendRow([
+      'Out',
+      stats['p1']['results'][i]['smash-out'],
+      stats['p2']['results'][i]['smash-out']
+    ]);
+    sheet.appendRow([
+      'Out %',
+      stats['p1']['results'][i]['smash-out-%'],
+      stats['p2']['results'][i]['smash-out-%']
     ]);
   }
 }
