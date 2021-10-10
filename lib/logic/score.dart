@@ -100,31 +100,6 @@ List<String> statsScoreList(Map score, String playerServing) {
   return result;
 }
 
-// String formatStatsScore(Map match, Map score, String playerServing) {
-//   var playerServingName = match[playerServing];
-//   var playerReceiving = playerServing == 'p1' ? 'p2' : 'p1';
-//   final scorePlayerServingLastSet = score[playerServing].last['set'];
-//   final scorePlayerReceivingLastSet = score[playerReceiving].last['set'];
-//   final isTieBreak =
-//       scorePlayerServingLastSet == 6 && scorePlayerReceivingLastSet == 6;
-//   var playerServingGame =
-//       score[playerServing].last[isTieBreak ? 'tiebreak' : 'game'];
-//   var playerReceivingGame =
-//       score[playerReceiving].last[isTieBreak ? 'tiebreak' : 'game'];
-//   var result = [playerServingName];
-//   var game = '$playerServingGame/$playerReceivingGame';
-//   if (game != '0/0') result.add(game);
-//   for (var i = 0; i < score[playerServing].length; i++) {
-//     result.add(
-//         formatScoreSet(score[playerServing][i], score[playerReceiving][i]));
-//   }
-//   final isMatchFinished = match['events'].last['event'] == 'FinalScore';
-//   if (isMatchFinished &&
-//       scorePlayerServingLastSet == 0 &&
-//       scorePlayerReceivingLastSet == 0) result.removeAt(result.length - 1);
-//   return result.join(' ');
-// }
-
 String formatStatsScore(Map match, Map score, String playerServing) {
   var playerServingName = match[playerServing];
   return ([playerServingName] + statsScoreList(score, playerServing)).join(' ');

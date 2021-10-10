@@ -80,12 +80,14 @@ class _MatchScreenState extends State<MatchScreen> {
       if (item['event'] == 'CoinToss') {
         final serverName = widget.match[item['server']];
         items.add({
+          'pointNumber': '',
           'title': '$serverName to serve',
           'subtitle': '$serverName 0/0 0-0',
         });
       } else if (item['event'] == 'Rally') {
         final score = widget.match['events'][i + 1];
         items.add({
+          'pointNumber': '#${score['pointNumber']}',
           'title': formatRally(widget.match, item),
           'subtitle': formatScore(widget.match, score, score['server']),
         });
@@ -103,6 +105,7 @@ class _MatchScreenState extends State<MatchScreen> {
             matchDuration.toString().split('.').first;
         final pointsPlayed = stats['p1']['results'][0]['points-played'];
         items.add({
+          'pointNumber': '',
           'title': finalScoreFormatted,
           'subtitle': '$pointsPlayed points played in $matchDurationFormatted'
         });
@@ -156,7 +159,9 @@ class _MatchScreenState extends State<MatchScreen> {
                 //   }));
                 // }
               },
-              title: Text(item['title']),
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text(item['title']), Text(item['pointNumber'])]),
               subtitle: Text(item['subtitle']),
             ),
           );

@@ -57,11 +57,13 @@ String formatRally(Map match, Map event) {
   final shotName = whatWasTheShotHitOptions(
           isServing: event['server'] == event['lastHitBy'])['options']
       .where((option) => option['value'] == shot)
-      .first['label'];
+      .first['label']
+      .toLowerCase();
   final depth = event['depth'];
   final depthName = whereDidTheBallLandOptions(shot: shot)['options']
       .where((option) => option['value'] == depth)
-      .first['label'];
+      .first['label']
+      .toLowerCase();
 
   return '$playerName $shotName $depthName';
 }
