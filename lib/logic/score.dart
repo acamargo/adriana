@@ -45,9 +45,11 @@ String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
         playerReceivingSet['tiebreak'] as int);
     final playerMin = min(playerServingSet['tiebreak'] as int,
         playerReceivingSet['tiebreak'] as int);
-    final isFinished = (playerMax >= 7 && (playerMax - playerMin) <= 2);
+    final isFinished = (playerMax >= 7 && (playerMax - playerMin) >= 2);
     if (isFinished)
-      return '$playerServingSetGames-$playerReceivingSetGames($playerMin)';
+      return (playerServingSet['tiebreak'] == playerMax)
+          ? '$playerServingSetGames-$playerReceivingSetGames($playerMin)'
+          : '($playerMin)$playerServingSetGames-$playerReceivingSetGames';
     else
       return '$playerServingSetGames-$playerReceivingSetGames';
   } else {
