@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:open_file/open_file.dart';
 
 import '../matches_storage.dart';
 import 'new_match_screen.dart';
-import 'point_screen.dart';
-import 'coin_toss_screen.dart';
-import 'stats_screen.dart';
 import '../models/match.dart';
 import '../logic/date_time.dart';
 import '../logic/match.dart';
@@ -25,7 +21,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   void _add() async {
     Match? results = await Navigator.of(context).push(MaterialPageRoute<Match>(
-        builder: (BuildContext context) => NewMatchScreen(),
+        builder: (BuildContext context) => NewMatchScreen({}),
         fullscreenDialog: true));
     if (results != null) {
       final match = newMatch(

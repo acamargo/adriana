@@ -6,6 +6,9 @@ import 'package:share_plus/share_plus.dart';
 import 'point_screen.dart';
 import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
+import 'new_match_screen.dart';
+import '../matches_storage.dart';
+import '../models/match.dart';
 import '../logic/rally.dart';
 import '../logic/score.dart';
 import '../logic/stats.dart';
@@ -23,6 +26,20 @@ class MatchScreen extends StatefulWidget {
 class _MatchScreenState extends State<MatchScreen> {
   void handleClick(String value) async {
     switch (value) {
+      case 'Edit':
+        Match? results = await Navigator.of(context).push(
+            MaterialPageRoute<Match>(
+                builder: (BuildContext context) => NewMatchScreen(widget.match),
+                fullscreenDialog: true));
+        if (results != null) {
+          widget.match['p1'] = results.p1;
+          widget.match['p2'] = results.p2;
+          widget.match['surface'] = results.surface;
+          widget.match['venue'] = results.venue;
+          MatchesStorage().create(widget.match);
+          setState(() {});
+        }
+        break;
       case 'Share stats':
         generateStatsSpreadsheet(match: widget.match);
         final box = context.findRenderObject() as RenderBox?;
@@ -136,6 +153,7 @@ class _MatchScreenState extends State<MatchScreen> {
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return {
+                'Edit',
                 'Share stats',
                 'Open stats',
                 if (events.first['event'] != 'FinalScore') 'Finish'

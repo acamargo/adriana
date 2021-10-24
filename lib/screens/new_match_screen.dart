@@ -5,7 +5,9 @@ import 'package:wakelock/wakelock.dart';
 import '../models/match.dart';
 
 class NewMatchScreen extends StatefulWidget {
-  const NewMatchScreen({Key? key}) : super(key: key);
+  final Map match;
+
+  NewMatchScreen(this.match);
 
   @override
   _NewMatchPage createState() => _NewMatchPage();
@@ -14,10 +16,19 @@ class NewMatchScreen extends StatefulWidget {
 class _NewMatchPage extends State<NewMatchScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final p1Controller = TextEditingController();
-  final p2Controller = TextEditingController();
-  final surfaceController = TextEditingController();
-  final venueController = TextEditingController();
+  late TextEditingController p1Controller;
+  late TextEditingController p2Controller;
+  late TextEditingController surfaceController;
+  late TextEditingController venueController;
+
+  @override
+  void initState() {
+    super.initState();
+    p1Controller = TextEditingController(text: widget.match['p1']);
+    p2Controller = TextEditingController(text: widget.match['p2']);
+    surfaceController = TextEditingController(text: widget.match['surface']);
+    venueController = TextEditingController(text: widget.match['venue']);
+  }
 
   @override
   void dispose() {
@@ -37,9 +48,12 @@ class _NewMatchPage extends State<NewMatchScreen> {
       DeviceOrientation.portraitDown,
     ]);
 
+    final isNew = widget.match['p1'] == null;
+
+    print(widget.match);
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('New Match'),
+        title: Text(isNew ? 'New Match' : 'Edit Match'),
       ),
       body: Form(
         key: _formKey,
@@ -48,6 +62,7 @@ class _NewMatchPage extends State<NewMatchScreen> {
             children: [
               ListTile(
                 title: TextFormField(
+                  //initialValue: 'oi', //widget.match['p1'].toString(),
                   decoration: InputDecoration(labelText: "Player 1"),
                   controller: p1Controller,
                   validator: (value) {
