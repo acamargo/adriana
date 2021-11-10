@@ -40,6 +40,35 @@ class _MatchScreenState extends State<MatchScreen> {
           setState(() {});
         }
         break;
+      case 'Delete':
+        bool result = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+              content: Text("Would you like to delete the match?"),
+              actions: [
+                TextButton(
+                  child: Text("YES"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(true);
+                  },
+                ),
+                TextButton(
+                  child: Text("NO"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(false);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        if (result) {
+          await MatchesStorage().delete(widget.match);
+          Navigator.pop(context);
+        }
+        break;
       case 'Share stats':
         generateStatsSpreadsheet(match: widget.match);
         final box = context.findRenderObject() as RenderBox?;
@@ -154,6 +183,7 @@ class _MatchScreenState extends State<MatchScreen> {
             itemBuilder: (BuildContext context) {
               return {
                 'Edit',
+                'Delete',
                 'Share stats',
                 'Open stats',
                 if (events.first['event'] != 'FinalScore') 'Finish'

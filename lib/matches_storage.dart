@@ -40,7 +40,7 @@ class MatchesStorage {
         .listSync(recursive: false)
         .where((file) => file is File && file.path.endsWith('match.json'))
         .toList()
-          ..sort((fileA, fileB) => fileB.path.compareTo(fileA.path));
+      ..sort((fileA, fileB) => fileB.path.compareTo(fileA.path));
     return Future.wait(files.map((file) => loadMatch(file)).toList());
   }
 
@@ -91,5 +91,18 @@ class MatchesStorage {
       return item.toIso8601String();
     }
     return item;
+  }
+
+  Future<void> delete(Map data) async {
+    final path = await _localPath;
+    final fileName = data['createdAt'].toIso8601String();
+    try {
+      final file = File('$path/$fileName.match.json');
+      await file.delete();
+    } catch (e) {}
+    try {
+      final file = File('$path/$fileName.match.xlsx');
+      await file.delete();
+    } catch (e) {}
   }
 }
