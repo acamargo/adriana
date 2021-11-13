@@ -26,12 +26,12 @@ Fell free to write in English or Portuguese as well.
 
 ## Roadmap
 
-[x] Scoreboard
-[x] Stats in XLSX
-[ ] Stats in PDF
-[ ] Track warming-up time
-[ ] Track strokes using giroscope/accelerometer
-[ ] Track fitness metrics (distance ran, calories burnt, something like that)
+- [x] Scoreboard
+- [x] Stats in XLSX
+- [ ] Stats in PDF
+- [ ] Track warming-up time
+- [ ] Track strokes using giroscope/accelerometer
+- [ ] Track fitness metrics (distance ran, calories burnt, something like that)
 
 ## Contributing
 
