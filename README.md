@@ -1,16 +1,50 @@
-# adriana
+# Adriana
 
-A new Flutter project.
+Adriana is a tennis scoreboard and stats tracking tool to measure your performance on court.
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+TBD
 
-A few resources to get you started if this is your first Flutter project:
+## Visuals
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+TBD 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Installation
+
+TBD
+
+## Usage
+
+TBD
+
+## Support
+
+I'm glad to help you via [GitHub issues](https://github.com/acamargo/adriana/issues).
+
+Fell free to write in English or Portuguese as well.
+
+## Roadmap
+
+[x] Scoreboard
+[x] Stats in XLSX
+[ ] Stats in PDF
+[ ] Track warming-up time
+[ ] Track strokes using giroscope/accelerometer
+[ ] Track fitness metrics (distance ran, calories burnt, something like that)
+
+## Contributing
+
+Feel free to open PRs!
+
+## Acknowledgments
+
+Adriana is a friend of mine who encouraged me to start this project.
+
+## License
+
+I'd like to use some free software license, but I haven't chosen one yet.
+
+## Project status
+
+Well, this is a pet project. So, it's under *slow* development.
