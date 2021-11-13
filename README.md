@@ -30,8 +30,8 @@ Fell free to write in English or Portuguese as well.
 - [x] Stats in XLSX
 - [ ] Stats in PDF
 - [ ] Track warming-up time
-- [ ] Track strokes using giroscope/accelerometer
-- [ ] Track fitness metrics (distance ran, calories burnt, something like that)
+- [ ] Track strokes using gyroscope/accelerometer
+- [ ] Track fitness metrics (running distance, calories burned, something like that)
 
 ## Contributing
 
