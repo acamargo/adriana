@@ -10,6 +10,7 @@ import 'new_match_screen.dart';
 import '../matches_storage.dart';
 import '../models/match.dart';
 import '../logic/rally.dart';
+import '../logic/match.dart';
 import '../logic/score.dart';
 import '../logic/stats.dart';
 import '../logic/date_time.dart';
@@ -38,6 +39,42 @@ class _MatchScreenState extends State<MatchScreen> {
           widget.match['venue'] = results.venue;
           MatchesStorage().create(widget.match);
           setState(() {});
+        }
+        break;
+      case 'Rematch':
+        bool result = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+              content:
+                  Text("Would you like to create a new match from this one?"),
+              actions: [
+                TextButton(
+                  child: Text("YES"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(true);
+                  },
+                ),
+                TextButton(
+                  child: Text("NO"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(false);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        if (result) {
+          final match = newMatch(
+              createdAt: DateTime.now(),
+              p1: widget.match['p1'],
+              p2: widget.match['p2'],
+              surface: widget.match['surface'],
+              venue: widget.match['venue']);
+          await MatchesStorage().create(match);
+          Navigator.pop(context);
         }
         break;
       case 'Delete':
@@ -183,6 +220,7 @@ class _MatchScreenState extends State<MatchScreen> {
             itemBuilder: (BuildContext context) {
               return {
                 'Edit',
+                'Rematch',
                 'Delete',
                 'Share stats',
                 'Open stats',
