@@ -33,6 +33,13 @@ Fell free to write in English or Portuguese as well.
 - [ ] Track strokes using gyroscope/accelerometer
 - [ ] Track fitness metrics (running distance, calories burned, something like that)
 
+## Other apps suggestion
+
+I'm not affiliate with any of those below. But it is worth to take a look anyway.
+
+* [Swing Vision](https://swing.tennis/)
+* [ProTracker Tennis](http://www.protrackertennis.com)
+
 ## Contributing
 
 Feel free to open PRs!
