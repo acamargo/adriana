@@ -1014,7 +1014,7 @@ void main() {
           ],
         };
         test('Then displays the tiebreak result in the score', () {
-          expect(formatScore(match, score, 'p1'), 'P1 0/0 6-7(5)');
+          expect(formatScore(match, score, 'p1'), 'P1 0/0 (5)6-7');
         });
       });
       group('When this is a tie break and p2 is serving', () {
