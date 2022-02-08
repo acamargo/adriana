@@ -284,20 +284,20 @@ Map matchStats({required Map match}) {
         }
 
         if (shot == 'FH') {
-          report[server]['results'][0]['forehand-played']++;
-          report[server]['results'][currentSet]['forehand-played']++;
+          report[lastHitBy]['results'][0]['forehand-played']++;
+          report[lastHitBy]['results'][currentSet]['forehand-played']++;
           switch (depth) {
             case 'I':
-              report[server]['results'][0]['forehand-won']++;
-              report[server]['results'][currentSet]['forehand-won']++;
+              report[lastHitBy]['results'][0]['forehand-won']++;
+              report[lastHitBy]['results'][currentSet]['forehand-won']++;
               break;
             case 'O':
-              report[server]['results'][0]['forehand-out']++;
-              report[server]['results'][currentSet]['forehand-out']++;
+              report[lastHitBy]['results'][0]['forehand-out']++;
+              report[lastHitBy]['results'][currentSet]['forehand-out']++;
               break;
             case 'N':
-              report[server]['results'][0]['forehand-net']++;
-              report[server]['results'][currentSet]['forehand-net']++;
+              report[lastHitBy]['results'][0]['forehand-net']++;
+              report[lastHitBy]['results'][currentSet]['forehand-net']++;
               break;
           }
           updatePercentages(report, currentSet, 'forehand');
