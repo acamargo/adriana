@@ -322,20 +322,20 @@ Map matchStats({required Map match}) {
           updatePercentages(report, currentSet, 'backhand');
         }
         if (shot == 'SM') {
-          report[server]['results'][0]['smash-played']++;
-          report[server]['results'][currentSet]['smash-played']++;
+          report[lastHitBy]['results'][0]['smash-played']++;
+          report[lastHitBy]['results'][currentSet]['smash-played']++;
           switch (depth) {
             case 'I':
-              report[server]['results'][0]['smash-won']++;
-              report[server]['results'][currentSet]['smash-won']++;
+              report[lastHitBy]['results'][0]['smash-won']++;
+              report[lastHitBy]['results'][currentSet]['smash-won']++;
               break;
             case 'O':
-              report[server]['results'][0]['smash-out']++;
-              report[server]['results'][currentSet]['smash-out']++;
+              report[lastHitBy]['results'][0]['smash-out']++;
+              report[lastHitBy]['results'][currentSet]['smash-out']++;
               break;
             case 'N':
-              report[server]['results'][0]['smash-net']++;
-              report[server]['results'][currentSet]['smash-net']++;
+              report[lastHitBy]['results'][0]['smash-net']++;
+              report[lastHitBy]['results'][currentSet]['smash-net']++;
               break;
           }
           updatePercentages(report, currentSet, 'smash');
