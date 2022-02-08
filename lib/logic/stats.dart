@@ -341,20 +341,20 @@ Map matchStats({required Map match}) {
           updatePercentages(report, currentSet, 'smash');
         }
         if (shot == 'V') {
-          report[server]['results'][0]['volley-played']++;
-          report[server]['results'][currentSet]['volley-played']++;
+          report[lastHitBy]['results'][0]['volley-played']++;
+          report[lastHitBy]['results'][currentSet]['volley-played']++;
           switch (depth) {
             case 'I':
-              report[server]['results'][0]['volley-won']++;
-              report[server]['results'][currentSet]['volley-won']++;
+              report[lastHitBy]['results'][0]['volley-won']++;
+              report[lastHitBy]['results'][currentSet]['volley-won']++;
               break;
             case 'O':
-              report[server]['results'][0]['volley-out']++;
-              report[server]['results'][currentSet]['volley-out']++;
+              report[lastHitBy]['results'][0]['volley-out']++;
+              report[lastHitBy]['results'][currentSet]['volley-out']++;
               break;
             case 'N':
-              report[server]['results'][0]['volley-net']++;
-              report[server]['results'][currentSet]['volley-net']++;
+              report[lastHitBy]['results'][0]['volley-net']++;
+              report[lastHitBy]['results'][currentSet]['volley-net']++;
               break;
           }
           updatePercentages(report, currentSet, 'volley');
