@@ -282,7 +282,7 @@ class _PointScreenState extends State<PointScreen> {
 
   _save() {
     if (isVibrate) Vibration.vibrate(duration: 100);
-    if (_player != '' && _shot != '' && _depth != '') {
+    if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       if (isSound) FlutterBeep.beep(false);
       _storeRallyEvent();
       Navigator.pushReplacement(context,
