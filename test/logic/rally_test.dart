@@ -26,6 +26,7 @@ void main() {
           match: match,
           player: 'p1',
           shot: 'SV',
+          direction: 'CC',
           depth: 'N',
         );
         test('Then there is no winner in this point yet', () {
@@ -35,6 +36,7 @@ void main() {
             'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SV',
+            'direction': 'CC',
             'depth': 'N',
             'winner': null,
           });
@@ -54,6 +56,7 @@ void main() {
           match: match,
           player: 'p1',
           shot: 'SV',
+          direction: 'CC',
           depth: 'N',
         );
         test('Then P2 won the point', () {
@@ -63,6 +66,7 @@ void main() {
             'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SV',
+            'direction': 'CC',
             'depth': 'N',
             'winner': 'p2',
           });
@@ -81,6 +85,7 @@ void main() {
           match: match,
           player: 'p1',
           shot: 'SV',
+          direction: 'CC',
           depth: 'I',
         );
         test('Then P1 won the point', () {
@@ -90,6 +95,7 @@ void main() {
             'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SV',
+            'direction': 'CC',
             'depth': 'I',
             'winner': 'p1',
           });
@@ -108,6 +114,7 @@ void main() {
           match: match,
           player: 'p1',
           shot: 'FH',
+          direction: 'CC',
           depth: 'N', // into the net
         );
         test('Then P2 won the point', () {
@@ -117,6 +124,7 @@ void main() {
             'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'FH',
+            'direction': 'CC',
             'depth': 'N',
             'winner': 'p2',
           });
@@ -135,6 +143,7 @@ void main() {
           match: match,
           player: 'p1',
           shot: 'FH',
+          direction: 'CC',
           depth: 'O',
         );
         test('Then P2 won the point', () {
@@ -144,6 +153,7 @@ void main() {
             'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'FH',
+            'direction': 'CC',
             'depth': 'O',
             'winner': 'p2',
           });
@@ -162,6 +172,7 @@ void main() {
           match: match,
           player: 'p1',
           shot: 'SM', // smash
+          direction: 'CC',
           depth: 'I', // in - winner
         );
         test('Then P1 won the point', () {
@@ -171,6 +182,7 @@ void main() {
             'server': 'p1',
             'lastHitBy': 'p1',
             'shot': 'SM',
+            'direction': 'CC',
             'depth': 'I',
             'winner': 'p1',
           });

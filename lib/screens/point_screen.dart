@@ -23,7 +23,9 @@ class PointScreen extends StatefulWidget {
 class _PointScreenState extends State<PointScreen> {
   String _player = '';
   String _shot = '';
+  String _direction = '';
   String _depth = '';
+
   bool isVibrate = true;
   bool isSound = true;
 
@@ -33,6 +35,7 @@ class _PointScreenState extends State<PointScreen> {
         match: widget.match,
         player: _player,
         shot: _shot,
+        direction: _direction,
         depth: _depth);
     Map scoreEvent = newScoreFromRally(
         DateTime.now(), widget.match, widget.match['events'].last, rallyEvent);
@@ -231,6 +234,29 @@ class _PointScreenState extends State<PointScreen> {
     ];
   }
 
+  List<Widget> _whatWasTheDirection() {
+    final options = whatWasTheDirectionOptions(shot: _shot);
+    return [
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+          spacing: 10,
+          children: <Widget>[
+            for (var item in options['options'])
+              choiceChip(
+                label: item['label'],
+                selected: _direction == item['value'],
+                onSelected: (bool selected) => setState(() {
+                  _direction = item['value'];
+                  _save();
+                }),
+              )
+          ],
+        ),
+      ),
+    ];
+  }
+
   List<Widget> _whereDidTheBallLand() {
     final options = whereDidTheBallLandOptions(shot: _shot);
     return [
@@ -320,9 +346,8 @@ class _PointScreenState extends State<PointScreen> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: _whoTouchedTheBallLast() +
-                [Divider()] +
                 _whatWasTheShotHit() +
-                [Divider()] +
+                _whatWasTheDirection() +
                 _whereDidTheBallLand()),
       ),
     );

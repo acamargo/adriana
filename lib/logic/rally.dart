@@ -3,6 +3,7 @@ Map newRallyEvent({
   required Map match,
   required String player,
   required String shot,
+  required String direction,
   required String depth,
 }) {
   Map score = match['events'].last;
@@ -24,6 +25,7 @@ Map newRallyEvent({
     'lastHitBy': player,
     'shot': shot,
     'depth': depth,
+    'direction': direction,
     'winner': winner,
   };
 }
@@ -36,6 +38,16 @@ Map whatWasTheShotHitOptions({required bool isServing}) {
       if (isServing) {'label': 'SERVE', 'value': 'SV'},
       {'label': 'VOLLEY', 'value': 'V'},
       {'label': 'FOREHAND', 'value': 'FH'},
+    ]
+  };
+}
+
+Map whatWasTheDirectionOptions({required String shot}) {
+  return {
+    'options': [
+      {'label': (shot == 'SV') ? 'OPEN' : 'CROSS COURT', 'value': 'CC'},
+      {'label': (shot == 'SV') ? 'BODY' : 'MIDDLE', 'value': 'M'},
+      {'label': (shot == 'SV') ? 'T' : 'DOWN THE LINE', 'value': 'DTL'}
     ]
   };
 }
