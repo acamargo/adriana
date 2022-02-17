@@ -77,5 +77,14 @@ String formatRally(Map match, Map event) {
       .first['label']
       .toLowerCase();
 
-  return '$playerName $shotName $depthName';
+  if (event.containsKey('direction')) {
+    final direction = event['direction'];
+    final directionName = whatWasTheDirectionOptions(shot: shot)['options']
+        .where((option) => option['value'] == direction)
+        .first['label']
+        .toLowerCase();
+    return '$playerName $shotName $directionName $depthName';
+  } else {
+    return '$playerName $shotName $depthName';
+  }
 }
