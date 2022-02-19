@@ -122,10 +122,19 @@ Map matchStats({required Map match}) {
     'forehand-played': 0,
     'forehand-won': 0,
     'forehand-won-%': 0,
+    'forehand-won-down-the-line': 0,
+    'forehand-won-middle': 0,
+    'forehand-won-cross-court': 0,
     'forehand-out': 0,
     'forehand-out-%': 0,
+    'forehand-out-down-the-line': 0,
+    'forehand-out-middle': 0,
+    'forehand-out-cross-court': 0,
     'forehand-net': 0,
     'forehand-net-%': 0,
+    'forehand-net-down-the-line': 0,
+    'forehand-net-middle': 0,
+    'forehand-net-cross-court': 0,
     'backhand-played': 0,
     'backhand-won': 0,
     'backhand-won-%': 0,
@@ -298,20 +307,43 @@ Map matchStats({required Map match}) {
         }
 
         if (shot == 'FH') {
+          final ballDirection = (direction == 'CC'
+              ? 'cross-court'
+              : direction == 'M'
+                  ? 'middle'
+                  : 'down-the-line');
           report[lastHitBy]['results'][0]['forehand-played']++;
           report[lastHitBy]['results'][currentSet]['forehand-played']++;
           switch (depth) {
             case 'I':
               report[lastHitBy]['results'][0]['forehand-won']++;
               report[lastHitBy]['results'][currentSet]['forehand-won']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['forehand-won-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['forehand-won-' + ballDirection]++;
+              }
               break;
             case 'O':
               report[lastHitBy]['results'][0]['forehand-out']++;
               report[lastHitBy]['results'][currentSet]['forehand-out']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['forehand-out-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['forehand-out-' + ballDirection]++;
+              }
               break;
             case 'N':
               report[lastHitBy]['results'][0]['forehand-net']++;
               report[lastHitBy]['results'][currentSet]['forehand-net']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['forehand-net-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['forehand-net-' + ballDirection]++;
+              }
               break;
           }
           updatePercentages(report, currentSet, 'forehand');
