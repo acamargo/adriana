@@ -110,6 +110,21 @@ void statsSheet(
       stats['p2']['results'][i]['aces']
     ]);
     sheet.appendRow([
+      'Aces placement: T',
+      stats['p1']['results'][i]['aces-T'],
+      stats['p2']['results'][i]['aces-T']
+    ]);
+    sheet.appendRow([
+      'Aces placement: Body',
+      stats['p1']['results'][i]['aces-body'],
+      stats['p2']['results'][i]['aces-body']
+    ]);
+    sheet.appendRow([
+      'Aces placement: Out Wide',
+      stats['p1']['results'][i]['aces-out-wide'],
+      stats['p2']['results'][i]['aces-out-wide']
+    ]);
+    sheet.appendRow([
       'Double faults',
       stats['p1']['results'][i]['double-faults'],
       stats['p2']['results'][i]['double-faults']

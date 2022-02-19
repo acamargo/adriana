@@ -103,6 +103,9 @@ Map matchStats({required Map match}) {
     'net-points-won': 0,
     'net-points-won-%': 0,
     'aces': 0,
+    'aces-T': 0,
+    'aces-body': 0,
+    'aces-out-wide': 0,
     'double-faults': 0,
     '1st-serve-played': 0,
     '1st-serve-won': 0,
@@ -165,6 +168,8 @@ Map matchStats({required Map match}) {
       final receiver = server == 'p1' ? 'p2' : 'p1';
       final winner = event['winner'];
       final shot = event['shot'];
+      final direction = event['direction'];
+      final hasDirection = direction != null;
       final depth = event['depth'];
       final currentSet = scoreBefore['p1'].length;
 
@@ -222,8 +227,17 @@ Map matchStats({required Map match}) {
             winner == lastHitBy &&
             shot == 'SV' &&
             depth == 'I') {
+          final serveDirection = (direction == 'CC'
+              ? 'out-wide'
+              : direction == 'M'
+                  ? 'body'
+                  : 'T');
           report[lastHitBy]['results'][0]['aces']++;
           report[lastHitBy]['results'][currentSet]['aces']++;
+          if (hasDirection) {
+            report[server]['results'][0]['aces-' + serveDirection]++;
+            report[server]['results'][currentSet]['aces-' + serveDirection]++;
+          }
         }
         if (lastHitBy == server &&
             winner != lastHitBy &&
