@@ -293,6 +293,21 @@ void statsSheet(
       stats['p2']['results'][i]['backhand-won-%']
     ]);
     sheet.appendRow([
+      'Winners down the line',
+      stats['p1']['results'][i]['backhand-won-down-the-line'],
+      stats['p2']['results'][i]['backhand-won-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Winners middle',
+      stats['p1']['results'][i]['backhand-won-middle'],
+      stats['p2']['results'][i]['backhand-won-middle']
+    ]);
+    sheet.appendRow([
+      'Winners cross court',
+      stats['p1']['results'][i]['backhand-won-cross-court'],
+      stats['p2']['results'][i]['backhand-won-cross-court']
+    ]);
+    sheet.appendRow([
       'Into the net',
       stats['p1']['results'][i]['backhand-net'],
       stats['p2']['results'][i]['backhand-net']
@@ -303,6 +318,21 @@ void statsSheet(
       stats['p2']['results'][i]['backhand-net-%']
     ]);
     sheet.appendRow([
+      'Into the net down the line',
+      stats['p1']['results'][i]['backhand-net-down-the-line'],
+      stats['p2']['results'][i]['backhand-net-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Into the net middle',
+      stats['p1']['results'][i]['backhand-net-middle'],
+      stats['p2']['results'][i]['backhand-net-middle']
+    ]);
+    sheet.appendRow([
+      'Into the net cross court',
+      stats['p1']['results'][i]['backhand-net-cross-court'],
+      stats['p2']['results'][i]['backhand-net-cross-court']
+    ]);
+    sheet.appendRow([
       'Out',
       stats['p1']['results'][i]['backhand-out'],
       stats['p2']['results'][i]['backhand-out']
@@ -311,6 +341,21 @@ void statsSheet(
       'Out %',
       stats['p1']['results'][i]['backhand-out-%'],
       stats['p2']['results'][i]['backhand-out-%']
+    ]);
+    sheet.appendRow([
+      'Out down the line',
+      stats['p1']['results'][i]['backhand-out-down-the-line'],
+      stats['p2']['results'][i]['backhand-out-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Out middle',
+      stats['p1']['results'][i]['backhand-out-middle'],
+      stats['p2']['results'][i]['backhand-out-middle']
+    ]);
+    sheet.appendRow([
+      'Out cross court',
+      stats['p1']['results'][i]['backhand-out-cross-court'],
+      stats['p2']['results'][i]['backhand-out-cross-court']
     ]);
 
     sheet.appendRow(['']);

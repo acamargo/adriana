@@ -138,10 +138,19 @@ Map matchStats({required Map match}) {
     'backhand-played': 0,
     'backhand-won': 0,
     'backhand-won-%': 0,
+    'backhand-won-down-the-line': 0,
+    'backhand-won-middle': 0,
+    'backhand-won-cross-court': 0,
     'backhand-out': 0,
     'backhand-out-%': 0,
+    'backhand-out-down-the-line': 0,
+    'backhand-out-middle': 0,
+    'backhand-out-cross-court': 0,
     'backhand-net': 0,
     'backhand-net-%': 0,
+    'backhand-net-down-the-line': 0,
+    'backhand-net-middle': 0,
+    'backhand-net-cross-court': 0,
     'smash-played': 0,
     'smash-won': 0,
     'smash-won-%': 0,
@@ -306,12 +315,14 @@ Map matchStats({required Map match}) {
           }
         }
 
+        final ballDirection = (direction == 'CC'
+            ? 'cross-court'
+            : direction == 'M'
+                ? 'middle'
+                : 'down-the-line');
+
         if (shot == 'FH') {
-          final ballDirection = (direction == 'CC'
-              ? 'cross-court'
-              : direction == 'M'
-                  ? 'middle'
-                  : 'down-the-line');
+          // FOREHAND
           report[lastHitBy]['results'][0]['forehand-played']++;
           report[lastHitBy]['results'][currentSet]['forehand-played']++;
           switch (depth) {
@@ -348,26 +359,48 @@ Map matchStats({required Map match}) {
           }
           updatePercentages(report, currentSet, 'forehand');
         }
+
         if (shot == 'BH') {
+          // BACKHAND
           report[lastHitBy]['results'][0]['backhand-played']++;
           report[lastHitBy]['results'][currentSet]['backhand-played']++;
           switch (depth) {
             case 'I':
               report[lastHitBy]['results'][0]['backhand-won']++;
               report[lastHitBy]['results'][currentSet]['backhand-won']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['backhand-won-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['backhand-won-' + ballDirection]++;
+              }
               break;
             case 'O':
               report[lastHitBy]['results'][0]['backhand-out']++;
               report[lastHitBy]['results'][currentSet]['backhand-out']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['backhand-out-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['backhand-out-' + ballDirection]++;
+              }
               break;
             case 'N':
               report[lastHitBy]['results'][0]['backhand-net']++;
               report[lastHitBy]['results'][currentSet]['backhand-net']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['backhand-net-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['backhand-net-' + ballDirection]++;
+              }
               break;
           }
           updatePercentages(report, currentSet, 'backhand');
         }
+
         if (shot == 'SM') {
+          // SMASH
           report[lastHitBy]['results'][0]['smash-played']++;
           report[lastHitBy]['results'][currentSet]['smash-played']++;
           switch (depth) {
