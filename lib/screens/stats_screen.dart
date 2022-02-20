@@ -110,17 +110,17 @@ void statsSheet(
       stats['p2']['results'][i]['aces']
     ]);
     sheet.appendRow([
-      'Aces placement: T',
+      'Aces T',
       stats['p1']['results'][i]['aces-T'],
       stats['p2']['results'][i]['aces-T']
     ]);
     sheet.appendRow([
-      'Aces placement: Body',
+      'Aces body',
       stats['p1']['results'][i]['aces-body'],
       stats['p2']['results'][i]['aces-body']
     ]);
     sheet.appendRow([
-      'Aces placement: Out Wide',
+      'Aces out wide',
       stats['p1']['results'][i]['aces-out-wide'],
       stats['p2']['results'][i]['aces-out-wide']
     ]);
