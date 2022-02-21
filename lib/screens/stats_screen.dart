@@ -414,6 +414,21 @@ void statsSheet(
       stats['p2']['results'][i]['smash-won-%']
     ]);
     sheet.appendRow([
+      'Winners down the line',
+      stats['p1']['results'][i]['smash-won-down-the-line'],
+      stats['p2']['results'][i]['smash-won-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Winners middle',
+      stats['p1']['results'][i]['smash-won-middle'],
+      stats['p2']['results'][i]['smash-won-middle']
+    ]);
+    sheet.appendRow([
+      'Winners cross court',
+      stats['p1']['results'][i]['smash-won-cross-court'],
+      stats['p2']['results'][i]['smash-won-cross-court']
+    ]);
+    sheet.appendRow([
       'Into the net',
       stats['p1']['results'][i]['smash-net'],
       stats['p2']['results'][i]['smash-net']
@@ -424,6 +439,21 @@ void statsSheet(
       stats['p2']['results'][i]['smash-net-%']
     ]);
     sheet.appendRow([
+      'Into the net down the line',
+      stats['p1']['results'][i]['smash-net-down-the-line'],
+      stats['p2']['results'][i]['smash-net-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Into the net middle',
+      stats['p1']['results'][i]['smash-net-middle'],
+      stats['p2']['results'][i]['smash-net-middle']
+    ]);
+    sheet.appendRow([
+      'Into the net cross court',
+      stats['p1']['results'][i]['smash-net-cross-court'],
+      stats['p2']['results'][i]['smash-net-cross-court']
+    ]);
+    sheet.appendRow([
       'Out',
       stats['p1']['results'][i]['smash-out'],
       stats['p2']['results'][i]['smash-out']
@@ -432,6 +462,21 @@ void statsSheet(
       'Out %',
       stats['p1']['results'][i]['smash-out-%'],
       stats['p2']['results'][i]['smash-out-%']
+    ]);
+    sheet.appendRow([
+      'Out down the line',
+      stats['p1']['results'][i]['smash-out-down-the-line'],
+      stats['p2']['results'][i]['smash-out-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Out middle',
+      stats['p1']['results'][i]['smash-out-middle'],
+      stats['p2']['results'][i]['smash-out-middle']
+    ]);
+    sheet.appendRow([
+      'Out cross court',
+      stats['p1']['results'][i]['smash-out-cross-court'],
+      stats['p2']['results'][i]['smash-out-cross-court']
     ]);
   }
 }

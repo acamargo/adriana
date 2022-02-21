@@ -154,10 +154,19 @@ Map matchStats({required Map match}) {
     'smash-played': 0,
     'smash-won': 0,
     'smash-won-%': 0,
+    'smash-won-down-the-line': 0,
+    'smash-won-middle': 0,
+    'smash-won-cross-court': 0,
     'smash-out': 0,
     'smash-out-%': 0,
+    'smash-out-down-the-line': 0,
+    'smash-out-middle': 0,
+    'smash-out-cross-court': 0,
     'smash-net': 0,
     'smash-net-%': 0,
+    'smash-net-down-the-line': 0,
+    'smash-net-middle': 0,
+    'smash-net-cross-court': 0,
     'volley-played': 0,
     'volley-won': 0,
     'volley-won-%': 0,
@@ -407,19 +416,36 @@ Map matchStats({required Map match}) {
             case 'I':
               report[lastHitBy]['results'][0]['smash-won']++;
               report[lastHitBy]['results'][currentSet]['smash-won']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]['smash-won-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['smash-won-' + ballDirection]++;
+              }
               break;
             case 'O':
               report[lastHitBy]['results'][0]['smash-out']++;
               report[lastHitBy]['results'][currentSet]['smash-out']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]['smash-out-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['smash-out-' + ballDirection]++;
+              }
               break;
             case 'N':
               report[lastHitBy]['results'][0]['smash-net']++;
               report[lastHitBy]['results'][currentSet]['smash-net']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]['smash-net-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['smash-net-' + ballDirection]++;
+              }
               break;
           }
           updatePercentages(report, currentSet, 'smash');
         }
+
         if (shot == 'V') {
+          // VOLLEY
           report[lastHitBy]['results'][0]['volley-played']++;
           report[lastHitBy]['results'][currentSet]['volley-played']++;
           switch (depth) {
