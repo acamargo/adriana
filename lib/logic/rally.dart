@@ -33,12 +33,12 @@ Map newRallyEvent({
 Map whatWasTheShotHitOptions({required bool isServing}) {
   return {
     'options': [
-      {'label': 'BACKHAND', 'short': 'BH', 'value': 'BH'},
-      {'label': 'OVERHEAD', 'short': 'OH', 'value': 'SM'},
-      if (isServing) {'label': 'SERVE', 'short': 'S', 'value': 'SV'},
-      {'label': 'DROP SHOT', 'short': 'DS', 'value': 'DS'},
-      {'label': 'VOLLEY', 'short': 'V', 'value': 'V'},
-      {'label': 'FOREHAND', 'short': 'FH', 'value': 'FH'},
+      {'label': 'BACKHAND', 'short': 'BKH', 'value': 'BH'},
+      {'label': 'OVERHEAD', 'short': 'OVH', 'value': 'SM'},
+      if (isServing) {'label': 'SERVE', 'short': 'SRV', 'value': 'SV'},
+      {'label': 'DROP SHOT', 'short': 'DPS', 'value': 'DS'},
+      {'label': 'VOLLEY', 'short': 'VLY', 'value': 'V'},
+      {'label': 'FOREHAND', 'short': 'FRH', 'value': 'FH'},
     ]
   };
 }
