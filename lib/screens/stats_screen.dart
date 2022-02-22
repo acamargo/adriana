@@ -376,6 +376,21 @@ void statsSheet(
       stats['p2']['results'][i]['volley-won-%']
     ]);
     sheet.appendRow([
+      'Winners down the line',
+      stats['p1']['results'][i]['volley-won-down-the-line'],
+      stats['p2']['results'][i]['volley-won-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Winners middle',
+      stats['p1']['results'][i]['volley-won-middle'],
+      stats['p2']['results'][i]['volley-won-middle']
+    ]);
+    sheet.appendRow([
+      'Winners cross court',
+      stats['p1']['results'][i]['volley-won-cross-court'],
+      stats['p2']['results'][i]['volley-won-cross-court']
+    ]);
+    sheet.appendRow([
       'Into the net',
       stats['p1']['results'][i]['volley-net'],
       stats['p2']['results'][i]['volley-net']
@@ -386,6 +401,21 @@ void statsSheet(
       stats['p2']['results'][i]['volley-net-%']
     ]);
     sheet.appendRow([
+      'Into the net down the line',
+      stats['p1']['results'][i]['volley-net-down-the-line'],
+      stats['p2']['results'][i]['volley-net-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Into the net middle',
+      stats['p1']['results'][i]['volley-net-middle'],
+      stats['p2']['results'][i]['volley-net-middle']
+    ]);
+    sheet.appendRow([
+      'Into the net cross court',
+      stats['p1']['results'][i]['volley-net-cross-court'],
+      stats['p2']['results'][i]['volley-net-cross-court']
+    ]);
+    sheet.appendRow([
       'Out',
       stats['p1']['results'][i]['volley-out'],
       stats['p2']['results'][i]['volley-out']
@@ -394,6 +424,21 @@ void statsSheet(
       'Out %',
       stats['p1']['results'][i]['volley-out-%'],
       stats['p2']['results'][i]['volley-out-%']
+    ]);
+    sheet.appendRow([
+      'Out down the line',
+      stats['p1']['results'][i]['volley-out-down-the-line'],
+      stats['p2']['results'][i]['volley-out-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Out middle',
+      stats['p1']['results'][i]['volley-out-middle'],
+      stats['p2']['results'][i]['volley-out-middle']
+    ]);
+    sheet.appendRow([
+      'Out cross court',
+      stats['p1']['results'][i]['volley-out-cross-court'],
+      stats['p2']['results'][i]['volley-out-cross-court']
     ]);
 
     sheet.appendRow(['']);

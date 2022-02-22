@@ -170,10 +170,19 @@ Map matchStats({required Map match}) {
     'volley-played': 0,
     'volley-won': 0,
     'volley-won-%': 0,
+    'volley-won-down-the-line': 0,
+    'volley-won-middle': 0,
+    'volley-won-cross-court': 0,
     'volley-out': 0,
     'volley-out-%': 0,
+    'volley-out-down-the-line': 0,
+    'volley-out-middle': 0,
+    'volley-out-cross-court': 0,
     'volley-net': 0,
     'volley-net-%': 0,
+    'volley-net-down-the-line': 0,
+    'volley-net-middle': 0,
+    'volley-net-cross-court': 0,
   };
   for (var i = 0; i <= lastSet; i++) {
     report['match-time']
@@ -452,14 +461,32 @@ Map matchStats({required Map match}) {
             case 'I':
               report[lastHitBy]['results'][0]['volley-won']++;
               report[lastHitBy]['results'][currentSet]['volley-won']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['volley-won-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['volley-won-' + ballDirection]++;
+              }
               break;
             case 'O':
               report[lastHitBy]['results'][0]['volley-out']++;
               report[lastHitBy]['results'][currentSet]['volley-out']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['volley-out-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['volley-out-' + ballDirection]++;
+              }
               break;
             case 'N':
               report[lastHitBy]['results'][0]['volley-net']++;
               report[lastHitBy]['results'][currentSet]['volley-net']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['volley-net-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['volley-net-' + ballDirection]++;
+              }
               break;
           }
           updatePercentages(report, currentSet, 'volley');
