@@ -33,11 +33,12 @@ Map newRallyEvent({
 Map whatWasTheShotHitOptions({required bool isServing}) {
   return {
     'options': [
-      {'label': 'BACKHAND', 'value': 'BH'},
-      {'label': 'SMASH', 'value': 'SM'},
-      if (isServing) {'label': 'SERVE', 'value': 'SV'},
-      {'label': 'VOLLEY', 'value': 'V'},
-      {'label': 'FOREHAND', 'value': 'FH'},
+      {'label': 'BACKHAND', 'short': 'BH', 'value': 'BH'},
+      {'label': 'OVERHEAD', 'short': 'OH', 'value': 'SM'},
+      if (isServing) {'label': 'SERVE', 'short': 'S', 'value': 'SV'},
+      {'label': 'DROP SHOT', 'short': 'DS', 'value': 'DS'},
+      {'label': 'VOLLEY', 'short': 'V', 'value': 'V'},
+      {'label': 'FOREHAND', 'short': 'FH', 'value': 'FH'},
     ]
   };
 }
@@ -45,7 +46,7 @@ Map whatWasTheShotHitOptions({required bool isServing}) {
 Map whatWasTheDirectionOptions({required String shot}) {
   return {
     'options': [
-      {'label': (shot == 'SV') ? 'OPEN' : 'CROSS COURT', 'value': 'CC'},
+      {'label': (shot == 'SV') ? 'OUT WIDE' : 'CROSS COURT', 'value': 'CC'},
       {'label': (shot == 'SV') ? 'BODY' : 'MIDDLE', 'value': 'M'},
       {'label': (shot == 'SV') ? 'T' : 'DOWN THE LINE', 'value': 'DTL'}
     ]

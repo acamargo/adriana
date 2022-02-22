@@ -221,7 +221,7 @@ class _PointScreenState extends State<PointScreen> {
           children: <Widget>[
             for (var item in options['options'])
               choiceChip(
-                label: item['label'],
+                label: item['short'],
                 selected: _shot == item['value'],
                 onSelected: (bool selected) => setState(() {
                   _shot = item['value'];
