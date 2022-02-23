@@ -183,6 +183,22 @@ Map matchStats({required Map match}) {
     'volley-net-down-the-line': 0,
     'volley-net-middle': 0,
     'volley-net-cross-court': 0,
+    'drop-shot-played': 0,
+    'drop-shot-won': 0,
+    'drop-shot-won-%': 0,
+    'drop-shot-won-down-the-line': 0,
+    'drop-shot-won-middle': 0,
+    'drop-shot-won-cross-court': 0,
+    'drop-shot-out': 0,
+    'drop-shot-out-%': 0,
+    'drop-shot-out-down-the-line': 0,
+    'drop-shot-out-middle': 0,
+    'drop-shot-out-cross-court': 0,
+    'drop-shot-net': 0,
+    'drop-shot-net-%': 0,
+    'drop-shot-net-down-the-line': 0,
+    'drop-shot-net-middle': 0,
+    'drop-shot-net-cross-court': 0,
   };
   for (var i = 0; i <= lastSet; i++) {
     report['match-time']
@@ -490,6 +506,45 @@ Map matchStats({required Map match}) {
               break;
           }
           updatePercentages(report, currentSet, 'volley');
+        }
+
+        if (shot == 'DS') {
+          // DROP SHOT
+          report[lastHitBy]['results'][0]['drop-shot-played']++;
+          report[lastHitBy]['results'][currentSet]['drop-shot-played']++;
+          switch (depth) {
+            case 'I':
+              report[lastHitBy]['results'][0]['drop-shot-won']++;
+              report[lastHitBy]['results'][currentSet]['drop-shot-won']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['drop-shot-won-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['drop-shot-won-' + ballDirection]++;
+              }
+              break;
+            case 'O':
+              report[lastHitBy]['results'][0]['drop-shot-out']++;
+              report[lastHitBy]['results'][currentSet]['drop-shot-out']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['drop-shot-out-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['drop-shot-out-' + ballDirection]++;
+              }
+              break;
+            case 'N':
+              report[lastHitBy]['results'][0]['drop-shot-net']++;
+              report[lastHitBy]['results'][currentSet]['drop-shot-net']++;
+              if (hasDirection) {
+                report[lastHitBy]['results'][0]
+                    ['drop-shot-net-' + ballDirection]++;
+                report[lastHitBy]['results'][currentSet]
+                    ['drop-shot-net-' + ballDirection]++;
+              }
+              break;
+          }
+          updatePercentages(report, currentSet, 'drop-shot');
         }
       }
     }

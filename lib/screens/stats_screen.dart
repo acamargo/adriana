@@ -523,6 +523,90 @@ void statsSheet(
       stats['p1']['results'][i]['smash-out-cross-court'],
       stats['p2']['results'][i]['smash-out-cross-court']
     ]);
+
+    sheet.appendRow(['']);
+    sheet.appendRow(
+        ['Drop shot Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([
+      'Total points decided with',
+      stats['p1']['results'][i]['drop-shot-played'],
+      stats['p2']['results'][i]['drop-shot-played']
+    ]);
+    sheet.appendRow([
+      'Winners',
+      stats['p1']['results'][i]['drop-shot-won'],
+      stats['p2']['results'][i]['drop-shot-won']
+    ]);
+    sheet.appendRow([
+      'Winners %',
+      stats['p1']['results'][i]['drop-shot-won-%'],
+      stats['p2']['results'][i]['drop-shot-won-%']
+    ]);
+    sheet.appendRow([
+      'Winners down the line',
+      stats['p1']['results'][i]['drop-shot-won-down-the-line'],
+      stats['p2']['results'][i]['drop-shot-won-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Winners middle',
+      stats['p1']['results'][i]['drop-shot-won-middle'],
+      stats['p2']['results'][i]['drop-shot-won-middle']
+    ]);
+    sheet.appendRow([
+      'Winners cross court',
+      stats['p1']['results'][i]['drop-shot-won-cross-court'],
+      stats['p2']['results'][i]['drop-shot-won-cross-court']
+    ]);
+    sheet.appendRow([
+      'Into the net',
+      stats['p1']['results'][i]['drop-shot-net'],
+      stats['p2']['results'][i]['drop-shot-net']
+    ]);
+    sheet.appendRow([
+      'Into the net %',
+      stats['p1']['results'][i]['drop-shot-net-%'],
+      stats['p2']['results'][i]['drop-shot-net-%']
+    ]);
+    sheet.appendRow([
+      'Into the net down the line',
+      stats['p1']['results'][i]['drop-shot-net-down-the-line'],
+      stats['p2']['results'][i]['drop-shot-net-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Into the net middle',
+      stats['p1']['results'][i]['drop-shot-net-middle'],
+      stats['p2']['results'][i]['drop-shot-net-middle']
+    ]);
+    sheet.appendRow([
+      'Into the net cross court',
+      stats['p1']['results'][i]['drop-shot-net-cross-court'],
+      stats['p2']['results'][i]['drop-shot-net-cross-court']
+    ]);
+    sheet.appendRow([
+      'Out',
+      stats['p1']['results'][i]['drop-shot-out'],
+      stats['p2']['results'][i]['drop-shot-out']
+    ]);
+    sheet.appendRow([
+      'Out %',
+      stats['p1']['results'][i]['drop-shot-out-%'],
+      stats['p2']['results'][i]['drop-shot-out-%']
+    ]);
+    sheet.appendRow([
+      'Out down the line',
+      stats['p1']['results'][i]['drop-shot-out-down-the-line'],
+      stats['p2']['results'][i]['drop-shot-out-down-the-line']
+    ]);
+    sheet.appendRow([
+      'Out middle',
+      stats['p1']['results'][i]['drop-shot-out-middle'],
+      stats['p2']['results'][i]['drop-shot-out-middle']
+    ]);
+    sheet.appendRow([
+      'Out cross court',
+      stats['p1']['results'][i]['drop-shot-out-cross-court'],
+      stats['p2']['results'][i]['drop-shot-out-cross-court']
+    ]);
   }
 }
 
