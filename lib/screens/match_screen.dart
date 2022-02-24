@@ -261,9 +261,24 @@ class _MatchScreenState extends State<MatchScreen> {
                 //   }));
                 // }
               },
-              title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(item['title']), Text(item['pointNumber'])]),
+              title: item['pointNumber'].isEmpty
+                  ? Text(item['title'])
+                  : Row(mainAxisSize: MainAxisSize.max, children: [
+                      Flexible(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          child: Text(
+                            item['title'],
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        alignment: Alignment.centerRight,
+                        child: Text(item['pointNumber']),
+                      )
+                    ]),
               subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [Text(item['subtitle']), Text(item['time'])]),
