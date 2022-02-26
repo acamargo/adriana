@@ -341,14 +341,15 @@ class _PointScreenState extends State<PointScreen> {
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.all(10),
+      body: Center(
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _whoTouchedTheBallLast() +
-                _whatWasTheShotHit() +
-                _whatWasTheDirection() +
-                _whereDidTheBallLand()),
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: _whoTouchedTheBallLast() +
+              _whatWasTheShotHit() +
+              _whatWasTheDirection() +
+              _whereDidTheBallLand(),
+        ),
       ),
     );
   }
