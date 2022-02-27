@@ -18,6 +18,7 @@ class MatchesScreen extends StatefulWidget {
 
 class _MatchesScreenState extends State<MatchesScreen> {
   List _matches = [];
+  late String _title;
 
   void _add() async {
     Match? results = await Navigator.of(context).push(MaterialPageRoute<Match>(
@@ -45,8 +46,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void _refresh() {
+    setState(() => _title = "Loading matches...");
     widget.storage.loadAll().then((matches) {
-      setState(() => _matches = matches);
+      setState(() {
+        _matches = matches;
+        _title = "Matches (${matches.length})";
+      });
     });
   }
 
@@ -62,7 +67,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Matches'),
+        title: Text(_title),
       ),
       body: ListView.builder(
         itemCount: _matches.length,
