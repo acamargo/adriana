@@ -23,10 +23,9 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
     Map scoreEvent = newScoreFromCoinToss(widget.match, coinTossEvent);
     widget.match['events'].add(coinTossEvent);
     widget.match['events'].add(scoreEvent);
-    widget.storage.create(widget.match);
-
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
+    widget.storage.create(widget.match).then((_) => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => PointScreen(widget.match))));
   }
 
   @override

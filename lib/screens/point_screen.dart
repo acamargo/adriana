@@ -29,7 +29,7 @@ class _PointScreenState extends State<PointScreen> {
   bool isVibrate = true;
   bool isSound = true;
 
-  _storeRallyEvent() {
+  _storeRallyEvent() async {
     Map rallyEvent = newRallyEvent(
         createdAt: DateTime.now(),
         match: widget.match,
@@ -42,7 +42,7 @@ class _PointScreenState extends State<PointScreen> {
 
     widget.match['events'].add(rallyEvent);
     widget.match['events'].add(scoreEvent);
-    widget.storage.create(widget.match);
+    return widget.storage.create(widget.match);
   }
 
   Widget choiceChip(
@@ -112,8 +112,9 @@ class _PointScreenState extends State<PointScreen> {
             'state': 'Match finished'
           };
           widget.match['events'].add(finalScoreEvent);
-          widget.storage.create(widget.match);
-          Navigator.pop(context);
+          widget.storage
+              .create(widget.match)
+              .then((_) => Navigator.pop(context));
         }
         break;
     }
@@ -153,11 +154,10 @@ class _PointScreenState extends State<PointScreen> {
     if (result) {
       widget.match['events'].removeLast();
       widget.match['events'].removeLast();
-      widget.storage.create(widget.match);
-      Navigator.pushReplacement(
+      widget.storage.create(widget.match).then((_) => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => CoinTossScreen(widget.match)));
+              builder: (context) => CoinTossScreen(widget.match))));
     }
   }
 
@@ -195,9 +195,9 @@ class _PointScreenState extends State<PointScreen> {
     if (result) {
       widget.match['events'].removeLast();
       widget.match['events'].removeLast();
-      widget.storage.create(widget.match);
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
+      widget.storage.create(widget.match).then((_) => Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => PointScreen(widget.match))));
     }
   }
 
@@ -325,9 +325,8 @@ class _PointScreenState extends State<PointScreen> {
     if (isVibrate) Vibration.vibrate(duration: 100);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       if (isSound) FlutterBeep.beep(false);
-      _storeRallyEvent();
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
+      _storeRallyEvent().then((_) => Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => PointScreen(widget.match))));
     } else {
       if (isSound) FlutterBeep.beep();
     }
