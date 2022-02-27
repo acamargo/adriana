@@ -125,43 +125,44 @@ class _MatchScreenState extends State<MatchScreen> {
               .showSnackBar(SnackBar(content: Text(result.message)));
         break;
       case 'Finish':
-        // bool result = await showDialog(
-        //   context: context,
-        //   builder: (BuildContext context) {
-        //     return AlertDialog(
-        //       title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
-        //       content: Text("Would you like to finish the match?"),
-        //       actions: [
-        //         TextButton(
-        //           child: Text("YES"),
-        //           onPressed: () {
-        //             Navigator.of(context, rootNavigator: true).pop(true);
-        //           },
-        //         ),
-        //         TextButton(
-        //           child: Text("NO"),
-        //           onPressed: () {
-        //             Navigator.of(context, rootNavigator: true).pop(false);
-        //           },
-        //         ),
-        //       ],
-        //     );
-        //   },
-        // );
-        // if (result) {
-        //   Map lastScore = widget.match['events'].last;
-        //   Map finalScoreEvent = {
-        //     'event': 'FinalScore',
-        //     'createdAt': DateTime.now(),
-        //     'pointNumber': lastScore['pointNumber'],
-        //     'p1': lastScore['p1'],
-        //     'p2': lastScore['p2'],
-        //     'state': 'Match finished'
-        //   };
-        //   widget.match['events'].add(finalScoreEvent);
-        //   widget.storage.create(widget.match);
-        //   Navigator.pop(context);
-        // }
+        bool result = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+              content: Text("Would you like to finish the match?"),
+              actions: [
+                TextButton(
+                  child: Text("YES"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(true);
+                  },
+                ),
+                TextButton(
+                  child: Text("NO"),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop(false);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        if (result) {
+          Map lastScore = widget.match['events'].last;
+          Map finalScoreEvent = {
+            'event': 'FinalScore',
+            'createdAt': DateTime.now(),
+            'pointNumber': lastScore['pointNumber'],
+            'p1': lastScore['p1'],
+            'p2': lastScore['p2'],
+            'state': 'Match finished'
+          };
+          widget.match['events'].add(finalScoreEvent);
+          MatchesStorage()
+              .create(widget.match)
+              .then((_) => Navigator.pop(context));
+        }
         break;
     }
   }
@@ -226,9 +227,10 @@ class _MatchScreenState extends State<MatchScreen> {
                 'Edit',
                 'Rematch',
                 'Delete',
-                'Share stats',
-                'Open stats',
-                if (events.first['event'] != 'FinalScore') 'Finish'
+                if (items.isNotEmpty) 'Share stats',
+                if (items.isNotEmpty) 'Open stats',
+                if (items.isNotEmpty && events.first['event'] != 'FinalScore')
+                  'Finish'
               }.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
