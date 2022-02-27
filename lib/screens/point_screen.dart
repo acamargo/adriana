@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:vibration/vibration.dart';
@@ -337,11 +336,6 @@ class _PointScreenState extends State<PointScreen> {
   @override
   Widget build(BuildContext context) {
     Wakelock.enable();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
 
     if (_player == '') {
       _player = whoIsServing();

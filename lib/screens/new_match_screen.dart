@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../models/match.dart';
@@ -42,11 +41,6 @@ class _NewMatchPage extends State<NewMatchScreen> {
   @override
   Widget build(BuildContext context) {
     Wakelock.disable();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
 
     final isNew = widget.match['p1'] == null;
 

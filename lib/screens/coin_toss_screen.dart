@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../matches_storage.dart';
@@ -33,11 +32,6 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
   @override
   Widget build(BuildContext context) {
     Wakelock.enable();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
 
     return Scaffold(
       appBar: AppBar(

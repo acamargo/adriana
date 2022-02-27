@@ -40,8 +40,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
     Wakelock.disable();
 
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
   }
 
@@ -92,12 +92,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: _add,
         tooltip: 'Add match',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

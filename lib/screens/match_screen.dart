@@ -168,7 +168,7 @@ class _MatchScreenState extends State<MatchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Wakelock.enable();
+    Wakelock.disable();
 
     final events = widget.match['events'].reversed.toList();
     List<Map> items = [];
