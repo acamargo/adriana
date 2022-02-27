@@ -14,6 +14,8 @@ void statsSheet(
       ? 'p1'
       : 'p2';
   for (var i = 0; i < stats['p1']['results'].length; i++) {
+    if (stats['scores'][i].isEmpty) continue;
+
     final title = (i == 0) ? 'Overall' : 'Set $i';
     var sheet = spreadsheet[title];
     sheet.appendRow(['Players', '${match['p1']} vs ${match['p2']}']);
