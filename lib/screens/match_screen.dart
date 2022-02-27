@@ -166,11 +166,7 @@ class _MatchScreenState extends State<MatchScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Wakelock.disable();
-
-    final events = widget.match['events'].reversed.toList();
+  List<Map> _history() {
     List<Map> items = [];
     for (var i = 0; i < widget.match['events'].length; i++) {
       final item = widget.match['events'][i];
@@ -209,7 +205,15 @@ class _MatchScreenState extends State<MatchScreen> {
         });
       }
     }
-    items = items.reversed.toList();
+    return items.reversed.toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Wakelock.disable();
+
+    final events = widget.match['events'].reversed.toList();
+    List<Map> items = _history();
 
     return Scaffold(
       appBar: AppBar(
@@ -235,57 +239,40 @@ class _MatchScreenState extends State<MatchScreen> {
           )
         ],
       ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final item = items[index];
+      body: items.isEmpty
+          ? Center(child: Text('Tap "+" to start the match.'))
+          : ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
 
-          return Card(
-            child: ListTile(
-              onTap: () {
-                // if (match['events'].last['event'] == 'FinalScore') {
-                //   openStatsSpreadsheet(match: match).then((result) {
-                //     if (result.type != ResultType.done)
-                //       ScaffoldMessenger.of(context).showSnackBar(
-                //           SnackBar(content: Text(result.message)));
-                //   });
-                // } else {
-                //   Navigator.of(context)
-                //       .push(MaterialPageRoute(builder: (context) {
-                //     bool hasCoinToss = match['events']
-                //         .where((event) => event['event'] == 'CoinToss')
-                //         .isNotEmpty;
-                //     return hasCoinToss
-                //         ? PointScreen(match)
-                //         : CoinTossScreen(match);
-                //   }));
-                // }
+                return Card(
+                  child: ListTile(
+                    title: item['pointNumber'].isEmpty
+                        ? Text(item['title'])
+                        : Row(mainAxisSize: MainAxisSize.max, children: [
+                            Flexible(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                child: Text(
+                                  item['title'],
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.15,
+                              alignment: Alignment.centerRight,
+                              child: Text(item['pointNumber']),
+                            )
+                          ]),
+                    subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [Text(item['subtitle']), Text(item['time'])]),
+                  ),
+                );
               },
-              title: item['pointNumber'].isEmpty
-                  ? Text(item['title'])
-                  : Row(mainAxisSize: MainAxisSize.max, children: [
-                      Flexible(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.75,
-                          child: Text(
-                            item['title'],
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        alignment: Alignment.centerRight,
-                        child: Text(item['pointNumber']),
-                      )
-                    ]),
-              subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(item['subtitle']), Text(item['time'])]),
             ),
-          );
-        },
-      ),
       floatingActionButton: Visibility(
         visible: events.first['event'] != 'FinalScore',
         child: FloatingActionButton(

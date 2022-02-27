@@ -102,29 +102,32 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: _matches.length,
-        itemBuilder: (context, index) {
-          final match = _matches[index];
-          final isFinished = match['events'].last['event'] == 'FinalScore';
-          final status = isFinished ? 'finished' : 'in progress';
+      body: _matches.isEmpty
+          ? Center(child: Text('Tap "+" to add a match.'))
+          : ListView.builder(
+              itemCount: _matches.length,
+              itemBuilder: (context, index) {
+                final match = _matches[index];
+                final isFinished =
+                    match['events'].last['event'] == 'FinalScore';
+                final status = isFinished ? 'finished' : 'in progress';
 
-          return Card(
-            child: ListTile(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return MatchScreen(match);
-                })).then((val) => _refresh());
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return MatchScreen(match);
+                      })).then((val) => _refresh());
+                    },
+                    title: Text(
+                        '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
+                    subtitle: Text(
+                        '${match['surface']} - ${match['venue']} - $status'),
+                  ),
+                );
               },
-              title: Text(
-                  '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
-              subtitle:
-                  Text('${match['surface']} - ${match['venue']} - $status'),
             ),
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _add,
         tooltip: 'Add match',
