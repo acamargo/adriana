@@ -20,6 +20,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
   List _matches = [];
   late String _title;
 
+  bool isLandscape = true;
+  final String portraitScreenOrientation = "Set portrait mode";
+  final String landscapeScreenOrientation = "Set landscape mode";
+
   void _add() async {
     Match? results = await Navigator.of(context).push(MaterialPageRoute<Match>(
         builder: (BuildContext context) => NewMatchScreen({}),
@@ -39,10 +43,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
   void _setupScreen() {
     Wakelock.disable();
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+    SystemChrome.setPreferredOrientations(isLandscape
+        ? [
+            DeviceOrientation.landscapeLeft,
+            DeviceOrientation.landscapeRight,
+          ]
+        : [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   }
 
   void _refresh() {
@@ -61,6 +67,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
     _refresh();
   }
 
+  void handleClick(String value) async {
+    if (value == portraitScreenOrientation) {
+      isLandscape = false;
+      _setupScreen();
+    } else if (value == landscapeScreenOrientation) {
+      isLandscape = true;
+      _setupScreen();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _setupScreen();
@@ -68,6 +84,23 @@ class _MatchesScreenState extends State<MatchesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context) {
+              return {
+                isLandscape
+                    ? portraitScreenOrientation
+                    : landscapeScreenOrientation,
+              }.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: _matches.length,
