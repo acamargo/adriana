@@ -6,6 +6,7 @@ import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
 
 import '../matches_storage.dart';
+import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
 import '../logic/score.dart';
 import '../logic/rally.dart';
@@ -116,6 +117,49 @@ class _PointScreenState extends State<PointScreen> {
           Navigator.pop(context);
         }
         break;
+    }
+  }
+
+  bool _undoCoinTossAllowed() {
+    final events = widget.match['events'];
+    final length = events.length;
+    return events[length - 2]['event'] == 'CoinToss' &&
+        events[length - 1]['event'] == 'Score';
+  }
+
+  void handleCoinTossUndo() async {
+    bool result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+          content: Text("Would you like to undo the coin toss?"),
+          actions: [
+            TextButton(
+              child: Text("YES"),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(true);
+              },
+            ),
+            TextButton(
+              child: Text("NO"),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    if (result) {
+      widget.match['events'].removeLast();
+      widget.match['events'].removeLast();
+      print(widget.match['events']);
+      widget.storage.create(widget.match);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CoinTossScreen(widget.match)));
     }
   }
 
@@ -313,6 +357,16 @@ class _PointScreenState extends State<PointScreen> {
                 widget.match['events'].last['server']),
             style: TextStyle(color: Colors.lightGreenAccent)),
         actions: <Widget>[
+          if (_undoCoinTossAllowed())
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: handleCoinTossUndo,
+                  child: Icon(
+                    Icons.undo,
+                    size: 26.0,
+                  ),
+                )),
           if (_undoAllowed())
             Padding(
                 padding: EdgeInsets.only(right: 20.0),

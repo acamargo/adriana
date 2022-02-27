@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../matches_storage.dart';
 import 'point_screen.dart';
@@ -30,14 +32,22 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Wakelock.enable();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.match['p1']} vs ${widget.match['p2']}"),
+        title: Text("Coin toss"),
       ),
-      body: Container(
+      body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Coin toss"),
             ElevatedButton(
               onPressed: () {
                 _storeCoinTossEvent('p1');
