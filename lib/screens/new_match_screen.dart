@@ -50,7 +50,6 @@ class _NewMatchPage extends State<NewMatchScreen> {
 
     final isNew = widget.match['p1'] == null;
 
-    print(widget.match);
     return new Scaffold(
       appBar: new AppBar(
         title: Text(isNew ? 'New Match' : 'Edit Match'),

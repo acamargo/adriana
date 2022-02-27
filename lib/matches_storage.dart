@@ -46,7 +46,6 @@ class MatchesStorage {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    print(path);
     return File('$path/matches.json');
   }
 
@@ -81,7 +80,6 @@ class MatchesStorage {
     final path = await _localPath;
     final fileName = data['createdAt'].toIso8601String();
     final file = File('$path/$fileName.match.json');
-    print(file);
     final contents = json.encode(data, toEncodable: myEncode);
     return file.writeAsString(contents);
   }

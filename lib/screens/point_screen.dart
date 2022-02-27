@@ -154,7 +154,6 @@ class _PointScreenState extends State<PointScreen> {
     if (result) {
       widget.match['events'].removeLast();
       widget.match['events'].removeLast();
-      print(widget.match['events']);
       widget.storage.create(widget.match);
       Navigator.pushReplacement(
           context,
@@ -197,7 +196,6 @@ class _PointScreenState extends State<PointScreen> {
     if (result) {
       widget.match['events'].removeLast();
       widget.match['events'].removeLast();
-      print(widget.match['events']);
       widget.storage.create(widget.match);
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => PointScreen(widget.match)));
