@@ -4,14 +4,15 @@ import 'package:flutter_beep/flutter_beep.dart';
 import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
 
+import '../accidental/storage/preferences.dart';
 import '../matches_storage.dart';
-import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
 import '../logic/score.dart';
 import '../logic/rally.dart';
 
 class PointScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
+  final PreferencesStorage preferences = PreferencesStorage();
   final Map match;
 
   PointScreen(this.match);
@@ -28,6 +29,16 @@ class _PointScreenState extends State<PointScreen> {
 
   bool isVibrate = true;
   bool isSound = true;
+  Future<void> _loadPreferences() async {
+    isVibrate = await widget.preferences.isVibrate();
+    isSound = await widget.preferences.isSound();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
 
   _storeRallyEvent() async {
     Map rallyEvent = newRallyEvent(
@@ -60,15 +71,19 @@ class _PointScreenState extends State<PointScreen> {
   void handleClick(String value) async {
     switch (value) {
       case 'Enable vibrate':
+        await widget.preferences.setVibrate(true);
         isVibrate = true;
         break;
       case 'Disable vibrate':
+        await widget.preferences.setVibrate(false);
         isVibrate = false;
         break;
       case 'Enable sound':
+        await widget.preferences.setSound(true);
         isSound = true;
         break;
       case 'Disable sound':
+        await widget.preferences.setSound(false);
         isSound = false;
         break;
       case 'Stats':

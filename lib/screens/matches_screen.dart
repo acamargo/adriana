@@ -1,3 +1,4 @@
+import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
@@ -11,6 +12,7 @@ import 'match_screen.dart';
 
 class MatchesScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
+  final PreferencesStorage preferences = PreferencesStorage();
 
   @override
   _MatchesScreenState createState() => _MatchesScreenState();
@@ -40,8 +42,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
     }
   }
 
-  void _setupScreen() {
+  Future<void> _setupScreen() async {
     Wakelock.disable();
+
+    isLandscape = await widget.preferences.isLandscape();
 
     SystemChrome.setPreferredOrientations(isLandscape
         ? [
@@ -64,23 +68,22 @@ class _MatchesScreenState extends State<MatchesScreen> {
   @override
   void initState() {
     super.initState();
+    _setupScreen();
     _refresh();
   }
 
   void handleClick(String value) async {
     if (value == portraitScreenOrientation) {
-      isLandscape = false;
+      await widget.preferences.setLandscape(false);
       _setupScreen();
     } else if (value == landscapeScreenOrientation) {
-      isLandscape = true;
+      await widget.preferences.setLandscape(true);
       _setupScreen();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _setupScreen();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
