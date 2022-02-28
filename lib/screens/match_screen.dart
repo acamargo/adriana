@@ -278,20 +278,29 @@ class _MatchScreenState extends State<MatchScreen> {
       floatingActionButton: Visibility(
         visible: events.first['event'] != 'FinalScore',
         child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              bool hasCoinToss = events
-                  .where((event) => event['event'] == 'CoinToss')
-                  .isNotEmpty;
-              return hasCoinToss
-                  ? PointScreen(widget.match)
-                  : CoinTossScreen(widget.match);
-            })).then((_) => setState(() {}));
-          },
+          onPressed: addEvent,
           tooltip: 'Add event',
           child: Icon(Icons.add),
         ),
       ),
     );
+  }
+
+  addEvent() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      bool hasCoinToss = widget.match['events']
+          .where((event) => event['event'] == 'CoinToss')
+          .isNotEmpty;
+      return hasCoinToss
+          ? PointScreen(widget.match)
+          : CoinTossScreen(widget.match);
+    })).then((eventName) {
+      if (eventName == null) {
+        // back button pressed, updates the screen
+        setState(() {});
+      } else {
+        addEvent();
+      }
+    });
   }
 }

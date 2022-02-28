@@ -114,7 +114,7 @@ class _PointScreenState extends State<PointScreen> {
           widget.match['events'].add(finalScoreEvent);
           widget.storage
               .create(widget.match)
-              .then((_) => Navigator.pop(context));
+              .then((_) => Navigator.of(context).pop('finish'));
         }
         break;
     }
@@ -154,10 +154,9 @@ class _PointScreenState extends State<PointScreen> {
     if (result) {
       widget.match['events'].removeLast();
       widget.match['events'].removeLast();
-      widget.storage.create(widget.match).then((_) => Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CoinTossScreen(widget.match))));
+      widget.storage
+          .create(widget.match)
+          .then((_) => Navigator.of(context).pop('undoCoinToss'));
     }
   }
 
@@ -195,9 +194,9 @@ class _PointScreenState extends State<PointScreen> {
     if (result) {
       widget.match['events'].removeLast();
       widget.match['events'].removeLast();
-      widget.storage.create(widget.match).then((_) => Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => PointScreen(widget.match))));
+      widget.storage
+          .create(widget.match)
+          .then((_) => Navigator.of(context).pop('undo'));
     }
   }
 
@@ -325,8 +324,7 @@ class _PointScreenState extends State<PointScreen> {
     if (isVibrate) Vibration.vibrate(duration: 100);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       if (isSound) FlutterBeep.beep(false);
-      _storeRallyEvent().then((_) => Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => PointScreen(widget.match))));
+      _storeRallyEvent().then((_) => Navigator.of(context).pop('newEvent'));
     } else {
       if (isSound) FlutterBeep.beep();
     }
