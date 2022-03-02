@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home_screen.dart';
+import 'package:adriana/accidental/screens/home_screen.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();

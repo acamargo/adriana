@@ -4,8 +4,8 @@ import 'package:flutter_beep/flutter_beep.dart';
 import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
 
-import '../accidental/storage/preferences.dart';
-import '../accidental/storage/matches.dart';
+import 'package:adriana/accidental/storage/preferences.dart';
+import 'package:adriana/accidental/storage/matches.dart';
 import 'stats_screen.dart';
 import 'package:adriana/essential/score.dart';
 import 'package:adriana/essential/rally.dart';
