@@ -21,6 +21,7 @@ class MatchesScreen extends StatefulWidget {
 class _MatchesScreenState extends State<MatchesScreen> {
   List _matches = [];
   late String _title;
+  late bool _isLoading;
 
   bool isLandscape = true;
   final String portraitScreenOrientation = "Set portrait mode";
@@ -56,11 +57,15 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   void _refresh() {
-    setState(() => _title = "Loading matches...");
+    setState(() {
+      _isLoading = true;
+      _title = "Matches";
+    });
     widget.storage.loadAll().then((matches) {
       setState(() {
+        _isLoading = false;
         _matches = matches;
-        _title = "Matches (${matches.length})";
+        if (matches.length > 0) _title = "Matches (${matches.length})";
       });
     });
   }
@@ -105,36 +110,41 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ),
         ],
       ),
-      body: _matches.isEmpty
-          ? Center(child: Text('Tap "+" to add a match.'))
-          : ListView.builder(
-              itemCount: _matches.length,
-              itemBuilder: (context, index) {
-                final match = _matches[index];
-                final isFinished =
-                    match['events'].last['event'] == 'FinalScore';
-                final status = isFinished ? 'finished' : 'in progress';
+      body: _isLoading
+          ? Center(child: Text('Loading matches...'))
+          : _matches.isEmpty
+              ? Center(child: Text('Tap "+" to add a match.'))
+              : ListView.builder(
+                  itemCount: _matches.length,
+                  itemBuilder: (context, index) {
+                    final match = _matches[index];
+                    final isFinished =
+                        match['events'].last['event'] == 'FinalScore';
+                    final status = isFinished ? 'finished' : 'in progress';
 
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return MatchScreen(match);
-                      })).then((val) => _refresh());
-                    },
-                    title: Text(
-                        '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
-                    subtitle: Text(
-                        '${match['surface']} - ${match['venue']} - $status'),
-                  ),
-                );
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _add,
-        tooltip: 'Add match',
-        child: Icon(Icons.add),
+                    return Card(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return MatchScreen(match);
+                          })).then((val) => _refresh());
+                        },
+                        title: Text(
+                            '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
+                        subtitle: Text(
+                            '${match['surface']} - ${match['venue']} - $status'),
+                      ),
+                    );
+                  },
+                ),
+      floatingActionButton: Visibility(
+        visible: !_isLoading,
+        child: FloatingActionButton(
+          onPressed: _add,
+          tooltip: 'Add match',
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
