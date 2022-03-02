@@ -7,7 +7,7 @@ import 'point_screen.dart';
 import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
 import 'new_match_screen.dart';
-import '../matches_storage.dart';
+import '../accidental/storage/matches.dart';
 import '../models/match.dart';
 import '../logic/rally.dart';
 import '../logic/match.dart';

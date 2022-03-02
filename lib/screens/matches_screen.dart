@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../matches_storage.dart';
+import '../accidental/storage/matches.dart';
 import 'new_match_screen.dart';
 import '../models/match.dart';
 import '../logic/date_time.dart';

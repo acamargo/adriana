@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:test/test.dart';
 
 import 'package:adriana/logic/stats.dart';
-import 'package:adriana/matches_storage.dart';
+import 'package:adriana/accidental/storage/matches.dart';
 
 void main() {
   group('matchStats()', () {

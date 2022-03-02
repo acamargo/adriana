@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../matches_storage.dart';
-import 'point_screen.dart';
+import '../accidental/storage/matches.dart';
 import '../logic/coin_toss.dart';
 import '../logic/score.dart';
 

@@ -5,7 +5,7 @@ import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
 
 import '../accidental/storage/preferences.dart';
-import '../matches_storage.dart';
+import '../accidental/storage/matches.dart';
 import 'stats_screen.dart';
 import '../logic/score.dart';
 import '../logic/rally.dart';
