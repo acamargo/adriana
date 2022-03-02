@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:adriana/logic/coin_toss.dart';
+import 'package:adriana/essential/coin_toss.dart';
 
 void main() {
   group('Given a DateTime and winner', () {

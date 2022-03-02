@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../accidental/storage/matches.dart';
-import '../logic/coin_toss.dart';
-import '../logic/score.dart';
+import 'package:adriana/accidental/storage/matches.dart';
+import 'package:adriana/essential/coin_toss.dart';
+import 'package:adriana/essential/score.dart';
 
 class CoinTossScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();

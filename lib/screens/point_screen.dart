@@ -7,8 +7,8 @@ import 'package:open_file/open_file.dart';
 import '../accidental/storage/preferences.dart';
 import '../accidental/storage/matches.dart';
 import 'stats_screen.dart';
-import '../logic/score.dart';
-import '../logic/rally.dart';
+import 'package:adriana/essential/score.dart';
+import 'package:adriana/essential/rally.dart';
 
 class PointScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();

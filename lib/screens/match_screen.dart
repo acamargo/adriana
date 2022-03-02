@@ -9,10 +9,10 @@ import 'stats_screen.dart';
 import 'new_match_screen.dart';
 import '../accidental/storage/matches.dart';
 import '../models/match.dart';
-import '../logic/rally.dart';
-import '../logic/match.dart';
-import '../logic/score.dart';
-import '../logic/stats.dart';
+import 'package:adriana/essential/rally.dart';
+import 'package:adriana/essential/match.dart';
+import 'package:adriana/essential/score.dart';
+import 'package:adriana/essential/stats.dart';
 import '../logic/date_time.dart';
 
 class MatchScreen extends StatefulWidget {

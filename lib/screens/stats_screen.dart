@@ -3,8 +3,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
-import '../logic/stats.dart';
-import '../logic/score.dart';
+import 'package:adriana/essential/stats.dart';
+import 'package:adriana/essential/score.dart';
 import '../logic/date_time.dart';
 
 void statsSheet(

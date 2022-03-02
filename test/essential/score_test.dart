@@ -1,8 +1,8 @@
 import 'package:test/test.dart';
 
-import 'package:adriana/logic/score.dart';
-import 'package:adriana/logic/match.dart';
-import 'package:adriana/logic/coin_toss.dart';
+import 'package:adriana/essential/score.dart';
+import 'package:adriana/essential/match.dart';
+import 'package:adriana/essential/coin_toss.dart';
 
 void main() {
   group('formatStatsSet()', () {

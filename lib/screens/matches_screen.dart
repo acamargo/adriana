@@ -7,7 +7,7 @@ import '../accidental/storage/matches.dart';
 import 'new_match_screen.dart';
 import '../models/match.dart';
 import '../logic/date_time.dart';
-import '../logic/match.dart';
+import 'package:adriana/essential/match.dart';
 import 'match_screen.dart';
 
 class MatchesScreen extends StatefulWidget {

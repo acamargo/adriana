@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 
-import 'package:adriana/logic/match.dart';
-import 'package:adriana/logic/rally.dart';
+import 'package:adriana/essential/match.dart';
+import 'package:adriana/essential/rally.dart';
 
 void main() {
   group('newRallyEvent()', () {
