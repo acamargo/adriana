@@ -13,7 +13,7 @@ import 'package:adriana/essential/rally.dart';
 import 'package:adriana/essential/match.dart';
 import 'package:adriana/essential/score.dart';
 import 'package:adriana/essential/stats.dart';
-import '../logic/date_time.dart';
+import 'package:adriana/accidental/logic/date_time.dart';
 
 class MatchScreen extends StatefulWidget {
   final Map match;

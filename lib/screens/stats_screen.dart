@@ -5,7 +5,7 @@ import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
 import 'package:adriana/essential/stats.dart';
 import 'package:adriana/essential/score.dart';
-import '../logic/date_time.dart';
+import 'package:adriana/accidental/logic/date_time.dart';
 
 void statsSheet(
     {required spreadsheet, required Map stats, required Map match}) {
