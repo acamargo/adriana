@@ -5,7 +5,7 @@ import 'package:wakelock/wakelock.dart';
 
 import '../accidental/storage/matches.dart';
 import 'new_match_screen.dart';
-import '../models/match.dart';
+import 'package:adriana/accidental/models/match.dart';
 import 'package:adriana/accidental/logic/date_time.dart';
 import 'package:adriana/essential/match.dart';
 import 'match_screen.dart';

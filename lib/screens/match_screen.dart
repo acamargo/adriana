@@ -8,7 +8,7 @@ import 'coin_toss_screen.dart';
 import 'stats_screen.dart';
 import 'new_match_screen.dart';
 import '../accidental/storage/matches.dart';
-import '../models/match.dart';
+import 'package:adriana/accidental/models/match.dart';
 import 'package:adriana/essential/rally.dart';
 import 'package:adriana/essential/match.dart';
 import 'package:adriana/essential/score.dart';

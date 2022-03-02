@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../models/match.dart';
+import 'package:adriana/accidental/models/match.dart';
 
 class NewMatchScreen extends StatefulWidget {
   final Map match;
