@@ -192,7 +192,7 @@ class _MatchScreenState extends State<MatchScreen> {
       } else if (item['event'] == 'FinalScore') {
         final stats = matchStats(match: widget.match);
         final matchFinishedResult =
-            '${widget.match[stats['winner']]} d. ${widget.match[stats['looser']]}';
+            '${widget.match[stats['winner']]} d. ${widget.match[stats['loser']]}';
         final matchDuration = stats['match-duration'][0];
         String matchFinishedDuration =
             matchDuration.toString().split('.').first;

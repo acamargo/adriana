@@ -1430,7 +1430,7 @@ void main() {
             ],
           },
           'winner': 'p1',
-          'looser': 'p2',
+          'loser': 'p2',
           'score': 'Ângelo 6-0 6-1 6-1 5-7',
         });
       });
@@ -3152,7 +3152,7 @@ void main() {
             ],
           },
           'winner': 'p1',
-          'looser': 'p2',
+          'loser': 'p2',
           'score': 'André 6-2 6-2 2-6 3-6 3-1',
         });
       });

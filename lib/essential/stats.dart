@@ -563,7 +563,7 @@ Map matchStats({required Map match}) {
       ? 'p1'
       : 'p2';
   report['winner'] = matchWinner;
-  report['looser'] = matchWinner == 'p1' ? 'p2' : 'p1';
+  report['loser'] = matchWinner == 'p1' ? 'p2' : 'p1';
   report['score'] = formatStatsScore(match, events.last, matchWinner);
   return report;
 }
