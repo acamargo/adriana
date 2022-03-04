@@ -132,7 +132,7 @@ void statsSheet(
       stats['p2']['results'][i]['double-faults']
     ]);
     sheet.appendRow([
-      '1st serve points played',
+      '1st serve in',
       stats['p1']['results'][i]['1st-serve-played'],
       stats['p2']['results'][i]['1st-serve-played']
     ]);
@@ -147,7 +147,7 @@ void statsSheet(
       stats['p2']['results'][i]['1st-serve-won-%']
     ]);
     sheet.appendRow([
-      '2nd serve points played',
+      '2nd serve in',
       stats['p1']['results'][i]['2nd-serve-played'],
       stats['p2']['results'][i]['2nd-serve-played']
     ]);
