@@ -74,17 +74,17 @@ void statsSheet(
       stats['p2']['results'][i]['service-points-won-%']
     ]);
     sheet.appendRow([
-      'Return points played',
+      'Receiver points played',
       stats['p1']['results'][i]['return-points-played'],
       stats['p2']['results'][i]['return-points-played']
     ]);
     sheet.appendRow([
-      'Return points won',
+      'Receiver points won',
       stats['p1']['results'][i]['return-points-won'],
       stats['p2']['results'][i]['return-points-won']
     ]);
     sheet.appendRow([
-      'Return points won %',
+      'Receiver points won %',
       stats['p1']['results'][i]['return-points-won-%'],
       stats['p2']['results'][i]['return-points-won-%']
     ]);
