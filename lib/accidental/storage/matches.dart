@@ -34,6 +34,16 @@ class MatchesStorage {
     return result;
   }
 
+  Future<List<FileSystemEntity>> loadListMatches() async {
+    final directory = await getApplicationDocumentsDirectory();
+    var files = directory
+        .listSync(recursive: false)
+        .where((file) => file is File && file.path.endsWith('match.json'))
+        .toList()
+      ..sort((fileA, fileB) => fileB.path.compareTo(fileA.path));
+    return files;
+  }
+
   Future<List<Map>> loadAll() async {
     final directory = await getApplicationDocumentsDirectory();
     var files = directory

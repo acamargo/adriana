@@ -20,8 +20,11 @@ class MatchesScreen extends StatefulWidget {
 
 class _MatchesScreenState extends State<MatchesScreen> {
   List _matches = [];
+  List _listMatchFiles = [];
+  bool _hasMore = false;
   late String _title;
   late bool _isLoading;
+  bool _isLoadingMore = false;
 
   bool isLandscape = true;
   final String portraitScreenOrientation = "Set portrait mode";
@@ -56,18 +59,46 @@ class _MatchesScreenState extends State<MatchesScreen> {
         : [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   }
 
+  int _batch = 1;
+
+  void _loadMore() {
+    _isLoadingMore = true;
+    widget.storage.loadListMatches().then((listMatches) {
+      _listMatchFiles = listMatches;
+      _hasMore = listMatches.length > _matches.length;
+      if (_hasMore) {
+        int start = _matches.length;
+        int end = ((_matches.length + _batch) > _listMatchFiles.length)
+            ? (_listMatchFiles.length - _matches.length)
+            : _matches.length + _batch;
+        var filesToBeLoaded = listMatches.getRange(start, end);
+        Future.wait(filesToBeLoaded
+                .map((file) => widget.storage.loadMatch(file))
+                .toList())
+            .then((matches) {
+          setState(() {
+            _matches.addAll(matches);
+            if (listMatches.length > 0)
+              _title = "Matches (${listMatches.length})";
+            _isLoading = false;
+            _isLoadingMore = false;
+          });
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          _isLoadingMore = false;
+        });
+      }
+    });
+  }
+
   void _refresh() {
     setState(() {
       _isLoading = true;
       _title = "Matches";
     });
-    widget.storage.loadAll().then((matches) {
-      setState(() {
-        _isLoading = false;
-        _matches = matches;
-        if (matches.length > 0) _title = "Matches (${matches.length})";
-      });
-    });
+    _loadMore();
   }
 
   @override
@@ -115,8 +146,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
           : _matches.isEmpty
               ? Center(child: Text('Tap "+" to add a match.'))
               : ListView.builder(
-                  itemCount: _matches.length,
+                  itemCount: _hasMore ? _matches.length + 1 : _matches.length,
                   itemBuilder: (context, index) {
+                    if (index >= _matches.length &&
+                        _hasMore &&
+                        !_isLoadingMore) {
+                      _loadMore();
+                      return Center(
+                        child: SizedBox(
+                          child: CircularProgressIndicator(),
+                          height: 24,
+                          width: 24,
+                        ),
+                      );
+                    }
                     final match = _matches[index];
                     final isFinished =
                         match['events'].last['event'] == 'FinalScore';
