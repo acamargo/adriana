@@ -101,6 +101,10 @@ class MatchesStorage {
     return item;
   }
 
+  bool exist(File path) {
+    return path.existsSync();
+  }
+
   Future<void> delete(Map data) async {
     final path = await _localPath;
     final fileName = data['createdAt'].toIso8601String();

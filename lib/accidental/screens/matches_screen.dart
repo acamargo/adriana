@@ -22,9 +22,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
   List _matches = [];
   List _listMatchFiles = [];
   bool _hasMore = false;
-  late String _title;
-  late bool _isLoading;
-  bool _isLoadingMore = false;
+  String _title = "Matches";
+  bool _isLoadingMatchesList = false;
+  bool _isLoadingMatchData = false;
+  int _batch = 1;
 
   bool isLandscape = true;
   final String portraitScreenOrientation = "Set portrait mode";
@@ -59,46 +60,50 @@ class _MatchesScreenState extends State<MatchesScreen> {
         : [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   }
 
-  int _batch = 1;
-
   void _loadMore() {
-    _isLoadingMore = true;
-    widget.storage.loadListMatches().then((listMatches) {
-      _listMatchFiles = listMatches;
-      _hasMore = listMatches.length > _matches.length;
-      if (_hasMore) {
-        int start = _matches.length;
-        int end = ((_matches.length + _batch) > _listMatchFiles.length)
-            ? (_listMatchFiles.length - _matches.length)
-            : _matches.length + _batch;
-        var filesToBeLoaded = listMatches.getRange(start, end);
-        Future.wait(filesToBeLoaded
-                .map((file) => widget.storage.loadMatch(file))
-                .toList())
-            .then((matches) {
-          setState(() {
-            _matches.addAll(matches);
-            if (listMatches.length > 0)
-              _title = "Matches (${listMatches.length})";
-            _isLoading = false;
-            _isLoadingMore = false;
-          });
-        });
-      } else {
+    _isLoadingMatchData = true;
+    _hasMore = _listMatchFiles.length > _matches.length;
+    if (_hasMore) {
+      int start = _matches.length;
+      int end = ((_matches.length + _batch) > _listMatchFiles.length)
+          ? (_listMatchFiles.length - _matches.length)
+          : _matches.length + _batch;
+      var filesToBeLoaded = _listMatchFiles.getRange(start, end);
+      Future.wait(filesToBeLoaded
+              .map((file) => widget.storage.loadMatch(file))
+              .toList())
+          .then((matches) {
         setState(() {
-          _isLoading = false;
-          _isLoadingMore = false;
+          _matches.addAll(matches);
+          if (_listMatchFiles.length > 0)
+            _title = "Matches (${_listMatchFiles.length})";
+          _isLoadingMatchesList = false;
+          _isLoadingMatchData = false;
         });
-      }
-    });
+      });
+    } else {
+      setState(() {
+        _isLoadingMatchesList = false;
+        _isLoadingMatchData = false;
+      });
+    }
   }
 
   void _refresh() {
-    setState(() {
-      _isLoading = true;
-      _title = "Matches";
-    });
-    _loadMore();
+    if (!_isLoadingMatchesList) {
+      setState(() {
+        _isLoadingMatchesList = true;
+        _title = "Matches";
+        _matches = [];
+      });
+      widget.storage.loadListMatches().then((listMatches) {
+        _listMatchFiles = listMatches;
+        setState(() {
+          _isLoadingMatchesList = false;
+        });
+        _loadMore();
+      });
+    }
   }
 
   @override
@@ -141,7 +146,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ),
         ],
       ),
-      body: _isLoading
+      body: _isLoadingMatchesList
           ? Center(child: Text('Loading matches...'))
           : _matches.isEmpty
               ? Center(child: Text('Tap "+" to add a match.'))
@@ -150,7 +155,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   itemBuilder: (context, index) {
                     if (index >= _matches.length &&
                         _hasMore &&
-                        !_isLoadingMore) {
+                        !_isLoadingMatchData) {
                       _loadMore();
                       return Center(
                         child: SizedBox(
@@ -171,7 +176,20 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
                             return MatchScreen(match);
-                          })).then((val) => _refresh());
+                          })).then((_) {
+                            // Update match entry when necessary
+                            var matchFile = _listMatchFiles[index];
+                            if (widget.storage.exist(matchFile)) {
+                              widget.storage.loadMatch(matchFile).then((value) {
+                                setState(() => _matches[index] = value);
+                              });
+                            } else {
+                              setState(() {
+                                _listMatchFiles.removeAt(index);
+                                _matches.removeAt(index);
+                              });
+                            }
+                          });
                         },
                         title: Text(
                             '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
@@ -182,7 +200,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   },
                 ),
       floatingActionButton: Visibility(
-        visible: !_isLoading,
+        visible: !_isLoadingMatchesList,
         child: FloatingActionButton(
           onPressed: _add,
           tooltip: 'Add match',
