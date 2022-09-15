@@ -74,7 +74,10 @@ class _MatchScreenState extends State<MatchScreen> {
               surface: widget.match['surface'],
               venue: widget.match['venue']);
           await MatchesStorage().create(match);
-          Navigator.pop(context);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return MatchScreen(match);
+          }));
         }
         break;
       case 'Delete':
