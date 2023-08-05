@@ -324,16 +324,11 @@ Map matchStats({required Map match}) {
             (scoreBefore[receiver][currentSet - 1]['game'] == 'Ad')) {
           report[receiver]['results'][0]['break-points-played']++;
           report[receiver]['results'][currentSet]['break-points-played']++;
-          report[receiver]['results'][0]['game-points-played']++;
-          report[receiver]['results'][currentSet]['game-points-played']++;
           if (receiver == winner) {
             report[receiver]['results'][0]['break-points-won']++;
             report[receiver]['results'][currentSet]['break-points-won']++;
-            report[receiver]['results'][0]['game-points-won']++;
-            report[receiver]['results'][currentSet]['game-points-won']++;
-            updatePercentages(report, currentSet, 'break-points');
-            updatePercentages(report, currentSet, 'game-points');
           }
+          updatePercentages(report, currentSet, 'break-points');
         }
 
         if ((scoreBefore[server][currentSet - 1]['game'] == '40' &&
@@ -345,8 +340,8 @@ Map matchStats({required Map match}) {
           if (server == winner) {
             report[server]['results'][0]['game-points-won']++;
             report[server]['results'][currentSet]['game-points-won']++;
-            updatePercentages(report, currentSet, 'game-points');
           }
+          updatePercentages(report, currentSet, 'game-points');
         }
 
         final ballDirection = (direction == 'CC'
