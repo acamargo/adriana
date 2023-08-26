@@ -113,6 +113,14 @@ Map matchStats({required Map match}) {
     '2nd-serve-played': 0,
     '2nd-serve-won': 0,
     '2nd-serve-won-%': 0,
+    'games-serving-played': 0,
+    'games-serving-won': 0,
+    'games-serving-won-%': 0,
+    'games-serving-with-game-point': 0,
+    'games-receiving-played': 0,
+    'games-receiving-won': 0,
+    'games-receiving-won-%': 0,
+    'games-receiving-with-break-point': 0,
     'break-points-played': 0,
     'break-points-won': 0,
     'break-points-won-%': 0,
@@ -210,8 +218,60 @@ Map matchStats({required Map match}) {
   report['scores'][0] = lastScore;
 
   var fault = false;
+  var serving = "";
   for (var i = 0; i < events.length; i++) {
     final event = events[i];
+    if ((event['event'] == 'Score') &&
+        event.containsKey('server') &&
+        event['p1'].last['tiebreak'] == null) {
+      final server = event['server'];
+      final receiver = server == 'p1' ? 'p2' : 'p1';
+      final currentSet = event['p1'].length - 1;
+      if (serving != server) {
+        report[server]['results'][0]['games-serving-played']++;
+        report[server]['results'][currentSet]['games-serving-played']++;
+        report[receiver]['results'][0]['games-receiving-played']++;
+        report[receiver]['results'][currentSet]['games-receiving-played']++;
+
+        final servingCurrentGames = events[i][server].last['set'];
+        final previousScoreIndex = i - 2;
+        final servingPreviousGames =
+            events[previousScoreIndex][server].last['set'];
+        if (servingCurrentGames > servingPreviousGames) {
+          report[server]['results'][0]['games-serving-won']++;
+          report[server]['results'][currentSet]['games-serving-won']++;
+        } else {
+          report[receiver]['results'][0]['games-receiving-won']++;
+          report[receiver]['results'][currentSet]['games-receiving-won']++;
+        }
+        if (report[server]['results'][0]['games-serving-played'] > 0)
+          report[server]['results'][0]['games-serving-won-%'] = (100 *
+                  (report[server]['results'][0]['games-serving-won'] /
+                      report[server]['results'][0]['games-serving-played']))
+              .round();
+        if (report[server]['results'][currentSet]['games-serving-played'] > 0)
+          report[server]['results'][currentSet]['games-serving-won-%'] = (100 *
+                  (report[server]['results'][currentSet]['games-serving-won'] /
+                      report[server]['results'][currentSet]
+                          ['games-serving-played']))
+              .round();
+        if (report[receiver]['results'][0]['games-receiving-played'] > 0)
+          report[receiver]['results'][0]['games-receiving-won-%'] = (100 *
+                  (report[receiver]['results'][0]['games-receiving-won'] /
+                      report[receiver]['results'][0]['games-receiving-played']))
+              .round();
+        if (report[receiver]['results'][currentSet]['games-receiving-played'] >
+            0)
+          report[receiver]['results'][currentSet]['games-receiving-won-%'] =
+              (100 *
+                      (report[receiver]['results'][currentSet]
+                              ['games-receiving-won'] /
+                          report[receiver]['results'][currentSet]
+                              ['games-receiving-played']))
+                  .round();
+        serving = server;
+      }
+    }
     if (event['event'] == 'Rally') {
       final scoreBefore = events[i - 1];
       final scoreAfter = events[i + 1];
