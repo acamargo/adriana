@@ -31,12 +31,11 @@ dependencies:
   collection: ^1.15.0
   wakelock: ^0.6.1+1
   path_provider: ^2.0.2
-  intl: ^0.17.0
+  intl: ^0.18.1
   flutter_beep: ^1.0.0
-  vibration: ^1.7.4-nullsafety.0
-  excel: ^2.0.0-null-safety-3
+  excel: ^3.0.0
   open_file: ^3.2.1
-  share_plus: ^3.0.2
+  share_plus: ^6.3.4
 
 dev_dependencies:
   flutter_test:
