@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_beep/flutter_beep.dart';
-import 'package:vibration/vibration.dart';
+// import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
 
 import 'package:adriana/accidental/storage/preferences.dart';
@@ -27,10 +27,10 @@ class _PointScreenState extends State<PointScreen> {
   String _direction = '';
   String _depth = '';
 
-  bool isVibrate = true;
+  // bool isVibrate = true;
   bool isSound = true;
   Future<void> _loadPreferences() async {
-    isVibrate = await widget.preferences.isVibrate();
+    // isVibrate = await widget.preferences.isVibrate();
     isSound = await widget.preferences.isSound();
   }
 
@@ -70,14 +70,14 @@ class _PointScreenState extends State<PointScreen> {
 
   void handleClick(String value) async {
     switch (value) {
-      case 'Enable vibrate':
-        await widget.preferences.setVibrate(true);
-        isVibrate = true;
-        break;
-      case 'Disable vibrate':
-        await widget.preferences.setVibrate(false);
-        isVibrate = false;
-        break;
+      // case 'Enable vibrate':
+      //   await widget.preferences.setVibrate(true);
+      //   isVibrate = true;
+      //   break;
+      // case 'Disable vibrate':
+      //   await widget.preferences.setVibrate(false);
+      //   isVibrate = false;
+      //   break;
       case 'Enable sound':
         await widget.preferences.setSound(true);
         isSound = true;
@@ -336,7 +336,7 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   _save() {
-    if (isVibrate) Vibration.vibrate(duration: 100);
+    // if (isVibrate) Vibration.vibrate(duration: 100);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       if (isSound) FlutterBeep.beep(false);
       _storeRallyEvent().then((_) => Navigator.of(context).pop('newEvent'));
@@ -385,7 +385,7 @@ class _PointScreenState extends State<PointScreen> {
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return {
-                isVibrate ? 'Disable vibrate' : 'Enable vibrate',
+                // isVibrate ? 'Disable vibrate' : 'Enable vibrate',
                 isSound ? 'Disable sound' : 'Enable sound',
                 'Stats',
                 'Finish'
