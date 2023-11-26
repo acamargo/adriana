@@ -44,6 +44,46 @@ class MatchesStorage {
     return files;
   }
 
+  Future<Directory> getExternalSdCardPath() async {
+    var directory = await getExternalStorageDirectory();
+
+    String newPath = "";
+    List<String> paths = directory!.path.split("/");
+    for (int x = 1; x < paths.length; x++) {
+      String folder = paths[x];
+      if (folder != "Android") {
+        newPath += "/" + folder;
+      } else {
+        break;
+      }
+    }
+    newPath = newPath + "/AdrianaTennisApp";
+    return Directory(newPath);
+  }
+
+  Future copyFilesToSdCard() async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    var files = directory
+        .listSync(recursive: false)
+        .where((file) =>
+            file is File &&
+            (file.path.endsWith('match.json') ||
+                file.path.endsWith('match.xlsx')))
+        .toList();
+
+    final destination = await getExternalSdCardPath();
+    if (!await destination.exists()) {
+      await destination.create(recursive: true);
+    }
+    files.forEach((element) async {
+      String basename = element.path.split('/').last;
+      String finalDestination =
+          destination.path + "/" + basename.replaceAll(':', '-');
+      await (element as File).copy(finalDestination);
+    });
+  }
+
   Future<List<Map>> loadAll() async {
     final directory = await getApplicationDocumentsDirectory();
     var files = directory

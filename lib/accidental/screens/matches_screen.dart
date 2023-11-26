@@ -2,6 +2,7 @@ import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:adriana/accidental/storage/matches.dart';
 import 'new_match_screen.dart';
@@ -106,11 +107,29 @@ class _MatchesScreenState extends State<MatchesScreen> {
     }
   }
 
+  void requestStoragePermissions() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    print(statuses[Permission.storage]);
+
+    var state = await Permission.manageExternalStorage.status;
+    var state2 = await Permission.storage.status;
+    if (!state2.isGranted) {
+      await Permission.storage.request();
+    }
+    if (!state.isGranted) {
+      await Permission.manageExternalStorage.request();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _setupScreen();
     _refresh();
+    requestStoragePermissions();
   }
 
   void handleClick(String value) async {
