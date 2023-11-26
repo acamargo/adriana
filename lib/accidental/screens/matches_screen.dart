@@ -130,6 +130,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     _setupScreen();
     _refresh();
     requestStoragePermissions();
+    widget.storage.copyFilesToSdCard();
   }
 
   void handleClick(String value) async {

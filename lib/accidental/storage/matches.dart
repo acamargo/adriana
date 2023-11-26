@@ -80,6 +80,7 @@ class MatchesStorage {
       String basename = element.path.split('/').last;
       String finalDestination =
           destination.path + "/" + basename.replaceAll(':', '-');
+      print('Copying $element.path to $finalDestination');
       await (element as File).copy(finalDestination);
     });
   }
