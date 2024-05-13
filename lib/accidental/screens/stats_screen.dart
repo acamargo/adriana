@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:excel/excel.dart';
+import 'package:adriana/accidental/storage/matches.dart';
 import 'package:adriana/essential/stats.dart';
 import 'package:adriana/essential/score.dart';
 import 'package:adriana/accidental/logic/date_time.dart';
@@ -18,596 +18,627 @@ void statsSheet(
 
     final title = (i == 0) ? 'Overall' : 'Set $i';
     var sheet = spreadsheet[title];
-    sheet.appendRow(['Players', '${match['p1']} vs ${match['p2']}']);
-    sheet.appendRow(['Court surface', match['surface']]);
-    sheet.appendRow(['Venue', match['venue']]);
     sheet.appendRow([
-      'Date',
-      formatStatsWeekday(match['createdAt']),
-      match['createdAt'].toString().split('.').first
+      TextCellValue('Players'),
+      TextCellValue('${match['p1']} vs ${match['p2']}')
     ]);
-    sheet.appendRow(['']);
-    sheet.appendRow([title]);
+    sheet.appendRow(
+        [TextCellValue('Court surface'), TextCellValue(match['surface'])]);
+    sheet.appendRow([TextCellValue('Venue'), TextCellValue(match['venue'])]);
     sheet.appendRow([
-      'Score',
-      (i == 0)
+      TextCellValue('Date'),
+      TextCellValue(formatStatsWeekday(match['createdAt'])),
+      TextCellValue(match['createdAt'].toString().split('.').first)
+    ]);
+    sheet.appendRow([TextCellValue('')]);
+    sheet.appendRow([TextCellValue(title)]);
+    sheet.appendRow([
+      TextCellValue('Score'),
+      TextCellValue((i == 0)
           ? formatStatsScore(match, match['events'].last, matchWinner)
-          : formatStatsSet(match['p1'], match['p2'], stats['scores'][i])
-    ]);
-    sheet.appendRow(
-        ['Duration', stats['match-duration'][i].toString().split('.').first]);
-    sheet.appendRow(['']);
-    sheet.appendRow(['Point Stats', stats['p1']['name'], stats['p2']['name']]);
-    sheet.appendRow([
-      'Played',
-      stats['p1']['results'][i]['points-played'],
-      stats['p2']['results'][i]['points-played']
+          : formatStatsSet(match['p1'], match['p2'], stats['scores'][i]))
     ]);
     sheet.appendRow([
-      'Total won',
-      stats['p1']['results'][i]['points-won'],
-      stats['p2']['results'][i]['points-won']
+      TextCellValue('Duration'),
+      TextCellValue(stats['match-duration'][i].toString().split('.').first)
+    ]);
+    sheet.appendRow([TextCellValue('')]);
+    sheet.appendRow([
+      TextCellValue('Point Stats'),
+      TextCellValue(stats['p1']['name']),
+      TextCellValue(stats['p2']['name'])
     ]);
     sheet.appendRow([
-      'Total won %',
-      stats['p1']['results'][i]['points-won-%'],
-      stats['p2']['results'][i]['points-won-%']
+      TextCellValue('Played'),
+      IntCellValue(stats['p1']['results'][i]['points-played']),
+      IntCellValue(stats['p2']['results'][i]['points-played'])
     ]);
     sheet.appendRow([
-      'Winners',
-      stats['p1']['results'][i]['winners'],
-      stats['p2']['results'][i]['winners']
+      TextCellValue('Total won'),
+      IntCellValue(stats['p1']['results'][i]['points-won']),
+      IntCellValue(stats['p2']['results'][i]['points-won'])
     ]);
     sheet.appendRow([
-      'Service points played',
-      stats['p1']['results'][i]['service-points-played'],
-      stats['p2']['results'][i]['service-points-played']
+      TextCellValue('Total won %'),
+      IntCellValue(stats['p1']['results'][i]['points-won-%']),
+      IntCellValue(stats['p2']['results'][i]['points-won-%'])
     ]);
     sheet.appendRow([
-      'Service points won',
-      stats['p1']['results'][i]['service-points-won'],
-      stats['p2']['results'][i]['service-points-won']
+      TextCellValue('Winners'),
+      IntCellValue(stats['p1']['results'][i]['winners']),
+      IntCellValue(stats['p2']['results'][i]['winners'])
     ]);
     sheet.appendRow([
-      'Service points won %',
-      stats['p1']['results'][i]['service-points-won-%'],
-      stats['p2']['results'][i]['service-points-won-%']
+      TextCellValue('Service points played'),
+      IntCellValue(stats['p1']['results'][i]['service-points-played']),
+      IntCellValue(stats['p2']['results'][i]['service-points-played'])
     ]);
     sheet.appendRow([
-      'Receiver points played',
-      stats['p1']['results'][i]['return-points-played'],
-      stats['p2']['results'][i]['return-points-played']
+      TextCellValue('Service points won'),
+      IntCellValue(stats['p1']['results'][i]['service-points-won']),
+      IntCellValue(stats['p2']['results'][i]['service-points-won'])
     ]);
     sheet.appendRow([
-      'Receiver points won',
-      stats['p1']['results'][i]['return-points-won'],
-      stats['p2']['results'][i]['return-points-won']
+      TextCellValue('Service points won %'),
+      IntCellValue(stats['p1']['results'][i]['service-points-won-%']),
+      IntCellValue(stats['p2']['results'][i]['service-points-won-%'])
     ]);
     sheet.appendRow([
-      'Receiver points won %',
-      stats['p1']['results'][i]['return-points-won-%'],
-      stats['p2']['results'][i]['return-points-won-%']
+      TextCellValue('Receiver points played'),
+      IntCellValue(stats['p1']['results'][i]['return-points-played']),
+      IntCellValue(stats['p2']['results'][i]['return-points-played'])
     ]);
     sheet.appendRow([
-      'Net points played',
-      stats['p1']['results'][i]['net-points-played'],
-      stats['p2']['results'][i]['net-points-played']
+      TextCellValue('Receiver points won'),
+      IntCellValue(stats['p1']['results'][i]['return-points-won']),
+      IntCellValue(stats['p2']['results'][i]['return-points-won'])
     ]);
     sheet.appendRow([
-      'Net points won',
-      stats['p1']['results'][i]['net-points-won'],
-      stats['p2']['results'][i]['net-points-won']
+      TextCellValue('Receiver points won %'),
+      IntCellValue(stats['p1']['results'][i]['return-points-won-%']),
+      IntCellValue(stats['p2']['results'][i]['return-points-won-%'])
     ]);
     sheet.appendRow([
-      'Net points won %',
-      stats['p1']['results'][i]['net-points-won-%'],
-      stats['p2']['results'][i]['net-points-won-%']
-    ]);
-
-    sheet.appendRow(['']);
-    sheet.appendRow(['Serve Stats', stats['p1']['name'], stats['p2']['name']]);
-    sheet.appendRow([
-      'Aces',
-      stats['p1']['results'][i]['aces'],
-      stats['p2']['results'][i]['aces']
+      TextCellValue('Net points played'),
+      IntCellValue(stats['p1']['results'][i]['net-points-played']),
+      IntCellValue(stats['p2']['results'][i]['net-points-played'])
     ]);
     sheet.appendRow([
-      'Aces T',
-      stats['p1']['results'][i]['aces-T'],
-      stats['p2']['results'][i]['aces-T']
+      TextCellValue('Net points won'),
+      IntCellValue(stats['p1']['results'][i]['net-points-won']),
+      IntCellValue(stats['p2']['results'][i]['net-points-won'])
     ]);
     sheet.appendRow([
-      'Aces body',
-      stats['p1']['results'][i]['aces-body'],
-      stats['p2']['results'][i]['aces-body']
-    ]);
-    sheet.appendRow([
-      'Aces out wide',
-      stats['p1']['results'][i]['aces-out-wide'],
-      stats['p2']['results'][i]['aces-out-wide']
-    ]);
-    sheet.appendRow([
-      'Double faults',
-      stats['p1']['results'][i]['double-faults'],
-      stats['p2']['results'][i]['double-faults']
-    ]);
-    sheet.appendRow([
-      '1st serve in',
-      stats['p1']['results'][i]['1st-serve-played'],
-      stats['p2']['results'][i]['1st-serve-played']
-    ]);
-    sheet.appendRow([
-      '1st serve points won',
-      stats['p1']['results'][i]['1st-serve-won'],
-      stats['p2']['results'][i]['1st-serve-won']
-    ]);
-    sheet.appendRow([
-      '1st serve points won %',
-      stats['p1']['results'][i]['1st-serve-won-%'],
-      stats['p2']['results'][i]['1st-serve-won-%']
-    ]);
-    sheet.appendRow([
-      '2nd serve in',
-      stats['p1']['results'][i]['2nd-serve-played'],
-      stats['p2']['results'][i]['2nd-serve-played']
-    ]);
-    sheet.appendRow([
-      '2nd serve points won',
-      stats['p1']['results'][i]['2nd-serve-won'],
-      stats['p2']['results'][i]['2nd-serve-won']
-    ]);
-    sheet.appendRow([
-      '2nd serve points won %',
-      stats['p1']['results'][i]['2nd-serve-won-%'],
-      stats['p2']['results'][i]['2nd-serve-won-%']
-    ]);
-    sheet.appendRow([
-      'Game points played',
-      stats['p1']['results'][i]['game-points-played'],
-      stats['p2']['results'][i]['game-points-played']
-    ]);
-    sheet.appendRow([
-      'Game points won',
-      stats['p1']['results'][i]['game-points-won'],
-      stats['p2']['results'][i]['game-points-won']
-    ]);
-    sheet.appendRow([
-      'Game points won %',
-      stats['p1']['results'][i]['game-points-won-%'],
-      stats['p2']['results'][i]['game-points-won-%']
-    ]);
-    sheet.appendRow([
-      'Break points played',
-      stats['p1']['results'][i]['break-points-played'],
-      stats['p2']['results'][i]['break-points-played']
-    ]);
-    sheet.appendRow([
-      'Break points won',
-      stats['p1']['results'][i]['break-points-won'],
-      stats['p2']['results'][i]['break-points-won']
-    ]);
-    sheet.appendRow([
-      'Break points won %',
-      stats['p1']['results'][i]['break-points-won-%'],
-      stats['p2']['results'][i]['break-points-won-%']
+      TextCellValue('Net points won %'),
+      IntCellValue(stats['p1']['results'][i]['net-points-won-%']),
+      IntCellValue(stats['p2']['results'][i]['net-points-won-%'])
     ]);
 
-    sheet.appendRow(['']);
-    sheet.appendRow(
-        ['Forehand Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([TextCellValue('')]);
     sheet.appendRow([
-      'Total points decided with',
-      stats['p1']['results'][i]['forehand-played'],
-      stats['p2']['results'][i]['forehand-played']
+      TextCellValue('Serve Stats'),
+      TextCellValue(stats['p1']['name']),
+      TextCellValue(stats['p2']['name'])
     ]);
     sheet.appendRow([
-      'Winners',
-      stats['p1']['results'][i]['forehand-won'],
-      stats['p2']['results'][i]['forehand-won']
+      TextCellValue('Aces'),
+      IntCellValue(stats['p1']['results'][i]['aces']),
+      IntCellValue(stats['p2']['results'][i]['aces'])
     ]);
     sheet.appendRow([
-      'Winners %',
-      stats['p1']['results'][i]['forehand-won-%'],
-      stats['p2']['results'][i]['forehand-won-%']
+      TextCellValue('Aces T'),
+      IntCellValue(stats['p1']['results'][i]['aces-T']),
+      IntCellValue(stats['p2']['results'][i]['aces-T'])
     ]);
     sheet.appendRow([
-      'Winners down the line',
-      stats['p1']['results'][i]['forehand-won-down-the-line'],
-      stats['p2']['results'][i]['forehand-won-down-the-line']
+      TextCellValue('Aces body'),
+      IntCellValue(stats['p1']['results'][i]['aces-body']),
+      IntCellValue(stats['p2']['results'][i]['aces-body'])
     ]);
     sheet.appendRow([
-      'Winners middle',
-      stats['p1']['results'][i]['forehand-won-middle'],
-      stats['p2']['results'][i]['forehand-won-middle']
+      TextCellValue('Aces out wide'),
+      IntCellValue(stats['p1']['results'][i]['aces-out-wide']),
+      IntCellValue(stats['p2']['results'][i]['aces-out-wide'])
     ]);
     sheet.appendRow([
-      'Winners cross court',
-      stats['p1']['results'][i]['forehand-won-cross-court'],
-      stats['p2']['results'][i]['forehand-won-cross-court']
+      TextCellValue('Int faults'),
+      IntCellValue(stats['p1']['results'][i]['double-faults']),
+      IntCellValue(stats['p2']['results'][i]['double-faults'])
     ]);
     sheet.appendRow([
-      'Into the net',
-      stats['p1']['results'][i]['forehand-net'],
-      stats['p2']['results'][i]['forehand-net']
+      TextCellValue('1st serve in'),
+      IntCellValue(stats['p1']['results'][i]['1st-serve-played']),
+      IntCellValue(stats['p2']['results'][i]['1st-serve-played'])
     ]);
     sheet.appendRow([
-      'Into the net %',
-      stats['p1']['results'][i]['forehand-net-%'],
-      stats['p2']['results'][i]['forehand-net-%']
+      TextCellValue('1st serve points won'),
+      IntCellValue(stats['p1']['results'][i]['1st-serve-won']),
+      IntCellValue(stats['p2']['results'][i]['1st-serve-won'])
     ]);
     sheet.appendRow([
-      'Into the net down the line',
-      stats['p1']['results'][i]['forehand-net-down-the-line'],
-      stats['p2']['results'][i]['forehand-net-down-the-line']
+      TextCellValue('1st serve points won %'),
+      IntCellValue(stats['p1']['results'][i]['1st-serve-won-%']),
+      IntCellValue(stats['p2']['results'][i]['1st-serve-won-%'])
     ]);
     sheet.appendRow([
-      'Into the net middle',
-      stats['p1']['results'][i]['forehand-net-middle'],
-      stats['p2']['results'][i]['forehand-net-middle']
+      TextCellValue('2nd serve in'),
+      IntCellValue(stats['p1']['results'][i]['2nd-serve-played']),
+      IntCellValue(stats['p2']['results'][i]['2nd-serve-played'])
     ]);
     sheet.appendRow([
-      'Into the net cross court',
-      stats['p1']['results'][i]['forehand-net-cross-court'],
-      stats['p2']['results'][i]['forehand-net-cross-court']
+      TextCellValue('2nd serve points won'),
+      IntCellValue(stats['p1']['results'][i]['2nd-serve-won']),
+      IntCellValue(stats['p2']['results'][i]['2nd-serve-won'])
     ]);
     sheet.appendRow([
-      'Out',
-      stats['p1']['results'][i]['forehand-out'],
-      stats['p2']['results'][i]['forehand-out']
+      TextCellValue('2nd serve points won %'),
+      IntCellValue(stats['p1']['results'][i]['2nd-serve-won-%']),
+      IntCellValue(stats['p2']['results'][i]['2nd-serve-won-%'])
     ]);
     sheet.appendRow([
-      'Out %',
-      stats['p1']['results'][i]['forehand-out-%'],
-      stats['p2']['results'][i]['forehand-out-%']
+      TextCellValue('Game points played'),
+      IntCellValue(stats['p1']['results'][i]['game-points-played']),
+      IntCellValue(stats['p2']['results'][i]['game-points-played'])
     ]);
     sheet.appendRow([
-      'Out down the line',
-      stats['p1']['results'][i]['forehand-out-down-the-line'],
-      stats['p2']['results'][i]['forehand-out-down-the-line']
+      TextCellValue('Game points won'),
+      IntCellValue(stats['p1']['results'][i]['game-points-won']),
+      IntCellValue(stats['p2']['results'][i]['game-points-won'])
     ]);
     sheet.appendRow([
-      'Out middle',
-      stats['p1']['results'][i]['forehand-out-middle'],
-      stats['p2']['results'][i]['forehand-out-middle']
+      TextCellValue('Game points won %'),
+      IntCellValue(stats['p1']['results'][i]['game-points-won-%']),
+      IntCellValue(stats['p2']['results'][i]['game-points-won-%'])
     ]);
     sheet.appendRow([
-      'Out cross court',
-      stats['p1']['results'][i]['forehand-out-cross-court'],
-      stats['p2']['results'][i]['forehand-out-cross-court']
-    ]);
-
-    sheet.appendRow(['']);
-    sheet.appendRow(
-        ['Backhand Stats', stats['p1']['name'], stats['p2']['name']]);
-    sheet.appendRow([
-      'Total points decided with',
-      stats['p1']['results'][i]['backhand-played'],
-      stats['p2']['results'][i]['backhand-played']
+      TextCellValue('Break points played'),
+      IntCellValue(stats['p1']['results'][i]['break-points-played']),
+      IntCellValue(stats['p2']['results'][i]['break-points-played'])
     ]);
     sheet.appendRow([
-      'Winners',
-      stats['p1']['results'][i]['backhand-won'],
-      stats['p2']['results'][i]['backhand-won']
+      TextCellValue('Break points won'),
+      IntCellValue(stats['p1']['results'][i]['break-points-won']),
+      IntCellValue(stats['p2']['results'][i]['break-points-won'])
     ]);
     sheet.appendRow([
-      'Winners %',
-      stats['p1']['results'][i]['backhand-won-%'],
-      stats['p2']['results'][i]['backhand-won-%']
-    ]);
-    sheet.appendRow([
-      'Winners down the line',
-      stats['p1']['results'][i]['backhand-won-down-the-line'],
-      stats['p2']['results'][i]['backhand-won-down-the-line']
-    ]);
-    sheet.appendRow([
-      'Winners middle',
-      stats['p1']['results'][i]['backhand-won-middle'],
-      stats['p2']['results'][i]['backhand-won-middle']
-    ]);
-    sheet.appendRow([
-      'Winners cross court',
-      stats['p1']['results'][i]['backhand-won-cross-court'],
-      stats['p2']['results'][i]['backhand-won-cross-court']
-    ]);
-    sheet.appendRow([
-      'Into the net',
-      stats['p1']['results'][i]['backhand-net'],
-      stats['p2']['results'][i]['backhand-net']
-    ]);
-    sheet.appendRow([
-      'Into the net %',
-      stats['p1']['results'][i]['backhand-net-%'],
-      stats['p2']['results'][i]['backhand-net-%']
-    ]);
-    sheet.appendRow([
-      'Into the net down the line',
-      stats['p1']['results'][i]['backhand-net-down-the-line'],
-      stats['p2']['results'][i]['backhand-net-down-the-line']
-    ]);
-    sheet.appendRow([
-      'Into the net middle',
-      stats['p1']['results'][i]['backhand-net-middle'],
-      stats['p2']['results'][i]['backhand-net-middle']
-    ]);
-    sheet.appendRow([
-      'Into the net cross court',
-      stats['p1']['results'][i]['backhand-net-cross-court'],
-      stats['p2']['results'][i]['backhand-net-cross-court']
-    ]);
-    sheet.appendRow([
-      'Out',
-      stats['p1']['results'][i]['backhand-out'],
-      stats['p2']['results'][i]['backhand-out']
-    ]);
-    sheet.appendRow([
-      'Out %',
-      stats['p1']['results'][i]['backhand-out-%'],
-      stats['p2']['results'][i]['backhand-out-%']
-    ]);
-    sheet.appendRow([
-      'Out down the line',
-      stats['p1']['results'][i]['backhand-out-down-the-line'],
-      stats['p2']['results'][i]['backhand-out-down-the-line']
-    ]);
-    sheet.appendRow([
-      'Out middle',
-      stats['p1']['results'][i]['backhand-out-middle'],
-      stats['p2']['results'][i]['backhand-out-middle']
-    ]);
-    sheet.appendRow([
-      'Out cross court',
-      stats['p1']['results'][i]['backhand-out-cross-court'],
-      stats['p2']['results'][i]['backhand-out-cross-court']
+      TextCellValue('Break points won %'),
+      IntCellValue(stats['p1']['results'][i]['break-points-won-%']),
+      IntCellValue(stats['p2']['results'][i]['break-points-won-%'])
     ]);
 
-    sheet.appendRow(['']);
-    sheet.appendRow(['Volley Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([TextCellValue('')]);
     sheet.appendRow([
-      'Total points decided with',
-      stats['p1']['results'][i]['volley-played'],
-      stats['p2']['results'][i]['volley-played']
+      TextCellValue('Forehand Stats'),
+      TextCellValue(stats['p1']['name']),
+      TextCellValue(stats['p2']['name'])
     ]);
     sheet.appendRow([
-      'Winners',
-      stats['p1']['results'][i]['volley-won'],
-      stats['p2']['results'][i]['volley-won']
+      TextCellValue('Total points decided with'),
+      IntCellValue(stats['p1']['results'][i]['forehand-played']),
+      IntCellValue(stats['p2']['results'][i]['forehand-played'])
     ]);
     sheet.appendRow([
-      'Winners %',
-      stats['p1']['results'][i]['volley-won-%'],
-      stats['p2']['results'][i]['volley-won-%']
+      TextCellValue('Winners'),
+      IntCellValue(stats['p1']['results'][i]['forehand-won']),
+      IntCellValue(stats['p2']['results'][i]['forehand-won'])
     ]);
     sheet.appendRow([
-      'Winners down the line',
-      stats['p1']['results'][i]['volley-won-down-the-line'],
-      stats['p2']['results'][i]['volley-won-down-the-line']
+      TextCellValue('Winners %'),
+      IntCellValue(stats['p1']['results'][i]['forehand-won-%']),
+      IntCellValue(stats['p2']['results'][i]['forehand-won-%'])
     ]);
     sheet.appendRow([
-      'Winners middle',
-      stats['p1']['results'][i]['volley-won-middle'],
-      stats['p2']['results'][i]['volley-won-middle']
+      TextCellValue('Winners down the line'),
+      IntCellValue(stats['p1']['results'][i]['forehand-won-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['forehand-won-down-the-line'])
     ]);
     sheet.appendRow([
-      'Winners cross court',
-      stats['p1']['results'][i]['volley-won-cross-court'],
-      stats['p2']['results'][i]['volley-won-cross-court']
+      TextCellValue('Winners middle'),
+      IntCellValue(stats['p1']['results'][i]['forehand-won-middle']),
+      IntCellValue(stats['p2']['results'][i]['forehand-won-middle'])
     ]);
     sheet.appendRow([
-      'Into the net',
-      stats['p1']['results'][i]['volley-net'],
-      stats['p2']['results'][i]['volley-net']
+      TextCellValue('Winners cross court'),
+      IntCellValue(stats['p1']['results'][i]['forehand-won-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['forehand-won-cross-court'])
     ]);
     sheet.appendRow([
-      'Into the net %',
-      stats['p1']['results'][i]['volley-net-%'],
-      stats['p2']['results'][i]['volley-net-%']
+      TextCellValue('Into the net'),
+      IntCellValue(stats['p1']['results'][i]['forehand-net']),
+      IntCellValue(stats['p2']['results'][i]['forehand-net'])
     ]);
     sheet.appendRow([
-      'Into the net down the line',
-      stats['p1']['results'][i]['volley-net-down-the-line'],
-      stats['p2']['results'][i]['volley-net-down-the-line']
+      TextCellValue('Into the net %'),
+      IntCellValue(stats['p1']['results'][i]['forehand-net-%']),
+      IntCellValue(stats['p2']['results'][i]['forehand-net-%'])
     ]);
     sheet.appendRow([
-      'Into the net middle',
-      stats['p1']['results'][i]['volley-net-middle'],
-      stats['p2']['results'][i]['volley-net-middle']
+      TextCellValue('Into the net down the line'),
+      IntCellValue(stats['p1']['results'][i]['forehand-net-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['forehand-net-down-the-line'])
     ]);
     sheet.appendRow([
-      'Into the net cross court',
-      stats['p1']['results'][i]['volley-net-cross-court'],
-      stats['p2']['results'][i]['volley-net-cross-court']
+      TextCellValue('Into the net middle'),
+      IntCellValue(stats['p1']['results'][i]['forehand-net-middle']),
+      IntCellValue(stats['p2']['results'][i]['forehand-net-middle'])
     ]);
     sheet.appendRow([
-      'Out',
-      stats['p1']['results'][i]['volley-out'],
-      stats['p2']['results'][i]['volley-out']
+      TextCellValue('Into the net cross court'),
+      IntCellValue(stats['p1']['results'][i]['forehand-net-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['forehand-net-cross-court'])
     ]);
     sheet.appendRow([
-      'Out %',
-      stats['p1']['results'][i]['volley-out-%'],
-      stats['p2']['results'][i]['volley-out-%']
+      TextCellValue('Out'),
+      IntCellValue(stats['p1']['results'][i]['forehand-out']),
+      IntCellValue(stats['p2']['results'][i]['forehand-out'])
     ]);
     sheet.appendRow([
-      'Out down the line',
-      stats['p1']['results'][i]['volley-out-down-the-line'],
-      stats['p2']['results'][i]['volley-out-down-the-line']
+      TextCellValue('Out %'),
+      IntCellValue(stats['p1']['results'][i]['forehand-out-%']),
+      IntCellValue(stats['p2']['results'][i]['forehand-out-%'])
     ]);
     sheet.appendRow([
-      'Out middle',
-      stats['p1']['results'][i]['volley-out-middle'],
-      stats['p2']['results'][i]['volley-out-middle']
+      TextCellValue('Out down the line'),
+      IntCellValue(stats['p1']['results'][i]['forehand-out-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['forehand-out-down-the-line'])
     ]);
     sheet.appendRow([
-      'Out cross court',
-      stats['p1']['results'][i]['volley-out-cross-court'],
-      stats['p2']['results'][i]['volley-out-cross-court']
-    ]);
-
-    sheet.appendRow(['']);
-    sheet.appendRow(['Smash Stats', stats['p1']['name'], stats['p2']['name']]);
-    sheet.appendRow([
-      'Total points decided with',
-      stats['p1']['results'][i]['smash-played'],
-      stats['p2']['results'][i]['smash-played']
+      TextCellValue('Out middle'),
+      IntCellValue(stats['p1']['results'][i]['forehand-out-middle']),
+      IntCellValue(stats['p2']['results'][i]['forehand-out-middle'])
     ]);
     sheet.appendRow([
-      'Winners',
-      stats['p1']['results'][i]['smash-won'],
-      stats['p2']['results'][i]['smash-won']
-    ]);
-    sheet.appendRow([
-      'Winners %',
-      stats['p1']['results'][i]['smash-won-%'],
-      stats['p2']['results'][i]['smash-won-%']
-    ]);
-    sheet.appendRow([
-      'Winners down the line',
-      stats['p1']['results'][i]['smash-won-down-the-line'],
-      stats['p2']['results'][i]['smash-won-down-the-line']
-    ]);
-    sheet.appendRow([
-      'Winners middle',
-      stats['p1']['results'][i]['smash-won-middle'],
-      stats['p2']['results'][i]['smash-won-middle']
-    ]);
-    sheet.appendRow([
-      'Winners cross court',
-      stats['p1']['results'][i]['smash-won-cross-court'],
-      stats['p2']['results'][i]['smash-won-cross-court']
-    ]);
-    sheet.appendRow([
-      'Into the net',
-      stats['p1']['results'][i]['smash-net'],
-      stats['p2']['results'][i]['smash-net']
-    ]);
-    sheet.appendRow([
-      'Into the net %',
-      stats['p1']['results'][i]['smash-net-%'],
-      stats['p2']['results'][i]['smash-net-%']
-    ]);
-    sheet.appendRow([
-      'Into the net down the line',
-      stats['p1']['results'][i]['smash-net-down-the-line'],
-      stats['p2']['results'][i]['smash-net-down-the-line']
-    ]);
-    sheet.appendRow([
-      'Into the net middle',
-      stats['p1']['results'][i]['smash-net-middle'],
-      stats['p2']['results'][i]['smash-net-middle']
-    ]);
-    sheet.appendRow([
-      'Into the net cross court',
-      stats['p1']['results'][i]['smash-net-cross-court'],
-      stats['p2']['results'][i]['smash-net-cross-court']
-    ]);
-    sheet.appendRow([
-      'Out',
-      stats['p1']['results'][i]['smash-out'],
-      stats['p2']['results'][i]['smash-out']
-    ]);
-    sheet.appendRow([
-      'Out %',
-      stats['p1']['results'][i]['smash-out-%'],
-      stats['p2']['results'][i]['smash-out-%']
-    ]);
-    sheet.appendRow([
-      'Out down the line',
-      stats['p1']['results'][i]['smash-out-down-the-line'],
-      stats['p2']['results'][i]['smash-out-down-the-line']
-    ]);
-    sheet.appendRow([
-      'Out middle',
-      stats['p1']['results'][i]['smash-out-middle'],
-      stats['p2']['results'][i]['smash-out-middle']
-    ]);
-    sheet.appendRow([
-      'Out cross court',
-      stats['p1']['results'][i]['smash-out-cross-court'],
-      stats['p2']['results'][i]['smash-out-cross-court']
+      TextCellValue('Out cross court'),
+      IntCellValue(stats['p1']['results'][i]['forehand-out-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['forehand-out-cross-court'])
     ]);
 
-    sheet.appendRow(['']);
-    sheet.appendRow(
-        ['Drop shot Stats', stats['p1']['name'], stats['p2']['name']]);
+    sheet.appendRow([TextCellValue('')]);
     sheet.appendRow([
-      'Total points decided with',
-      stats['p1']['results'][i]['drop-shot-played'],
-      stats['p2']['results'][i]['drop-shot-played']
+      TextCellValue('Backhand Stats'),
+      TextCellValue(stats['p1']['name']),
+      TextCellValue(stats['p2']['name'])
     ]);
     sheet.appendRow([
-      'Winners',
-      stats['p1']['results'][i]['drop-shot-won'],
-      stats['p2']['results'][i]['drop-shot-won']
+      TextCellValue('Total points decided with'),
+      IntCellValue(stats['p1']['results'][i]['backhand-played']),
+      IntCellValue(stats['p2']['results'][i]['backhand-played'])
     ]);
     sheet.appendRow([
-      'Winners %',
-      stats['p1']['results'][i]['drop-shot-won-%'],
-      stats['p2']['results'][i]['drop-shot-won-%']
+      TextCellValue('Winners'),
+      IntCellValue(stats['p1']['results'][i]['backhand-won']),
+      IntCellValue(stats['p2']['results'][i]['backhand-won'])
     ]);
     sheet.appendRow([
-      'Winners down the line',
-      stats['p1']['results'][i]['drop-shot-won-down-the-line'],
-      stats['p2']['results'][i]['drop-shot-won-down-the-line']
+      TextCellValue('Winners %'),
+      IntCellValue(stats['p1']['results'][i]['backhand-won-%']),
+      IntCellValue(stats['p2']['results'][i]['backhand-won-%'])
     ]);
     sheet.appendRow([
-      'Winners middle',
-      stats['p1']['results'][i]['drop-shot-won-middle'],
-      stats['p2']['results'][i]['drop-shot-won-middle']
+      TextCellValue('Winners down the line'),
+      IntCellValue(stats['p1']['results'][i]['backhand-won-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['backhand-won-down-the-line'])
     ]);
     sheet.appendRow([
-      'Winners cross court',
-      stats['p1']['results'][i]['drop-shot-won-cross-court'],
-      stats['p2']['results'][i]['drop-shot-won-cross-court']
+      TextCellValue('Winners middle'),
+      IntCellValue(stats['p1']['results'][i]['backhand-won-middle']),
+      IntCellValue(stats['p2']['results'][i]['backhand-won-middle'])
     ]);
     sheet.appendRow([
-      'Into the net',
-      stats['p1']['results'][i]['drop-shot-net'],
-      stats['p2']['results'][i]['drop-shot-net']
+      TextCellValue('Winners cross court'),
+      IntCellValue(stats['p1']['results'][i]['backhand-won-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['backhand-won-cross-court'])
     ]);
     sheet.appendRow([
-      'Into the net %',
-      stats['p1']['results'][i]['drop-shot-net-%'],
-      stats['p2']['results'][i]['drop-shot-net-%']
+      TextCellValue('Into the net'),
+      IntCellValue(stats['p1']['results'][i]['backhand-net']),
+      IntCellValue(stats['p2']['results'][i]['backhand-net'])
     ]);
     sheet.appendRow([
-      'Into the net down the line',
-      stats['p1']['results'][i]['drop-shot-net-down-the-line'],
-      stats['p2']['results'][i]['drop-shot-net-down-the-line']
+      TextCellValue('Into the net %'),
+      IntCellValue(stats['p1']['results'][i]['backhand-net-%']),
+      IntCellValue(stats['p2']['results'][i]['backhand-net-%'])
     ]);
     sheet.appendRow([
-      'Into the net middle',
-      stats['p1']['results'][i]['drop-shot-net-middle'],
-      stats['p2']['results'][i]['drop-shot-net-middle']
+      TextCellValue('Into the net down the line'),
+      IntCellValue(stats['p1']['results'][i]['backhand-net-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['backhand-net-down-the-line'])
     ]);
     sheet.appendRow([
-      'Into the net cross court',
-      stats['p1']['results'][i]['drop-shot-net-cross-court'],
-      stats['p2']['results'][i]['drop-shot-net-cross-court']
+      TextCellValue('Into the net middle'),
+      IntCellValue(stats['p1']['results'][i]['backhand-net-middle']),
+      IntCellValue(stats['p2']['results'][i]['backhand-net-middle'])
     ]);
     sheet.appendRow([
-      'Out',
-      stats['p1']['results'][i]['drop-shot-out'],
-      stats['p2']['results'][i]['drop-shot-out']
+      TextCellValue('Into the net cross court'),
+      IntCellValue(stats['p1']['results'][i]['backhand-net-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['backhand-net-cross-court'])
     ]);
     sheet.appendRow([
-      'Out %',
-      stats['p1']['results'][i]['drop-shot-out-%'],
-      stats['p2']['results'][i]['drop-shot-out-%']
+      TextCellValue('Out'),
+      IntCellValue(stats['p1']['results'][i]['backhand-out']),
+      IntCellValue(stats['p2']['results'][i]['backhand-out'])
     ]);
     sheet.appendRow([
-      'Out down the line',
-      stats['p1']['results'][i]['drop-shot-out-down-the-line'],
-      stats['p2']['results'][i]['drop-shot-out-down-the-line']
+      TextCellValue('Out %'),
+      IntCellValue(stats['p1']['results'][i]['backhand-out-%']),
+      IntCellValue(stats['p2']['results'][i]['backhand-out-%'])
     ]);
     sheet.appendRow([
-      'Out middle',
-      stats['p1']['results'][i]['drop-shot-out-middle'],
-      stats['p2']['results'][i]['drop-shot-out-middle']
+      TextCellValue('Out down the line'),
+      IntCellValue(stats['p1']['results'][i]['backhand-out-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['backhand-out-down-the-line'])
     ]);
     sheet.appendRow([
-      'Out cross court',
-      stats['p1']['results'][i]['drop-shot-out-cross-court'],
-      stats['p2']['results'][i]['drop-shot-out-cross-court']
+      TextCellValue('Out middle'),
+      IntCellValue(stats['p1']['results'][i]['backhand-out-middle']),
+      IntCellValue(stats['p2']['results'][i]['backhand-out-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out cross court'),
+      IntCellValue(stats['p1']['results'][i]['backhand-out-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['backhand-out-cross-court'])
+    ]);
+
+    sheet.appendRow([TextCellValue('')]);
+    sheet.appendRow([
+      TextCellValue('Volley Stats'),
+      TextCellValue(stats['p1']['name']),
+      TextCellValue(stats['p2']['name'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Total points decided with'),
+      IntCellValue(stats['p1']['results'][i]['volley-played']),
+      IntCellValue(stats['p2']['results'][i]['volley-played'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners'),
+      IntCellValue(stats['p1']['results'][i]['volley-won']),
+      IntCellValue(stats['p2']['results'][i]['volley-won'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners %'),
+      IntCellValue(stats['p1']['results'][i]['volley-won-%']),
+      IntCellValue(stats['p2']['results'][i]['volley-won-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners down the line'),
+      IntCellValue(stats['p1']['results'][i]['volley-won-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['volley-won-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners middle'),
+      IntCellValue(stats['p1']['results'][i]['volley-won-middle']),
+      IntCellValue(stats['p2']['results'][i]['volley-won-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners cross court'),
+      IntCellValue(stats['p1']['results'][i]['volley-won-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['volley-won-cross-court'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net'),
+      IntCellValue(stats['p1']['results'][i]['volley-net']),
+      IntCellValue(stats['p2']['results'][i]['volley-net'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net %'),
+      IntCellValue(stats['p1']['results'][i]['volley-net-%']),
+      IntCellValue(stats['p2']['results'][i]['volley-net-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net down the line'),
+      IntCellValue(stats['p1']['results'][i]['volley-net-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['volley-net-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net middle'),
+      IntCellValue(stats['p1']['results'][i]['volley-net-middle']),
+      IntCellValue(stats['p2']['results'][i]['volley-net-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net cross court'),
+      IntCellValue(stats['p1']['results'][i]['volley-net-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['volley-net-cross-court'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out'),
+      IntCellValue(stats['p1']['results'][i]['volley-out']),
+      IntCellValue(stats['p2']['results'][i]['volley-out'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out %'),
+      IntCellValue(stats['p1']['results'][i]['volley-out-%']),
+      IntCellValue(stats['p2']['results'][i]['volley-out-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out down the line'),
+      IntCellValue(stats['p1']['results'][i]['volley-out-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['volley-out-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out middle'),
+      IntCellValue(stats['p1']['results'][i]['volley-out-middle']),
+      IntCellValue(stats['p2']['results'][i]['volley-out-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out cross court'),
+      IntCellValue(stats['p1']['results'][i]['volley-out-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['volley-out-cross-court'])
+    ]);
+
+    sheet.appendRow([TextCellValue('')]);
+    sheet.appendRow([
+      TextCellValue('Smash Stats'),
+      TextCellValue(stats['p1']['name']),
+      TextCellValue(stats['p2']['name'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Total points decided with'),
+      IntCellValue(stats['p1']['results'][i]['smash-played']),
+      IntCellValue(stats['p2']['results'][i]['smash-played'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners'),
+      IntCellValue(stats['p1']['results'][i]['smash-won']),
+      IntCellValue(stats['p2']['results'][i]['smash-won'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners %'),
+      IntCellValue(stats['p1']['results'][i]['smash-won-%']),
+      IntCellValue(stats['p2']['results'][i]['smash-won-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners down the line'),
+      IntCellValue(stats['p1']['results'][i]['smash-won-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['smash-won-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners middle'),
+      IntCellValue(stats['p1']['results'][i]['smash-won-middle']),
+      IntCellValue(stats['p2']['results'][i]['smash-won-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners cross court'),
+      IntCellValue(stats['p1']['results'][i]['smash-won-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['smash-won-cross-court'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net'),
+      IntCellValue(stats['p1']['results'][i]['smash-net']),
+      IntCellValue(stats['p2']['results'][i]['smash-net'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net %'),
+      IntCellValue(stats['p1']['results'][i]['smash-net-%']),
+      IntCellValue(stats['p2']['results'][i]['smash-net-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net down the line'),
+      IntCellValue(stats['p1']['results'][i]['smash-net-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['smash-net-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net middle'),
+      IntCellValue(stats['p1']['results'][i]['smash-net-middle']),
+      IntCellValue(stats['p2']['results'][i]['smash-net-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net cross court'),
+      IntCellValue(stats['p1']['results'][i]['smash-net-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['smash-net-cross-court'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out'),
+      IntCellValue(stats['p1']['results'][i]['smash-out']),
+      IntCellValue(stats['p2']['results'][i]['smash-out'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out %'),
+      IntCellValue(stats['p1']['results'][i]['smash-out-%']),
+      IntCellValue(stats['p2']['results'][i]['smash-out-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out down the line'),
+      IntCellValue(stats['p1']['results'][i]['smash-out-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['smash-out-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out middle'),
+      IntCellValue(stats['p1']['results'][i]['smash-out-middle']),
+      IntCellValue(stats['p2']['results'][i]['smash-out-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out cross court'),
+      IntCellValue(stats['p1']['results'][i]['smash-out-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['smash-out-cross-court'])
+    ]);
+
+    sheet.appendRow([TextCellValue('')]);
+    sheet.appendRow([
+      TextCellValue('Drop shot Stats'),
+      TextCellValue(stats['p1']['name']),
+      TextCellValue(stats['p2']['name'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Total points decided with'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-played']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-played'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-won']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-won'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners %'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-won-%']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-won-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners down the line'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-won-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-won-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners middle'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-won-middle']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-won-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Winners cross court'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-won-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-won-cross-court'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-net']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-net'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net %'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-net-%']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-net-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net down the line'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-net-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-net-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net middle'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-net-middle']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-net-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Into the net cross court'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-net-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-net-cross-court'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-out']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-out'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out %'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-out-%']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-out-%'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out down the line'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-out-down-the-line']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-out-down-the-line'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out middle'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-out-middle']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-out-middle'])
+    ]);
+    sheet.appendRow([
+      TextCellValue('Out cross court'),
+      IntCellValue(stats['p1']['results'][i]['drop-shot-out-cross-court']),
+      IntCellValue(stats['p2']['results'][i]['drop-shot-out-cross-court'])
     ]);
   }
 }
@@ -626,57 +657,64 @@ void timelineSheet({required sheet, required match}) {
     'N': 'Into the net',
   };
   var row = [
-    'Time',
-    'Point Number',
-    'Event',
-    'Server',
-    'Decider',
-    'Shot',
-    'Call',
-    'Winner',
-    'Points ${match['p1']}',
-    'Points ${match['p2']}'
+    TextCellValue('Time'),
+    TextCellValue('Point Number'),
+    TextCellValue('Event'),
+    TextCellValue('Server'),
+    TextCellValue('Decider'),
+    TextCellValue('Shot'),
+    TextCellValue('Call'),
+    TextCellValue('Winner'),
+    TextCellValue('Points ${match['p1']}'),
+    TextCellValue('Points ${match['p2']}')
   ];
   final numberOfSets = match['events'].last['p1'].length;
   for (var i = 0; i < numberOfSets; i++) {
-    row.add('Set ${i + 1} ${match['p1']}');
-    row.add('Set ${i + 1} ${match['p2']}');
+    row.add(TextCellValue('Set ${i + 1} ${match['p1']}'));
+    row.add(TextCellValue('Set ${i + 1} ${match['p2']}'));
   }
   sheet.appendRow(row);
 
   for (int index = 0; index < match['events'].length; index++) {
     final event = match['events'][index];
     var row = [
-      event['createdAt'].toIso8601String(),
-      event['pointNumber'],
-      event['event'],
+      TextCellValue(event['createdAt'].toIso8601String()),
+      TextCellValue(event['pointNumber'].toString()),
+      TextCellValue(event['event']),
     ];
     if (event['event'] == 'CoinToss') {
-      row.addAll([match[event['server']]]);
+      row.addAll([TextCellValue(match[event['server']])]);
     } else if (event['event'] == 'Score' || event['event'] == 'FinalScore') {
-      row.addAll(['', '', '', '', '']);
+      row.addAll([
+        TextCellValue(''),
+        TextCellValue(''),
+        TextCellValue(''),
+        TextCellValue(''),
+        TextCellValue('')
+      ]);
       final p1Sets = event['p1'];
       final numberOfSets = p1Sets.length;
-      row.add(p1Sets.last['game']);
+      row.add(TextCellValue(p1Sets.last['game']));
 
       final p2Sets = event['p2'];
-      row.add(p2Sets.last['game']);
+      row.add(TextCellValue(p2Sets.last['game']));
 
       for (var i = 0; i < numberOfSets; i++) {
-        row.add(p1Sets[i]['set']);
-        row.add(p2Sets[i]['set']);
+        row.add(TextCellValue(p1Sets[i]['set'].toString()));
+        row.add(TextCellValue(p2Sets[i]['set'].toString()));
       }
     } else if (event['event'] == 'Rally') {
       row.addAll([
-        match[event['server']],
-        match[event['lastHitBy']],
-        shots[event['shot']],
-        (event['server'] == event['lastHitBy'] &&
+        TextCellValue(match[event['server']]),
+        TextCellValue(match[event['lastHitBy']]),
+        TextCellValue(shots[event['shot']].toString()),
+        TextCellValue((event['server'] == event['lastHitBy'] &&
                 event['shot'] == 'SV' &&
                 event['depth'] == 'I')
             ? 'Ace'
-            : depths[event['depth']],
-        event['winner'] == null ? 'FAULT' : match[event['winner']]
+            : depths[event['depth']].toString()),
+        TextCellValue(
+            event['winner'] == null ? 'FAULT' : match[event['winner']])
       ]);
     }
     sheet.appendRow(row);
@@ -684,8 +722,8 @@ void timelineSheet({required sheet, required match}) {
 }
 
 Future<String> statsSpreadsheetFilename({required Map match}) async {
-  var directory = await getApplicationDocumentsDirectory();
-  final fileName = match['createdAt'].toIso8601String();
+  var directory = await MatchesStorage().getExternalSdCardPath();
+  final fileName = match['createdAt'].toIso8601String().replaceAll(':', '-');
   final filePath = "${directory.path}/$fileName.match.xlsx";
   return filePath;
 }

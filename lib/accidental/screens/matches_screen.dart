@@ -84,8 +84,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
       });
     } else {
       // setState(() {
-      //   _isLoadingMatchesList = false;
-      //   _isLoadingMatchData = false;
+      _isLoadingMatchesList = false;
+      _isLoadingMatchData = false;
       // });
     }
   }
