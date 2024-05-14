@@ -141,7 +141,7 @@ void statsSheet(
       IntCellValue(stats['p2']['results'][i]['aces-out-wide'])
     ]);
     sheet.appendRow([
-      TextCellValue('Int faults'),
+      TextCellValue('Double faults'),
       IntCellValue(stats['p1']['results'][i]['double-faults']),
       IntCellValue(stats['p2']['results'][i]['double-faults'])
     ]);
