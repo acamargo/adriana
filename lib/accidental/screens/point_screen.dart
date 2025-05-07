@@ -231,6 +231,11 @@ class _PointScreenState extends State<PointScreen> {
     return _player == whoIsServing();
   }
 
+  bool isNewGame() {
+    return score()['p1'].last['game'] == '0' &&
+        score()['p2'].last['game'] == '0';
+  }
+
   List<Widget> _whoTouchedTheBallLast() {
     return [
       SingleChildScrollView(
@@ -338,10 +343,18 @@ class _PointScreenState extends State<PointScreen> {
   _save() {
     // if (isVibrate) Vibration.vibrate(duration: 100);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
-      if (isSound) FlutterBeep.beep(false);
-      _storeRallyEvent().then((_) => Navigator.of(context).pop('newEvent'));
+      _storeRallyEvent().then((_) {
+        if (isSound) {
+          if (isNewGame()) {
+            FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);
+          } else {
+            FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_ACK);
+          }
+        }
+        Navigator.of(context).pop('newEvent');
+      });
     } else {
-      if (isSound) FlutterBeep.beep();
+      if (isSound) FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_BEEP);
     }
   }
 
