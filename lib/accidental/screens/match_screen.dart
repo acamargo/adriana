@@ -298,8 +298,8 @@ class _MatchScreenState extends State<MatchScreen> {
           ? PointScreen(widget.match)
           : CoinTossScreen(widget.match);
     })).then((eventName) {
-      if (eventName == null) {
-        // back button pressed, updates the screen
+      if (eventName == null || eventName == 'finish') {
+        // back button pressed or finish action selected in point screen
         setState(() {});
       } else {
         addEvent();
