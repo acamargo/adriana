@@ -25,8 +25,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
   bool _hasMore = false;
   String _title = "Matches";
   bool _isLoadingMatchesList = false;
-  bool _isLoadingMatchData = false;
-  int _batch = 1;
 
   bool isLandscape = true;
   final String portraitScreenOrientation = "Set portrait mode";
@@ -61,50 +59,26 @@ class _MatchesScreenState extends State<MatchesScreen> {
         : [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   }
 
-  void _loadMore() {
-    _isLoadingMatchData = true;
-    _hasMore = _listMatchFiles.length > _matches.length;
-    if (_hasMore) {
-      int start = _matches.length;
-      int end = ((_matches.length + _batch) > _listMatchFiles.length)
-          ? (_listMatchFiles.length - _matches.length)
-          : _matches.length + _batch;
-      var filesToBeLoaded = _listMatchFiles.getRange(start, end);
-      Future.wait(filesToBeLoaded
-              .map((file) => widget.storage.loadMatch(file))
-              .toList())
+  void _refresh() {
+    widget.storage.loadListMatches().then((listMatches) {
+      _listMatchFiles = listMatches;
+      setState(() {
+        _isLoadingMatchesList = true;
+        _title = "Matches";
+        _matches = [];
+      });
+      Future.wait(listMatches
+          .map((file) => widget.storage.loadMatch(file))
+          .toList())
           .then((matches) {
         setState(() {
           _matches.addAll(matches);
           if (_listMatchFiles.length > 0)
             _title = "Matches (${_listMatchFiles.length})";
           _isLoadingMatchesList = false;
-          _isLoadingMatchData = false;
         });
       });
-    } else {
-      // setState(() {
-      _isLoadingMatchesList = false;
-      _isLoadingMatchData = false;
-      // });
-    }
-  }
-
-  void _refresh() {
-    if (!_isLoadingMatchesList) {
-      setState(() {
-        _isLoadingMatchesList = true;
-        _title = "Matches";
-        _matches = [];
-      });
-      widget.storage.loadListMatches().then((listMatches) {
-        _listMatchFiles = listMatches;
-        setState(() {
-          _isLoadingMatchesList = false;
-        });
-        _loadMore();
-      });
-    }
+    });
   }
 
   void requestStoragePermissions() async {
@@ -140,6 +114,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
     } else if (value == landscapeScreenOrientation) {
       await widget.preferences.setLandscape(true);
       _setupScreen();
+    } else if (value == 'Refresh') {
+      _refresh();
     }
   }
 
@@ -156,6 +132,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 isLandscape
                     ? portraitScreenOrientation
                     : landscapeScreenOrientation,
+                'Refresh'
               }.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
@@ -171,20 +148,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
           : _matches.isEmpty
               ? Center(child: Text('Tap "+" to add a match.'))
               : ListView.builder(
-                  itemCount: _hasMore ? _matches.length + 1 : _matches.length,
+                  itemCount: _matches.length,
                   itemBuilder: (context, index) {
-                    if (index >= _matches.length &&
-                        _hasMore &&
-                        !_isLoadingMatchData) {
-                      _loadMore();
-                      return Center(
-                        child: SizedBox(
-                          child: CircularProgressIndicator(),
-                          height: 24,
-                          width: 24,
-                        ),
-                      );
-                    }
                     final match = _matches[index];
                     final isFinished =
                         match['events'].last['event'] == 'FinalScore';
