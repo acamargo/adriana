@@ -233,7 +233,8 @@ class _PointScreenState extends State<PointScreen> {
 
   bool isNewGame() {
     return score()['p1'].last['game'] == '0' &&
-        score()['p2'].last['game'] == '0';
+        score()['p2'].last['game'] == '0' &&
+        !score()['isServiceFault'];
   }
 
   List<Widget> _whoTouchedTheBallLast() {
