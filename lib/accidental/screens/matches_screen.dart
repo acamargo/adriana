@@ -22,7 +22,6 @@ class MatchesScreen extends StatefulWidget {
 class _MatchesScreenState extends State<MatchesScreen> {
   List _matches = [];
   List _listMatchFiles = [];
-  bool _hasMore = false;
   String _title = "Matches";
   bool _isLoadingMatchesList = false;
 
