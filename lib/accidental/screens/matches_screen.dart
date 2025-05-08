@@ -67,8 +67,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
         _matches = [];
       });
       Future.wait(listMatches
-          .map((file) => widget.storage.loadMatch(file))
-          .toList())
+              .take(10) // FIXME: implement a decent lazy loading strategy
+              .map((file) => widget.storage.loadMatch(file))
+              .toList())
           .then((matches) {
         setState(() {
           _matches.addAll(matches);
