@@ -24,6 +24,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
   List _listMatchFiles = [];
   String _title = "Matches";
   bool _isLoadingMatchesList = false;
+  bool _isLoadingMore = false;
+  bool _hasMoreMatches = true;
+
+  // Number of matches to load at once
+  final int _batchSize = 15;
+
+  // Controller to detect when user scrolls to the bottom
+  final ScrollController _scrollController = ScrollController();
 
   bool isLandscape = true;
   final String portraitScreenOrientation = "Set portrait mode";
@@ -41,7 +49,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
           surface: results.surface,
           venue: results.venue);
       widget.storage.create(match);
-      setState(() => _matches.insert(0, match));
+      setState(() {
+        _matches.insert(0, match);
+        if (_listMatchFiles.length > 0) {
+          _title = "Matches (${_listMatchFiles.length + 1})";
+        }
+        // _listMatchFiles.insert(0, match['id'].toString()); // Add the new file to the list
+      });
     }
   }
 
@@ -52,33 +66,61 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
     SystemChrome.setPreferredOrientations(isLandscape
         ? [
-            DeviceOrientation.landscapeLeft,
-            DeviceOrientation.landscapeRight,
-          ]
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]
         : [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   }
 
   void _refresh() {
+    setState(() {
+      _isLoadingMatchesList = true;
+      _title = "Matches";
+      _matches = [];
+      _hasMoreMatches = true;
+    });
+
     widget.storage.loadListMatches().then((listMatches) {
       _listMatchFiles = listMatches;
-      setState(() {
-        _isLoadingMatchesList = true;
-        _title = "Matches";
-        _matches = [];
-      });
-      Future.wait(listMatches
-              .take(10) // FIXME: implement a decent lazy loading strategy
-              .map((file) => widget.storage.loadMatch(file))
-              .toList())
-          .then((matches) {
-        setState(() {
-          _matches.addAll(matches);
-          if (_listMatchFiles.length > 0)
-            _title = "Matches (${_listMatchFiles.length})";
-          _isLoadingMatchesList = false;
-        });
-      });
+      _loadMoreMatches(initial: true);
     });
+  }
+
+  Future<void> _loadMoreMatches({bool initial = false}) async {
+    if (_isLoadingMore || !_hasMoreMatches) return;
+
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    final startIndex = initial ? 0 : _matches.length;
+    final endIndex = startIndex + _batchSize;
+    final hasMore = endIndex < _listMatchFiles.length;
+
+    final matchesToLoad = _listMatchFiles
+        .sublist(startIndex, hasMore ? endIndex : _listMatchFiles.length);
+
+    final loadedMatches = await Future.wait(
+        matchesToLoad.map((file) => widget.storage.loadMatch(file)).toList()
+    );
+
+    setState(() {
+      _matches.addAll(loadedMatches);
+      _isLoadingMore = false;
+      _isLoadingMatchesList = false;
+      _hasMoreMatches = hasMore;
+
+      if (_listMatchFiles.length > 0) {
+        _title = "Matches (${_listMatchFiles.length})";
+      }
+    });
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200 && !_isLoadingMore && _hasMoreMatches) {
+      _loadMoreMatches();
+    }
   }
 
   void requestStoragePermissions() async {
@@ -103,8 +145,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
     super.initState();
     _setupScreen();
     _refresh();
+    _scrollController.addListener(_onScroll);
     requestStoragePermissions();
     widget.storage.copyFilesToSdCard();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void handleClick(String value) async {
@@ -143,49 +193,65 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ),
         ],
       ),
-      body: _isLoadingMatchesList
+      body: _isLoadingMatchesList && _matches.isEmpty
           ? Center(child: Text('Loading matches...'))
           : _matches.isEmpty
-              ? Center(child: Text('Tap "+" to add a match.'))
-              : ListView.builder(
-                  itemCount: _matches.length,
-                  itemBuilder: (context, index) {
-                    final match = _matches[index];
-                    final isFinished =
-                        match['events'].last['event'] == 'FinalScore';
-                    final status = isFinished ? 'finished' : 'in progress';
+          ? Center(child: Text('Tap "+" to add a match.'))
+          : ListView.builder(
+        controller: _scrollController,
+        itemCount: _matches.length + (_hasMoreMatches ? 1 : 0),
+        itemBuilder: (context, index) {
+          // Show loading indicator at the bottom while loading more items
+          if (index == _matches.length) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
 
-                    return Card(
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return MatchScreen(match);
-                          })).then((_) {
-                            // Update match entry when necessary
-                            var matchFile = _listMatchFiles[index];
-                            if (widget.storage.exist(matchFile)) {
-                              widget.storage.loadMatch(matchFile).then((value) {
-                                setState(() => _matches[index] = value);
-                              });
-                            } else {
-                              setState(() {
-                                _listMatchFiles.removeAt(index);
-                                _matches.removeAt(index);
-                              });
-                            }
-                          });
-                        },
-                        title: Text(
-                            '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
-                        subtitle: Text(
-                            '${match['surface']} - ${match['venue']} - $status'),
-                      ),
-                    );
-                  },
-                ),
+          final match = _matches[index];
+          final isFinished =
+              match['events'].last['event'] == 'FinalScore';
+          final status = isFinished ? 'finished' : 'in progress';
+
+          return Card(
+            child: ListTile(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return MatchScreen(match);
+                })).then((_) {
+                  // Update match entry when necessary
+                  if (index < _listMatchFiles.length) {
+                    var matchFile = _listMatchFiles[index];
+                    if (widget.storage.exist(matchFile)) {
+                      widget.storage.loadMatch(matchFile).then((value) {
+                        setState(() => _matches[index] = value);
+                      });
+                    } else {
+                      setState(() {
+                        _listMatchFiles.removeAt(index);
+                        _matches.removeAt(index);
+                        if (_listMatchFiles.length > 0) {
+                          _title = "Matches (${_listMatchFiles.length})";
+                        }
+                      });
+                    }
+                  }
+                });
+              },
+              title: Text(
+                  '${match['p1']} vs ${match['p2']} - ${formatDateTime(match['createdAt'], DateTime.now())}'),
+              subtitle: Text(
+                  '${match['surface']} - ${match['venue']} - $status'),
+            ),
+          );
+        },
+      ),
       floatingActionButton: Visibility(
-        visible: !_isLoadingMatchesList,
+        visible: !_isLoadingMatchesList || _matches.isNotEmpty,
         child: FloatingActionButton(
           onPressed: _add,
           tooltip: 'Add match',
