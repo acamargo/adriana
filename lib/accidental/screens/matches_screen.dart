@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,13 +50,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
           p2: results.p2,
           surface: results.surface,
           venue: results.venue);
-      widget.storage.create(match);
+      final File matchFile = await widget.storage.create(match);
       setState(() {
+        _listMatchFiles.insert(0, matchFile);
         _matches.insert(0, match);
-        if (_listMatchFiles.length > 0) {
-          _title = "Matches (${_listMatchFiles.length + 1})";
-        }
-        // _listMatchFiles.insert(0, match['id'].toString()); // Add the new file to the list
+        _title = "Matches (${_listMatchFiles.length})";
       });
     }
   }
