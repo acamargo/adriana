@@ -1,4 +1,6 @@
+import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'package:adriana/accidental/storage/matches.dart';
@@ -7,6 +9,7 @@ import 'package:adriana/essential/score.dart';
 
 class CoinTossScreen extends StatefulWidget {
   final MatchesStorage storage = MatchesStorage();
+  final PreferencesStorage preferences = PreferencesStorage();
   final Map match;
 
   CoinTossScreen(this.match);
@@ -16,15 +19,114 @@ class CoinTossScreen extends StatefulWidget {
 }
 
 class _CoinTossScreenState extends State<CoinTossScreen> {
-  _storeCoinTossEvent(winner) {
-    Map coinTossEvent =
-        newCoinTossEvent(winner: winner, createdAt: DateTime.now());
+  String _firstServer = '';
+  String _servingAtCourtEnd = '';
+
+  bool isSound = true;
+  Future<void> _loadPreferences() async {
+    isSound = await widget.preferences.isSound();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  Widget choiceChip(
+      {required String label, required bool selected, required onSelected}) {
+    return ChoiceChip(
+        padding: EdgeInsets.all(10),
+        label: Text(label,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        selected: selected,
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightGreenAccent,
+        onSelected: onSelected);
+  }
+
+  _save() {
+    if (_firstServer != '' && _servingAtCourtEnd != '') {
+      _storeCoinTossEvent(_firstServer, _servingAtCourtEnd).then((_) {
+        if (isSound) {
+          FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_ACK);
+        }
+        Navigator.of(context).pop('coinToss');
+      });
+    } else {
+      if (isSound) FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_BEEP);
+    }
+  }
+
+  List<Widget> _chooseFirstServer() {
+    return [
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+          spacing: 10,
+          children: [
+            choiceChip(
+                label: '${widget.match['p1']} serves first',
+                selected: _firstServer == 'p1',
+                onSelected: (bool selected) {
+                  setState(() {
+                    _firstServer = 'p1';
+                    _save();
+                  });
+                }),
+            choiceChip(
+                label: '${widget.match['p2']} serves first',
+                selected: _firstServer == 'p2',
+                onSelected: (bool selected) {
+                  setState(() {
+                    _firstServer = 'p2';
+                    _save();
+                  });
+                }),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> _chooseServerSideOfTheCourt() {
+    return [
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+          spacing: 10,
+          children: [
+            choiceChip(
+                label: 'Left end',
+                selected: _servingAtCourtEnd == 'L',
+                onSelected: (bool selected) {
+                  setState(() {
+                    _servingAtCourtEnd = 'L';
+                    _save();
+                  });
+                }),
+            choiceChip(
+                label: 'Right end',
+                selected: _servingAtCourtEnd == 'R',
+                onSelected: (bool selected) {
+                  setState(() {
+                    _servingAtCourtEnd = 'R';
+                    _save();
+                  });
+                }),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  _storeCoinTossEvent(winner, courtEnd) async {
+    Map coinTossEvent = newCoinTossEvent(
+        winner: winner, courtEnd: courtEnd, createdAt: DateTime.now());
     Map scoreEvent = newScoreFromCoinToss(widget.match, coinTossEvent);
     widget.match['events'].add(coinTossEvent);
     widget.match['events'].add(scoreEvent);
-    widget.storage
-        .create(widget.match)
-        .then((_) => Navigator.of(context).pop('coinToss'));
+    return widget.storage.create(widget.match);
   }
 
   @override
@@ -39,20 +141,21 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _storeCoinTossEvent('p1');
-              },
-              child: Text('${widget.match['p1']} serves first'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _storeCoinTossEvent('p2');
-              },
-              child: Text('${widget.match['p2']} serves first'),
-            )
-          ],
+          children: _chooseFirstServer() + _chooseServerSideOfTheCourt(),
+          // [
+          //   ElevatedButton(
+          //     onPressed: () {
+          //       _storeCoinTossEvent('p1');
+          //     },
+          //     child: Text('${widget.match['p1']} serves first'),
+          //   ),
+          //   ElevatedButton(
+          //     onPressed: () {
+          //       _storeCoinTossEvent('p2');
+          //     },
+          //     child: Text('${widget.match['p2']} serves first'),
+          //   )
+          // ],
         ),
       ),
     );

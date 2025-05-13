@@ -1069,8 +1069,8 @@ void main() {
         surface: 'Hard',
         venue: 'US Open 2021');
     group('When it has just done the coin toss and P1 won it', () {
-      final coinToss =
-          newCoinTossEvent(createdAt: DateTime.now(), winner: 'p1');
+      final coinToss = newCoinTossEvent(
+          createdAt: DateTime.now(), courtEnd: 'L', winner: 'p1');
       final newScore = newScoreFromCoinToss(match, coinToss);
       match['events'].add(coinToss);
       match['events'].add(newScore);

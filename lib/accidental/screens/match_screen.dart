@@ -176,9 +176,14 @@ class _MatchScreenState extends State<MatchScreen> {
       final item = widget.match['events'][i];
       if (item['event'] == 'CoinToss') {
         final serverName = widget.match[item['server']];
+        final serverEnd = item['courtEnd'];
         items.add({
           'pointNumber': '',
-          'title': '$serverName to serve',
+          'title': serverEnd == 'L'
+              ? '$serverName to serve at Left end'
+              : (serverEnd == 'R'
+                  ? '$serverName to serve at Right end'
+                  : '$serverName to serve'),
           'subtitle': '$serverName 0/0 0-0',
           'time': '',
         });

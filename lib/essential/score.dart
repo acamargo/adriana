@@ -58,6 +58,7 @@ String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
 }
 
 String formatScore(Map match, Map score, String playerServing) {
+  var courtEnd = score['courtEnd'];
   var playerServingName = match[playerServing];
   var playerReceiving = playerServing == 'p1' ? 'p2' : 'p1';
   final isTieBreak = score[playerServing].last['set'] == 6 &&
@@ -67,6 +68,7 @@ String formatScore(Map match, Map score, String playerServing) {
   var playerReceivingGame =
       score[playerReceiving].last[isTieBreak ? 'tiebreak' : 'game'];
   var result = [
+    if (courtEnd != null) courtEnd,
     playerServingName,
     if (score['isServiceFault'] == true) 'fault',
     '$playerServingGame/$playerReceivingGame'
@@ -127,6 +129,7 @@ Map newScoreFromCoinToss(match, coinToss) {
   Map newScore = {...previousScore};
   newScore['createdAt'] = DateTime.now();
   newScore['server'] = coinToss['server'];
+  newScore['courtEnd'] = coinToss['courtEnd'];
   newScore['isServiceFault'] = false;
   newScore['courtSide'] = 'deuce';
   newScore['state'] = 'first service, ${match[newScore['server']]}';
@@ -213,6 +216,47 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
     newScore['state'] = 'second service, ${match[newScore['server']]}';
   } else {
     newScore['state'] = 'first service, ${match[newScore['server']]}';
+  }
+
+  //          L | R
+  // 0  G1  *P1 | P2
+  // 1  G2  *P2 | P1
+  // 2  G3   P2 | P1*
+  // 3  G4   P1 | P2*
+  // 4  G5  *P1 | P2
+  // 5  G6  *P2 | P1
+  // 6  G7   P2 | P1*
+  // 7  G8   P1 | P2*
+  // 8  G9  *P1 | P2
+  // 9  G10 *P2 | P1
+  // 10 G11  P2 | P1*
+  // 11 G12  P1 | P2*
+  // 0  T1  *P1 | P2
+  // 1  T2   P1 | P2*
+  // 2  T3   P1 | P2*
+  // 3  T4  *P1 | P2
+  // 4  T5  *P1 | P2
+  // 5  T6   P1 | P2*
+  // 6  T7  *P2 | P1
+  final int gamesPlayed =
+      newScore['p1'].last['set'] + newScore['p2'].last['set'];
+  final bool isTieBreak =
+      newScore['p1'].last['set'] == 6 && newScore['p2'].last['set'] == 6;
+  final String coinTossCourtEnd = match['events'][1]['courtEnd'];
+  final List<int> gamesSameEnd = [0, 1, 4, 5, 8, 9];
+  if (isTieBreak) {
+    final int pointsPlayed =
+        newScore['p1'].last['tiebreak'] + newScore['p2'].last['tiebreak'];
+    final List<int> pointsSameEnd = [0, 3, 4];
+    if (pointsSameEnd.contains(pointsPlayed % 6)) {
+      newScore['courtEnd'] = coinTossCourtEnd;
+    } else {
+      newScore['courtEnd'] = coinTossCourtEnd == 'L' ? 'R' : 'L';
+    }
+  } else if (gamesSameEnd.contains(gamesPlayed)) {
+    newScore['courtEnd'] = coinTossCourtEnd;
+  } else {
+    newScore['courtEnd'] = coinTossCourtEnd == 'L' ? 'R' : 'L';
   }
 
   return newScore;

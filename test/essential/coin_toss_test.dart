@@ -8,7 +8,7 @@ void main() {
       test('Then the event has the required properties', () {
         final now = DateTime.now();
         expect(
-            newCoinTossEvent(winner: 'p1', createdAt: now),
+            newCoinTossEvent(winner: 'p1', courtEnd: 'L', createdAt: now),
             allOf([
               containsPair('event', 'CoinToss'),
               containsPair('createdAt', now),
