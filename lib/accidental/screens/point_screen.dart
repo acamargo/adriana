@@ -232,9 +232,12 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   bool isNewGame() {
-    return score()['p1'].last['game'] == '0' &&
-        score()['p2'].last['game'] == '0' &&
-        !score()['isServiceFault'];
+    final Map _score = score();
+    return _score['p1'].last['game'] == '0' &&
+        _score['p2'].last['game'] == '0' &&
+        !_score['isServiceFault'] &&
+        _score['p1'].last['set'] != 6 &&
+        _score['p2'].last['set'] != 6;
   }
 
   List<Widget> _whoTouchedTheBallLast() {
@@ -341,20 +344,44 @@ class _PointScreenState extends State<PointScreen> {
     ];
   }
 
+  bool switchEnds() {
+    final _score = score();
+    final bool isTieBreak =
+        _score['p1'].last['set'] == 6 && _score['p2'].last['set'] == 6;
+    if (isTieBreak) {
+      final int pointsPlayed =
+          _score['p1'].last['tiebreak'] + _score['p2'].last['tiebreak'];
+      final bool _switchEnds = pointsPlayed > 0 && pointsPlayed % 6 == 0;
+      return _switchEnds;
+    }
+    final int gamesPlayed = _score['p1'].last['set'] + _score['p2'].last['set'];
+    final bool _switchEnds = _score['p1'].last['game'] == '0' &&
+        _score['p2'].last['game'] == '0' &&
+        gamesPlayed > 0 &&
+        gamesPlayed % 2 != 0;
+    return _switchEnds;
+  }
+
   _save() {
     // if (isVibrate) Vibration.vibrate(duration: 100);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       _storeRallyEvent().then((_) {
         if (isSound) {
-          if (isNewGame()) {
+          if (switchEnds()) {
+            // print('switching ends');
+            FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
+          } else if (isNewGame()) {
+            // print('new game');
             FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);
           } else {
+            // print('ordinary point');
             FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_ACK);
           }
         }
         Navigator.of(context).pop('newEvent');
       });
     } else {
+      // print('shot selection');
       if (isSound) FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_BEEP);
     }
   }
