@@ -148,7 +148,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     _refresh();
     _scrollController.addListener(_onScroll);
     requestStoragePermissions();
-    widget.storage.copyFilesToSdCard();
+    // widget.storage.copyFilesToSdCard();
   }
 
   @override
