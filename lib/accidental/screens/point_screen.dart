@@ -3,6 +3,7 @@ import 'package:wakelock/wakelock.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 // import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:adriana/accidental/storage/matches.dart';
@@ -369,10 +370,12 @@ class _PointScreenState extends State<PointScreen> {
         if (isSound) {
           if (switchEnds()) {
             // print('switching ends');
-            FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
+            // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
+            FlutterRingtonePlayer().play(fromAsset: 'assets/sounds/mixkit-arcade-retro-game-over-213.wav');
           } else if (isNewGame()) {
             // print('new game');
-            FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);
+            // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);
+            FlutterRingtonePlayer().play(fromAsset: 'assets/sounds/mixkit-positive-notification-951.wav');
           } else {
             // print('ordinary point');
             FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_ACK);
