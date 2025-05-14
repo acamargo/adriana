@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:open_file/open_file.dart';
@@ -73,11 +75,9 @@ class _MatchScreenState extends State<MatchScreen> {
               p2: widget.match['p2'],
               surface: widget.match['surface'],
               venue: widget.match['venue']);
-          await MatchesStorage().create(match);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return MatchScreen(match);
-          }));
+          final File matchFile = await MatchesStorage().create(match);
+          Navigator.of(context).pop(
+              matchFile); // Returns to MatchesScreen providing the file created
         }
         break;
       case 'Delete':
