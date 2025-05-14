@@ -142,20 +142,6 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: _chooseFirstServer() + _chooseServerSideOfTheCourt(),
-          // [
-          //   ElevatedButton(
-          //     onPressed: () {
-          //       _storeCoinTossEvent('p1');
-          //     },
-          //     child: Text('${widget.match['p1']} serves first'),
-          //   ),
-          //   ElevatedButton(
-          //     onPressed: () {
-          //       _storeCoinTossEvent('p2');
-          //     },
-          //     child: Text('${widget.match['p2']} serves first'),
-          //   )
-          // ],
         ),
       ),
     );

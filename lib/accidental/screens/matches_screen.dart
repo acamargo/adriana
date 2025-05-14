@@ -66,9 +66,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
     SystemChrome.setPreferredOrientations(isLandscape
         ? [
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]
+            DeviceOrientation.landscapeLeft,
+            DeviceOrientation.landscapeRight,
+          ]
         : [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   }
 
@@ -97,12 +97,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
     final endIndex = startIndex + _batchSize;
     final hasMore = endIndex < _listMatchFiles.length;
 
-    final matchesToLoad = _listMatchFiles
-        .sublist(startIndex, hasMore ? endIndex : _listMatchFiles.length);
+    final matchesToLoad = _listMatchFiles.sublist(
+        startIndex, hasMore ? endIndex : _listMatchFiles.length);
 
     final loadedMatches = await Future.wait(
-        matchesToLoad.map((file) => widget.storage.loadMatch(file)).toList()
-    );
+        matchesToLoad.map((file) => widget.storage.loadMatch(file)).toList());
 
     setState(() {
       _matches.addAll(loadedMatches);
@@ -118,7 +117,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200 && !_isLoadingMore && _hasMoreMatches) {
+            _scrollController.position.maxScrollExtent - 200 &&
+        !_isLoadingMore &&
+        _hasMoreMatches) {
       _loadMoreMatches();
     }
   }
