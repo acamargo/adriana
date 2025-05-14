@@ -371,11 +371,16 @@ class _PointScreenState extends State<PointScreen> {
           if (switchEnds()) {
             // print('switching ends');
             // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
-            FlutterRingtonePlayer().play(fromAsset: 'assets/sounds/mixkit-uplifting-bells-notification-938.wav');
+            FlutterRingtonePlayer().play(
+                fromAsset:
+                    'assets/sounds/mixkit-video-game-treasure-2066.wav',
+                volume: 1);
           } else if (isNewGame()) {
             // print('new game');
             // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);
-            FlutterRingtonePlayer().play(fromAsset: 'assets/sounds/mixkit-positive-notification-951.wav');
+            FlutterRingtonePlayer().play(
+                fromAsset: 'assets/sounds/mixkit-positive-notification-951.wav',
+                volume: 1);
           } else {
             // print('ordinary point');
             FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_ACK);
