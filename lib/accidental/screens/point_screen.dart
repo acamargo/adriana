@@ -371,7 +371,7 @@ class _PointScreenState extends State<PointScreen> {
           if (switchEnds()) {
             // print('switching ends');
             // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
-            FlutterRingtonePlayer().play(fromAsset: 'assets/sounds/mixkit-arcade-retro-game-over-213.wav');
+            FlutterRingtonePlayer().play(fromAsset: 'assets/sounds/mixkit-uplifting-bells-notification-938.wav');
           } else if (isNewGame()) {
             // print('new game');
             // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);

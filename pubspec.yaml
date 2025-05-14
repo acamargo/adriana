@@ -57,7 +57,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/sounds/mixkit-arcade-retro-game-over-213.wav
+    - assets/sounds/mixkit-uplifting-bells-notification-938.wav
     - assets/sounds/mixkit-positive-notification-951.wav
   #   - images/a_dot_ham.jpeg
 
