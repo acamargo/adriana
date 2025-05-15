@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'package:adriana/accidental/models/match.dart';
 
@@ -40,7 +40,7 @@ class _NewMatchPage extends State<NewMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Wakelock.disable();
+    WakelockPlus.disable();
 
     final isNew = widget.match['p1'] == null;
 

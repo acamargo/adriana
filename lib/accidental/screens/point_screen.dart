@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock/wakelock_plus.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 // import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
@@ -396,7 +396,7 @@ class _PointScreenState extends State<PointScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Wakelock.enable();
+    WakelockPlus.enable();
 
     if (_player == '') {
       _player = whoIsServing();

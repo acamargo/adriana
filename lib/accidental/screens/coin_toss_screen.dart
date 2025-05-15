@@ -1,7 +1,7 @@
 import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'package:adriana/accidental/storage/matches.dart';
 import 'package:adriana/essential/coin_toss.dart';
@@ -131,7 +131,7 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Wakelock.enable();
+    WakelockPlus.enable();
 
     return Scaffold(
       appBar: AppBar(

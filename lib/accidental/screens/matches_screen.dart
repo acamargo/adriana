@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:adriana/accidental/storage/matches.dart';
@@ -60,7 +60,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   Future<void> _setupScreen() async {
-    Wakelock.disable();
+    WakelockPlus.disable();
 
     isLandscape = await widget.preferences.isLandscape();
 

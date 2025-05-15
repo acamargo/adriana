@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -219,7 +219,7 @@ class _MatchScreenState extends State<MatchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Wakelock.disable();
+    WakelockPlus.disable();
 
     final events = widget.match['events'].reversed.toList();
     List<Map> items = _history();
