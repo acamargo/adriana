@@ -1075,7 +1075,7 @@ void main() {
       match['events'].add(coinToss);
       match['events'].add(newScore);
       test('Then the Score is zeroed, starting with P1', () {
-        expect(formatScore(match, newScore, 'p1'), 'P1 0/0 0-0');
+        expect(formatScore(match, newScore, 'p1'), 'L P1 0/0 0-0');
       });
     });
     group('When a game in the first set is in progress', () {

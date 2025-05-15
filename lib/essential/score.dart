@@ -238,25 +238,29 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
   // 4  T5  *P1 | P2
   // 5  T6   P1 | P2*
   // 6  T7  *P2 | P1
-  final int gamesPlayed =
-      newScore['p1'].last['set'] + newScore['p2'].last['set'];
-  final bool isTieBreak =
-      newScore['p1'].last['set'] == 6 && newScore['p2'].last['set'] == 6;
-  final String coinTossCourtEnd = match['events'][1]['courtEnd'];
-  final List<int> gamesSameEnd = [0, 1, 4, 5, 8, 9];
-  if (isTieBreak) {
-    final int pointsPlayed =
-        newScore['p1'].last['tiebreak'] + newScore['p2'].last['tiebreak'];
-    final List<int> pointsSameEnd = [0, 3, 4];
-    if (pointsSameEnd.contains(pointsPlayed % 6)) {
+  final Map coinTossEvent = match['events']
+      .firstWhere((e) => e['event'] == 'CoinToss', orElse: () => {});
+  if (coinTossEvent.isNotEmpty) {
+    final int gamesPlayed =
+        newScore['p1'].last['set'] + newScore['p2'].last['set'];
+    final bool isTieBreak =
+        newScore['p1'].last['set'] == 6 && newScore['p2'].last['set'] == 6;
+    final String coinTossCourtEnd = coinTossEvent['courtEnd'];
+    final List<int> gamesSameEnd = [0, 1, 4, 5, 8, 9];
+    if (isTieBreak) {
+      final int pointsPlayed =
+          newScore['p1'].last['tiebreak'] + newScore['p2'].last['tiebreak'];
+      final List<int> pointsSameEnd = [0, 3, 4];
+      if (pointsSameEnd.contains(pointsPlayed % 6)) {
+        newScore['courtEnd'] = coinTossCourtEnd;
+      } else {
+        newScore['courtEnd'] = coinTossCourtEnd == 'L' ? 'R' : 'L';
+      }
+    } else if (gamesSameEnd.contains(gamesPlayed)) {
       newScore['courtEnd'] = coinTossCourtEnd;
     } else {
       newScore['courtEnd'] = coinTossCourtEnd == 'L' ? 'R' : 'L';
     }
-  } else if (gamesSameEnd.contains(gamesPlayed)) {
-    newScore['courtEnd'] = coinTossCourtEnd;
-  } else {
-    newScore['courtEnd'] = coinTossCourtEnd == 'L' ? 'R' : 'L';
   }
 
   return newScore;
