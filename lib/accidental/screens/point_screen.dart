@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wakelock/wakelock_plus.dart';
-import 'package:flutter_beep/flutter_beep.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:flutter_beep_plus/flutter_beep_plus.dart';
 // import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
@@ -23,6 +23,8 @@ class PointScreen extends StatefulWidget {
 }
 
 class _PointScreenState extends State<PointScreen> {
+  final _flutterBeepPlusPlugin = FlutterBeepPlus();
+
   String _player = '';
   String _shot = '';
   String _direction = '';
@@ -372,8 +374,7 @@ class _PointScreenState extends State<PointScreen> {
             // print('switching ends');
             // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
             FlutterRingtonePlayer().play(
-                fromAsset:
-                    'assets/sounds/mixkit-video-game-treasure-2066.wav',
+                fromAsset: 'assets/sounds/mixkit-video-game-treasure-2066.wav',
                 volume: 1);
           } else if (isNewGame()) {
             // print('new game');
@@ -383,14 +384,15 @@ class _PointScreenState extends State<PointScreen> {
                 volume: 1);
           } else {
             // print('ordinary point');
-            FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_ACK);
+            _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_ACK);
           }
         }
         Navigator.of(context).pop('newEvent');
       });
     } else {
       // print('shot selection');
-      if (isSound) FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_BEEP);
+      if (isSound)
+        _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
     }
   }
 

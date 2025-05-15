@@ -1,6 +1,6 @@
 import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_beep/flutter_beep.dart';
+import 'package:flutter_beep_plus/flutter_beep_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'package:adriana/accidental/storage/matches.dart';
@@ -19,6 +19,8 @@ class CoinTossScreen extends StatefulWidget {
 }
 
 class _CoinTossScreenState extends State<CoinTossScreen> {
+  final _flutterBeepPlusPlugin = FlutterBeepPlus();
+
   String _firstServer = '';
   String _servingAtCourtEnd = '';
 
@@ -49,12 +51,13 @@ class _CoinTossScreenState extends State<CoinTossScreen> {
     if (_firstServer != '' && _servingAtCourtEnd != '') {
       _storeCoinTossEvent(_firstServer, _servingAtCourtEnd).then((_) {
         if (isSound) {
-          FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_ACK);
+          _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_ACK);
         }
         Navigator.of(context).pop('coinToss');
       });
     } else {
-      if (isSound) FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_BEEP);
+      if (isSound)
+        _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
     }
   }
 
