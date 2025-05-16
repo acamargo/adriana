@@ -4,6 +4,7 @@ import 'package:flutter_beep_plus/flutter_beep_plus.dart';
 // import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:adriana/accidental/storage/preferences.dart';
 import 'package:adriana/accidental/storage/matches.dart';
@@ -22,8 +23,55 @@ class PointScreen extends StatefulWidget {
   _PointScreenState createState() => _PointScreenState();
 }
 
+class TTSService {
+  final FlutterTts flutterTts = FlutterTts();
+  bool isSpeaking = false;
+  List<String> speakQueue = [];
+
+  TTSService() {
+    _initTTS();
+  }
+
+  Future<void> _initTTS() async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
+
+    flutterTts.setCompletionHandler(() {
+      isSpeaking = false;
+      _processQueue();
+    });
+  }
+
+  Future<void> speak(String text) async {
+    speakQueue.add(text);
+
+    if (!isSpeaking) {
+      _processQueue();
+    }
+  }
+
+  Future<void> _processQueue() async {
+    if (speakQueue.isEmpty) return;
+
+    isSpeaking = true;
+    String textToSpeak = speakQueue.removeAt(0);
+    await flutterTts.speak(textToSpeak);
+  }
+
+  Future<void> stop() async {
+    speakQueue.clear();
+    await flutterTts.stop();
+    isSpeaking = false;
+  }
+}
+
 class _PointScreenState extends State<PointScreen> {
+  late FlutterTts flutterTts;
   final _flutterBeepPlusPlugin = FlutterBeepPlus();
+
+  TTSService tts = TTSService();
 
   String _player = '';
   String _shot = '';
@@ -41,6 +89,34 @@ class _PointScreenState extends State<PointScreen> {
   void initState() {
     super.initState();
     _loadPreferences();
+    // initTts();
+  }
+
+  // dynamic initTts() {
+  //   flutterTts = FlutterTts();
+  //   _setAwaitOptions();
+  // }
+
+  // Future<void> _setAwaitOptions() async {
+  //   await flutterTts.awaitSpeakCompletion(true);
+  // }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // flutterTts.stop();
+  }
+
+  Future<void> _speak(_newVoiceText) async {
+    await flutterTts.setVolume(1); // 0.0 ... 1.0
+    // await flutterTts.setSpeechRate(rate);
+    // await flutterTts.setPitch(pitch); // 0.5 ... 2.0
+
+    if (_newVoiceText != null) {
+      if (_newVoiceText!.isNotEmpty) {
+        await flutterTts.speak(_newVoiceText!);
+      }
+    }
   }
 
   _storeRallyEvent() async {
@@ -367,32 +443,95 @@ class _PointScreenState extends State<PointScreen> {
 
   _save() {
     // if (isVibrate) Vibration.vibrate(duration: 100);
+    if (isSound)
+      _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       _storeRallyEvent().then((_) {
         if (isSound) {
           if (switchEnds()) {
             // print('switching ends');
             // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
-            FlutterRingtonePlayer().play(
-                fromAsset: 'assets/sounds/mixkit-video-game-treasure-2066.wav',
-                volume: 1);
+            // FlutterRingtonePlayer().play(
+            //     fromAsset: 'assets/sounds/mixkit-video-game-treasure-2066.wav',
+            //     volume: 1);
+            // _speak("switch ends");
+            final rally =
+                widget.match['events'][widget.match['events'].length - 2];
+            final winner = rally['winner'];
+            final server = widget.match['events'].last['server'];
+            final receiver = server == 'p1' ? 'p2' : 'p1';
+            final server_set = widget.match['events'].last[server].last['set'];
+            final receiver_set =
+                widget.match['events'].last[receiver].last['set'];
+            final server_tb =
+                widget.match['events'].last[server].last['tiebreak'];
+            final receiver_tb =
+                widget.match['events'].last[receiver].last['tiebreak'];
+            var message = "game ${widget.match[winner]}. switch ends";
+            if (server_set == 6 && receiver_set == 6)
+              message = "$server_tb $receiver_tb. switch ends";
+            tts.speak(message);
           } else if (isNewGame()) {
             // print('new game');
             // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);
-            FlutterRingtonePlayer().play(
-                fromAsset: 'assets/sounds/mixkit-positive-notification-951.wav',
-                volume: 1);
+            // FlutterRingtonePlayer().play(
+            //     fromAsset: 'assets/sounds/mixkit-positive-notification-951.wav',
+            //     volume: 1);
+            // _speak("game");
+            // print(
+            //     "${widget.match['events'][widget.match['events'].length - 2]}");
+            final rally =
+                widget.match['events'][widget.match['events'].length - 2];
+            final winner = rally['winner'];
+            tts.speak("game ${widget.match[winner]}");
           } else {
             // print('ordinary point');
-            _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_ACK);
+            // _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_ACK);
+            print(widget.match['events'].last.toString());
+            final server = widget.match['events'].last['server'];
+            final server_game =
+                widget.match['events'].last[server].last['game'];
+            final server_set = widget.match['events'].last[server].last['set'];
+            final server_score = server_game == '0' ? 'love' : server_game;
+            final receiver = server == 'p1' ? 'p2' : 'p1';
+            final receiver_game =
+                widget.match['events'].last[receiver].last['game'];
+            final receiver_set =
+                widget.match['events'].last[receiver].last['set'];
+            final receiver_score =
+                receiver_game == '0' ? 'love' : receiver_game;
+            var message = "${server_score} ${receiver_score}";
+            if (widget.match['events'].last['isServiceFault'])
+              message = "fault";
+            else if (server_set == 6 && receiver_set == 6) {
+              final server_tb =
+                  widget.match['events'].last[server].last['tiebreak'];
+              final receiver_tb =
+                  widget.match['events'].last[receiver].last['tiebreak'];
+              if (server_tb == 0 && receiver_tb == 0)
+                message = "tiebreak";
+              else if (server_tb == receiver_tb)
+                message = "${server_tb} all";
+              else
+                message = "$server_tb $receiver_tb";
+            } else if (server_score == 'Ad')
+              message = "Ad ${widget.match[server]}";
+            else if (receiver_score == 'Ad')
+              message = 'Ad ${widget.match[receiver]}';
+            else if (server_score == receiver_score) {
+              message = "$server_score all";
+              if (server_score == '40') message = "deuce";
+            }
+
+            tts.speak(message);
           }
         }
         Navigator.of(context).pop('newEvent');
       });
     } else {
       // print('shot selection');
-      if (isSound)
-        _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
+      // if (isSound)
+      //   _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
     }
   }
 
