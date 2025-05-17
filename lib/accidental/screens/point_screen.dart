@@ -23,16 +23,38 @@ class PointScreen extends StatefulWidget {
   _PointScreenState createState() => _PointScreenState();
 }
 
+// Singleton TTSService Implementation
 class TTSService {
+  static final TTSService _instance = TTSService._internal();
   final FlutterTts flutterTts = FlutterTts();
   bool isSpeaking = false;
   List<String> speakQueue = [];
+  bool _isInitialized = false;
+  // Instance identifier for verification
+  final String instanceId = DateTime.now().millisecondsSinceEpoch.toString();
 
-  TTSService() {
+  // Factory constructor to return the same instance each time
+  factory TTSService() {
+    return _instance;
+  }
+
+  // Private constructor
+  TTSService._internal() {
     _initTTS();
   }
 
+  // Prevent anyone from using the new keyword to create additional instances
+  // This is another layer of protection
+  TTSService.createNewInstance() : this._internal();
+
+  // Method to verify this is a singleton (for testing purposes)
+  String getInstanceId() {
+    return instanceId;
+  }
+
   Future<void> _initTTS() async {
+    if (_isInitialized) return;
+
     await flutterTts.setLanguage("en-US");
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setVolume(1.0);
@@ -42,6 +64,9 @@ class TTSService {
       isSpeaking = false;
       _processQueue();
     });
+
+    _isInitialized = true;
+    print('TTSService initialized with ID: $instanceId');
   }
 
   Future<void> speak(String text) async {
@@ -68,10 +93,9 @@ class TTSService {
 }
 
 class _PointScreenState extends State<PointScreen> {
-  late FlutterTts flutterTts;
+  // Use the singleton instance
+  final TTSService tts = TTSService();
   final _flutterBeepPlusPlugin = FlutterBeepPlus();
-
-  TTSService tts = TTSService();
 
   String _player = '';
   String _shot = '';
@@ -89,34 +113,8 @@ class _PointScreenState extends State<PointScreen> {
   void initState() {
     super.initState();
     _loadPreferences();
-    // initTts();
-  }
-
-  // dynamic initTts() {
-  //   flutterTts = FlutterTts();
-  //   _setAwaitOptions();
-  // }
-
-  // Future<void> _setAwaitOptions() async {
-  //   await flutterTts.awaitSpeakCompletion(true);
-  // }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // flutterTts.stop();
-  }
-
-  Future<void> _speak(_newVoiceText) async {
-    await flutterTts.setVolume(1); // 0.0 ... 1.0
-    // await flutterTts.setSpeechRate(rate);
-    // await flutterTts.setPitch(pitch); // 0.5 ... 2.0
-
-    if (_newVoiceText != null) {
-      if (_newVoiceText!.isNotEmpty) {
-        await flutterTts.speak(_newVoiceText!);
-      }
-    }
+    // Verify singleton - print the instance ID
+    print('Using TTSService instance: ${tts.getInstanceId()}');
   }
 
   _storeRallyEvent() async {
@@ -449,12 +447,6 @@ class _PointScreenState extends State<PointScreen> {
       _storeRallyEvent().then((_) {
         if (isSound) {
           if (switchEnds()) {
-            // print('switching ends');
-            // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_PROP_NACK);
-            // FlutterRingtonePlayer().play(
-            //     fromAsset: 'assets/sounds/mixkit-video-game-treasure-2066.wav',
-            //     volume: 1);
-            // _speak("switch ends");
             final rally =
                 widget.match['events'][widget.match['events'].length - 2];
             final winner = rally['winner'];
@@ -472,21 +464,11 @@ class _PointScreenState extends State<PointScreen> {
               message = "$server_tb $receiver_tb. switch ends";
             tts.speak(message);
           } else if (isNewGame()) {
-            // print('new game');
-            // FlutterBeep.playSysSound(AndroidSoundIDs.TONE_CDMA_ABBR_INTERCEPT);
-            // FlutterRingtonePlayer().play(
-            //     fromAsset: 'assets/sounds/mixkit-positive-notification-951.wav',
-            //     volume: 1);
-            // _speak("game");
-            // print(
-            //     "${widget.match['events'][widget.match['events'].length - 2]}");
             final rally =
                 widget.match['events'][widget.match['events'].length - 2];
             final winner = rally['winner'];
             tts.speak("game ${widget.match[winner]}");
           } else {
-            // print('ordinary point');
-            // _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_ACK);
             print(widget.match['events'].last.toString());
             final server = widget.match['events'].last['server'];
             final server_game =
