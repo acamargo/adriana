@@ -328,6 +328,7 @@ class _PointScreenState extends State<PointScreen> {
                 label: widget.match['p1'],
                 selected: _player == 'p1',
                 onSelected: (bool selected) {
+                  if (isSound) tts.speak(widget.match['p1']);
                   setState(() {
                     _player = 'p1';
                     _save();
@@ -337,6 +338,7 @@ class _PointScreenState extends State<PointScreen> {
                 label: widget.match['p2'],
                 selected: _player == 'p2',
                 onSelected: (bool selected) {
+                  if (isSound) tts.speak(widget.match['p2']);
                   setState(() {
                     _player = 'p2';
                     _save();
@@ -364,10 +366,13 @@ class _PointScreenState extends State<PointScreen> {
               choiceChip(
                 label: item['short'],
                 selected: _shot == item['value'],
-                onSelected: (bool selected) => setState(() {
-                  _shot = item['value'];
+                onSelected: (bool selected) {
+                  if (isSound) tts.speak(item['label']);
+                  setState(() {
+                    _shot = item['value'];
+                  });
                   _save();
-                }),
+                },
               )
           ],
         ),
@@ -387,10 +392,13 @@ class _PointScreenState extends State<PointScreen> {
               choiceChip(
                 label: item['label'],
                 selected: _direction == item['value'],
-                onSelected: (bool selected) => setState(() {
-                  _direction = item['value'];
+                onSelected: (bool selected) {
+                  if (isSound) tts.speak(item['label']);
+                  setState(() {
+                    _direction = item['value'];
+                  });
                   _save();
-                }),
+                },
               )
           ],
         ),
@@ -410,10 +418,13 @@ class _PointScreenState extends State<PointScreen> {
               choiceChip(
                 label: item['label'],
                 selected: _depth == item['value'],
-                onSelected: (bool selected) => setState(() {
-                  _depth = item['value'];
+                onSelected: (bool selected) {
+                  if (isSound) tts.speak(item['label']);
+                  setState(() {
+                    _depth = item['value'];
+                  });
                   _save();
-                }),
+                },
               )
           ],
         ),
@@ -441,8 +452,8 @@ class _PointScreenState extends State<PointScreen> {
 
   _save() {
     // if (isVibrate) Vibration.vibrate(duration: 100);
-    if (isSound)
-      _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
+    // if (isSound)
+    //   _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       _storeRallyEvent().then((_) {
         if (isSound) {
