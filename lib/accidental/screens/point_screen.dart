@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:flutter_beep_plus/flutter_beep_plus.dart';
-// import 'package:vibration/vibration.dart';
 import 'package:open_file/open_file.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:adriana/accidental/storage/preferences.dart';
@@ -23,31 +20,24 @@ class PointScreen extends StatefulWidget {
   _PointScreenState createState() => _PointScreenState();
 }
 
-// Singleton TTSService Implementation
 class TTSService {
   static final TTSService _instance = TTSService._internal();
   final FlutterTts flutterTts = FlutterTts();
   bool isSpeaking = false;
   List<String> speakQueue = [];
   bool _isInitialized = false;
-  // Instance identifier for verification
   final String instanceId = DateTime.now().millisecondsSinceEpoch.toString();
 
-  // Factory constructor to return the same instance each time
   factory TTSService() {
     return _instance;
   }
 
-  // Private constructor
   TTSService._internal() {
     _initTTS();
   }
 
-  // Prevent anyone from using the new keyword to create additional instances
-  // This is another layer of protection
   TTSService.createNewInstance() : this._internal();
 
-  // Method to verify this is a singleton (for testing purposes)
   String getInstanceId() {
     return instanceId;
   }
@@ -93,19 +83,15 @@ class TTSService {
 }
 
 class _PointScreenState extends State<PointScreen> {
-  // Use the singleton instance
   final TTSService tts = TTSService();
-  final _flutterBeepPlusPlugin = FlutterBeepPlus();
 
   String _player = '';
   String _shot = '';
   String _direction = '';
   String _depth = '';
 
-  // bool isVibrate = true;
   bool isSound = true;
   Future<void> _loadPreferences() async {
-    // isVibrate = await widget.preferences.isVibrate();
     isSound = await widget.preferences.isSound();
   }
 
@@ -113,7 +99,6 @@ class _PointScreenState extends State<PointScreen> {
   void initState() {
     super.initState();
     _loadPreferences();
-    // Verify singleton - print the instance ID
     print('Using TTSService instance: ${tts.getInstanceId()}');
   }
 
@@ -147,14 +132,6 @@ class _PointScreenState extends State<PointScreen> {
 
   void handleClick(String value) async {
     switch (value) {
-      // case 'Enable vibrate':
-      //   await widget.preferences.setVibrate(true);
-      //   isVibrate = true;
-      //   break;
-      // case 'Disable vibrate':
-      //   await widget.preferences.setVibrate(false);
-      //   isVibrate = false;
-      //   break;
       case 'Enable sound':
         await widget.preferences.setSound(true);
         isSound = true;
@@ -451,9 +428,6 @@ class _PointScreenState extends State<PointScreen> {
   }
 
   _save() {
-    // if (isVibrate) Vibration.vibrate(duration: 100);
-    // if (isSound)
-    //   _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       _storeRallyEvent().then((_) {
         if (isSound) {
@@ -521,10 +495,6 @@ class _PointScreenState extends State<PointScreen> {
         }
         Navigator.of(context).pop('newEvent');
       });
-    } else {
-      // print('shot selection');
-      // if (isSound)
-      //   _flutterBeepPlusPlugin.playSysSound(AndroidSoundID.TONE_PROP_BEEP);
     }
   }
 
@@ -568,7 +538,6 @@ class _PointScreenState extends State<PointScreen> {
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return {
-                // isVibrate ? 'Disable vibrate' : 'Enable vibrate',
                 isSound ? 'Disable sound' : 'Enable sound',
                 'Stats',
                 'Finish'
