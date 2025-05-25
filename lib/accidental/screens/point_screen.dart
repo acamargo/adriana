@@ -285,15 +285,6 @@ class _PointScreenState extends State<PointScreen> {
     return _player == whoIsServing();
   }
 
-  bool isNewGame() {
-    final Map _score = score();
-    return _score['p1'].last['game'] == '0' &&
-        _score['p2'].last['game'] == '0' &&
-        !_score['isServiceFault'] &&
-        _score['p1'].last['set'] != 6 &&
-        _score['p2'].last['set'] != 6;
-  }
-
   List<Widget> _whoTouchedTheBallLast() {
     return [
       SingleChildScrollView(
@@ -431,67 +422,8 @@ class _PointScreenState extends State<PointScreen> {
     if (_player != '' && _shot != '' && _direction != '' && _depth != '') {
       _storeRallyEvent().then((_) {
         if (isSound) {
-          if (switchEnds()) {
-            final rally =
-                widget.match['events'][widget.match['events'].length - 2];
-            final winner = rally['winner'];
-            final server = widget.match['events'].last['server'];
-            final receiver = server == 'p1' ? 'p2' : 'p1';
-            final server_set = widget.match['events'].last[server].last['set'];
-            final receiver_set =
-                widget.match['events'].last[receiver].last['set'];
-            final server_tb =
-                widget.match['events'].last[server].last['tiebreak'];
-            final receiver_tb =
-                widget.match['events'].last[receiver].last['tiebreak'];
-            var message = "game ${widget.match[winner]}. switch ends";
-            if (server_set == 6 && receiver_set == 6)
-              message = "$server_tb $receiver_tb. switch ends";
-            tts.speak(message);
-          } else if (isNewGame()) {
-            final rally =
-                widget.match['events'][widget.match['events'].length - 2];
-            final winner = rally['winner'];
-            tts.speak("game ${widget.match[winner]}");
-          } else {
-            print(widget.match['events'].last.toString());
-            final server = widget.match['events'].last['server'];
-            final server_game =
-                widget.match['events'].last[server].last['game'];
-            final server_set = widget.match['events'].last[server].last['set'];
-            final server_score = server_game == '0' ? 'love' : server_game;
-            final receiver = server == 'p1' ? 'p2' : 'p1';
-            final receiver_game =
-                widget.match['events'].last[receiver].last['game'];
-            final receiver_set =
-                widget.match['events'].last[receiver].last['set'];
-            final receiver_score =
-                receiver_game == '0' ? 'love' : receiver_game;
-            var message = "${server_score} ${receiver_score}";
-            if (widget.match['events'].last['isServiceFault'])
-              message = "fault";
-            else if (server_set == 6 && receiver_set == 6) {
-              final server_tb =
-                  widget.match['events'].last[server].last['tiebreak'];
-              final receiver_tb =
-                  widget.match['events'].last[receiver].last['tiebreak'];
-              if (server_tb == 0 && receiver_tb == 0)
-                message = "tiebreak";
-              else if (server_tb == receiver_tb)
-                message = "${server_tb} all";
-              else
-                message = "$server_tb $receiver_tb";
-            } else if (server_score == 'Ad')
-              message = "Ad ${widget.match[server]}";
-            else if (receiver_score == 'Ad')
-              message = 'Ad ${widget.match[receiver]}';
-            else if (server_score == receiver_score) {
-              message = "$server_score all";
-              if (server_score == '40') message = "deuce";
-            }
-
-            tts.speak(message);
-          }
+          final message = spokenScore(widget.match);
+          tts.speak(message);
         }
         Navigator.of(context).pop('newEvent');
       });

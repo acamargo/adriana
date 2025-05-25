@@ -57,6 +57,85 @@ String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
   }
 }
 
+bool switchEnds(_score) {
+  // final _score = score();
+  final bool isTieBreak =
+      _score['p1'].last['set'] == 6 && _score['p2'].last['set'] == 6;
+  if (isTieBreak) {
+    final int pointsPlayed =
+        _score['p1'].last['tiebreak'] + _score['p2'].last['tiebreak'];
+    final bool _switchEnds = pointsPlayed > 0 && pointsPlayed % 6 == 0;
+    return _switchEnds;
+  }
+  final int gamesPlayed = _score['p1'].last['set'] + _score['p2'].last['set'];
+  final bool _switchEnds = _score['p1'].last['game'] == '0' &&
+      _score['p2'].last['game'] == '0' &&
+      gamesPlayed > 0 &&
+      gamesPlayed % 2 != 0;
+  return _switchEnds;
+}
+
+bool isNewGame(Map score) {
+  return score['p1'].last['game'] == '0' &&
+      score['p2'].last['game'] == '0' &&
+      !score['isServiceFault'] &&
+      score['p1'].last['set'] != 6 &&
+      score['p2'].last['set'] != 6;
+}
+
+String spokenScore(Map match) {
+  final rally = match['events'][match['events'].length - 2];
+  final score = match['events'].last;
+  if (switchEnds(score)) {
+    final winner = rally['winner'];
+    final server = score['server'];
+    final receiver = server == 'p1' ? 'p2' : 'p1';
+    final server_set = score[server].last['set'];
+    final receiver_set = score[receiver].last['set'];
+    final server_tb = score[server].last['tiebreak'];
+    final receiver_tb = score[receiver].last['tiebreak'];
+    var message = "game ${match[winner]}. switch ends";
+    if (server_set == 6 && receiver_set == 6)
+      message = "$server_tb $receiver_tb. switch ends";
+    return message;
+  } else if (isNewGame(score)) {
+    final winner = rally['winner'];
+    return "game ${match[winner]}";
+  } else {
+    final server = score['server'];
+    final server_game = score[server].last['game'];
+    final server_set = score[server].last['set'];
+    final server_score = server_game == '0' ? 'love' : server_game;
+    final receiver = server == 'p1' ? 'p2' : 'p1';
+    final receiver_game = score[receiver].last['game'];
+    final receiver_set = score[receiver].last['set'];
+    final receiver_score = receiver_game == '0' ? 'love' : receiver_game;
+    if (score['isServiceFault'])
+      return "fault";
+    else if (server_set == 6 && receiver_set == 6) {
+      final server_tb = score[server].last['tiebreak'];
+      final receiver_tb = score[receiver].last['tiebreak'];
+      if (server_tb == 0 && receiver_tb == 0)
+        return "tiebreak";
+      else if (server_tb == receiver_tb)
+        return "${server_tb} all";
+      else
+        return "$server_tb $receiver_tb";
+    } else if (server_score == 'Ad')
+      return "Ad ${match[server]}";
+    else if (receiver_score == 'Ad')
+      return 'Ad ${match[receiver]}';
+    else if (server_score == receiver_score) {
+      if (server_score == '40')
+        return "deuce";
+      else
+        return "$server_score all";
+    } else {
+      return "${server_score} ${receiver_score}";
+    }
+  }
+}
+
 String formatScore(Map match, Map score, String playerServing) {
   var courtEnd = score['courtEnd'];
   var playerServingName = match[playerServing];
