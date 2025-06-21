@@ -98,7 +98,8 @@ String spokenScore(Map match) {
     final winner = rally['winner'];
     final server_tb = score[server].last['tiebreak'];
     final receiver_tb = score[receiver].last['tiebreak'];
-    var message = "game ${match[winner]}. switch ends. ${match[server]} ${set_score}";
+    var message =
+        "game ${match[winner]}. switch ends. ${match[server]} ${set_score}";
     if (server_set == 6 && receiver_set == 6)
       message = "$server_tb $receiver_tb. switch ends";
     return message;
@@ -324,12 +325,17 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
   final Map coinTossEvent = match['events']
       .firstWhere((e) => e['event'] == 'CoinToss', orElse: () => {});
   if (coinTossEvent.isNotEmpty) {
-    final int gamesPlayed =
-        newScore['p1'].last['set'] + newScore['p2'].last['set'];
+    final int gamesPlayed = newScore['p1'].fold(0, (value, element) {
+          return value + element['set'];
+        }) +
+        newScore['p2'].fold(0, (value, element) {
+          return value + element['set'];
+          ;
+        });
     final bool isTieBreak =
         newScore['p1'].last['set'] == 6 && newScore['p2'].last['set'] == 6;
     final String coinTossCourtEnd = coinTossEvent['courtEnd'];
-    final List<int> gamesSameEnd = [0, 1, 4, 5, 8, 9];
+    final List<int> gamesSameEnd = [0, 1];
     if (isTieBreak) {
       final int pointsPlayed =
           newScore['p1'].last['tiebreak'] + newScore['p2'].last['tiebreak'];
@@ -339,7 +345,7 @@ Map newScoreFromRally(createdAt, match, previousScore, rally) {
       } else {
         newScore['courtEnd'] = coinTossCourtEnd == 'L' ? 'R' : 'L';
       }
-    } else if (gamesSameEnd.contains(gamesPlayed)) {
+    } else if (gamesSameEnd.contains(gamesPlayed % 4)) {
       newScore['courtEnd'] = coinTossCourtEnd;
     } else {
       newScore['courtEnd'] = coinTossCourtEnd == 'L' ? 'R' : 'L';
