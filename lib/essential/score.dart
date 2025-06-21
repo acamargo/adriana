@@ -86,21 +86,25 @@ bool isNewGame(Map score) {
 String spokenScore(Map match) {
   final rally = match['events'][match['events'].length - 2];
   final score = match['events'].last;
+  final server = score['server'];
+  final receiver = server == 'p1' ? 'p2' : 'p1';
+  final server_set = score[server].last['set'];
+  final receiver_set = score[receiver].last['set'];
+  var set_score = "${server_set} ${receiver_set}";
+  if (server_set == receiver_set) {
+    set_score = "${server_set} all";
+  }
   if (switchEnds(score)) {
     final winner = rally['winner'];
-    final server = score['server'];
-    final receiver = server == 'p1' ? 'p2' : 'p1';
-    final server_set = score[server].last['set'];
-    final receiver_set = score[receiver].last['set'];
     final server_tb = score[server].last['tiebreak'];
     final receiver_tb = score[receiver].last['tiebreak'];
-    var message = "game ${match[winner]}. switch ends";
+    var message = "game ${match[winner]}. switch ends. ${match[server]} ${set_score}";
     if (server_set == 6 && receiver_set == 6)
       message = "$server_tb $receiver_tb. switch ends";
     return message;
   } else if (isNewGame(score)) {
     final winner = rally['winner'];
-    return "game ${match[winner]}";
+    return "game ${match[winner]}. ${match[server]} ${set_score}";
   } else {
     final server = score['server'];
     final server_game = score[server].last['game'];
@@ -122,9 +126,9 @@ String spokenScore(Map match) {
       else
         return "$server_tb $receiver_tb";
     } else if (server_score == 'Ad')
-      return "Ad ${match[server]}";
+      return "Advantage ${match[server]}";
     else if (receiver_score == 'Ad')
-      return 'Ad ${match[receiver]}';
+      return 'Advantage ${match[receiver]}';
     else if (server_score == receiver_score) {
       if (server_score == '40')
         return "deuce";
