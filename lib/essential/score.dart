@@ -59,6 +59,7 @@ String formatScoreSet(Map playerServingSet, Map playerReceivingSet) {
 
 bool switchEnds(_score) {
   // final _score = score();
+  if (_score['isServiceFault']) return false;
   final bool isTieBreak =
       _score['p1'].last['set'] == 6 && _score['p2'].last['set'] == 6;
   if (isTieBreak) {
@@ -76,7 +77,8 @@ bool switchEnds(_score) {
 }
 
 bool isNewGame(Map score) {
-  return score['p1'].last['game'] == '0' &&
+  return !score['isServiceFault'] &&
+      score['p1'].last['game'] == '0' &&
       score['p2'].last['game'] == '0' &&
       !score['isServiceFault'] &&
       score['p1'].last['set'] != 6 &&
