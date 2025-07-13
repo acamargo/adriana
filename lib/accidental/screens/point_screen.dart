@@ -442,7 +442,7 @@ class _PointScreenState extends State<PointScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.centerLeft,
             child: Text(
                 formatScore(widget.match, widget.match['events'].last,
                     widget.match['events'].last['server']),
